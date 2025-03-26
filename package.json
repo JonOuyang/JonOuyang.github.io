@@ -1,6 +1,7 @@
 {
-  "name": "applewebsite",
-  "private": true,
+  "homepage": "https://jonouyang.github.io/",
+  "name": "Jonathan Ouyang's Website",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
