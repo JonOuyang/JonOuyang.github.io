@@ -9,16 +9,20 @@ import {
     yellowImg,
   } from "../utils";
   
-  export const navLists = ["Home", "Work History", "Research", "Contact"];
+  export const navLists = [
+    { name: "Home", path: "/" },
+    { name: "Work History", path: "/work-history" },
+    { name: "Research", path: "/research" },
+    { name: "Contact", path: "/contact" },
+  ];
   
   export const hightlightsSlides = [
     {
       id: 1, // Google Gemini API Developer Competition
       textLists: [
         "Google Gemini API Developer Competition",
-        "Grand Prize Winner - $300,000 USD Grand Prize",
-        "Rank 1 out of 4,500 projects",
-        "Rank 1 out of 45,500 developers",
+        "Grand Prize Winner",
+        "1981 DeLorean + 60K USD Cash"
       ],
       video: highlightFirstVideo,
       videoDuration: 4,
