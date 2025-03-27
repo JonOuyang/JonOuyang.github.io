@@ -9,38 +9,54 @@ import {
     yellowImg,
   } from "../utils";
   
-  export const navLists = ["Store", "Mac", "iPhone", "Support"];
+  export const navLists = ["Home", "Work History", "Research", "Contact"];
   
   export const hightlightsSlides = [
     {
-      id: 1,
+      id: 1, // Google Gemini API Developer Competition
       textLists: [
-        "Enter A17 Pro.",
-        "Game‑changing chip.",
-        "Groundbreaking performance.",
+        "Google Gemini API Developer Competition",
+        "Grand Prize Winner - $300,000 USD Grand Prize",
+        "Rank 1 out of 4,500 projects",
+        "Rank 1 out of 45,500 developers",
       ],
       video: highlightFirstVideo,
       videoDuration: 4,
     },
     {
-      id: 2,
-      textLists: ["Titanium.", "So strong. So light. So Pro."],
+      id: 2, // Google Promotional Shoot
+      textLists: [
+        "Google Video Shoot", 
+        "March 5, 2025 at UCLA"
+      ],
       video: highlightSecondVideo,
       videoDuration: 5,
     },
     {
-      id: 3,
+      id: 3, // starting at Amazon
       textLists: [
-        "iPhone 15 Pro Max has the",
-        "longest optical zoom in",
-        "iPhone ever. Far out.",
+        "Incoming at Amazon",
+        "2025 Summer at Culver City"
       ],
       video: highlightThirdVideo,
       videoDuration: 2,
     },
     {
       id: 4,
-      textLists: ["All-new Action button.", "What will yours do?."],
+      textLists: [
+        "Founder & President of GLITCH", 
+        "UCLA's Premier Hackathon Club"
+      ],
+      video: highlightFourthVideo,
+      videoDuration: 3.63,
+    },
+    {
+      id: 4,
+      textLists: [
+        "Joined Stanford ILIAD Lab",
+        "Researching Shared Autonomy in Driving",
+        "In Collaboration with Toyota Research Institute",
+      ],
       video: highlightFourthVideo,
       videoDuration: 3.63,
     },
