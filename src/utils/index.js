@@ -12,6 +12,7 @@ import highlightFirstmv from "/assets/videos/personal-website-highlight1.mp4";
 import highlightSectmv from "/assets/videos/personal-website-highlight2.mp4";
 import highlightThirdmv from "/assets/videos/personal-website-highlight3.mp4";
 import highlightFourthmv from "/assets/videos/personal-website-highlight4.mp4";
+import highlightFifthmv from "/assets/videos/personal-website-highlight4.webp";
 
 import exploremv from "/assets/videos/explore.mp4";
 import framemv from "/assets/videos/frame.mp4";
@@ -40,6 +41,7 @@ export const highlightFirstVideo = highlightFirstmv;
 export const highlightSecondVideo = highlightSectmv;
 export const highlightThirdVideo = highlightThirdmv;
 export const highlightFourthVideo = highlightFourthmv;
+export const highlightFifthVideo = highlightFifthmv;
 export const exploreVideo = exploremv;
 export const frameVideo = framemv;
 

@@ -1,6 +1,7 @@
 import {
     blackImg,
     blueImg,
+    highlightFifthVideo,
     highlightFirstVideo,
     highlightFourthVideo,
     highlightSecondVideo,
@@ -61,7 +62,7 @@ import {
         "Researching Shared Autonomy in Driving",
         "In Collaboration with Toyota Research Institute",
       ],
-      video: highlightFourthVideo,
+      video: highlightFifthVideo,
       videoDuration: 3.63,
     },
   ];
