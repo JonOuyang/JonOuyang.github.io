@@ -28,7 +28,7 @@ const App = () => {
           <Footer/>
          </main>
         } />
-        <Route path="/work-history" element={ // homepage
+        <Route path="/work-history" element={ // work history page
           <main className="bg-black">
           <Navbar />
           <GlowingHeader>Experience</GlowingHeader>
@@ -40,17 +40,24 @@ const App = () => {
           <Timeline experiences={extracurricularData} />
          </main>
         } />
-        <Route path="/research" element={ // homepage
+        <Route path="/research" element={ // research page
           <main className="bg-black">
           <Navbar />
           <GlowingHeader>Research</GlowingHeader>
           <Timeline experiences={researchData} />
          </main>
         } />
-        <Route path="/contact" element={ // homepage
+        <Route path="/contact" element={ // contact page
           <main className="bg-black">
           <Navbar />
           <GlowingHeader>Contacts</GlowingHeader>
+         </main>
+        } />
+        <Route path="/beta" element={ // beta testing page
+          <main className="bg-black">
+          <Navbar />
+          <GlowingHeader>Beta Testing</GlowingHeader>
+          <h1 style={{ textAlign: 'center', color: '#e2e8f0' }}>Anything you see in this page is considered to be under development. Elements on this page may be used in other pages in the future.</h1>
          </main>
         } />
       </Routes>

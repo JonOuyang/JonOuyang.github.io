@@ -15,6 +15,7 @@ import {
     { name: "Work History", path: "/work-history" },
     { name: "Research", path: "/research" },
     { name: "Contact", path: "/contact" },
+    { name: "Beta Testing", path: "/beta" },
   ];
   
   export const hightlightsSlides = [
