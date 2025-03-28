@@ -10,8 +10,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { experiencesData } from './experience-components/experience';
 import { extracurricularData } from './experience-components/extracurriculars';
+import { researchData } from './research-components/researchData';
 import Timeline from './experience-components/ExperienceTimeline';
-import ContactsSection from './contact-components/ContactSection';
 
 const App = () => {
   return (
@@ -44,6 +44,7 @@ const App = () => {
           <main className="bg-black">
           <Navbar />
           <GlowingHeader>Research</GlowingHeader>
+          <Timeline experiences={researchData} />
          </main>
         } />
         <Route path="/contact" element={ // homepage
