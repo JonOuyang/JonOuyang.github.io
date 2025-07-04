@@ -55,10 +55,11 @@ const HowItWorks = () => {
               />
             </div>
             <div className="hiw-video">
-                <video className="pointer-events-none" playsInline preload="none" muted autoPlay ref={videoRef}>
+                {/* --- MODIFIED LINE --- */}
+                <video className="pointer-events-none w-full h-full object-cover" playsInline preload="none" muted autoPlay loop ref={videoRef}>
                   <source src={frameVideo} type="video/mp4" />
                 </video>
-              </div>
+            </div>
           </div>
           <p className="text-gray font-semibold text-center mt-3">Honkai: Star Rail</p>
           </div>
@@ -93,4 +94,4 @@ const HowItWorks = () => {
   )
 }
 
-export default HowItWorks
+export default HowItWorks;
