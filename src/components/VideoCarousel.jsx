@@ -199,7 +199,15 @@ const VideoCarousel = () => {
         >
           {hightlightsSlides.map((list, i) => (
             <div key={list.id} className="w-full flex-shrink-0">
-              <div className="video-carousel_container relative pb-16">
+              {/* --- START OF CHANGES --- */}
+              <a
+                href={list.link}
+                // Optional: open in a new tab
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="video-carousel_container block relative pb-16 cursor-pointer"
+              >
+              {/* --- END OF CHANGES --- */}
                 <div className="w-full h-full flex-center rounded-3xl overflow-hidden bg-black">
                   <video
                     id={`video-${i}`}
@@ -229,7 +237,7 @@ const VideoCarousel = () => {
                     </p>
                   ))}
                 </div>
-              </div>
+              </a>
             </div>
           ))}
         </div>

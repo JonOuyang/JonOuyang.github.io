@@ -27,6 +27,7 @@ import {
       ],
       video: highlightFirstVideo,
       videoDuration: 4,
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7265418646028447745/",
     },
     {
       id: 2, // Google Promotional Shoot
@@ -36,6 +37,7 @@ import {
       ],
       video: highlightSecondVideo,
       videoDuration: 5,
+      link: "https://www.youtube.com/watch?v=G4RNny8s8Vw",
     },
     {
       id: 3, // starting at Amazon
@@ -45,6 +47,7 @@ import {
       ],
       video: highlightThirdVideo,
       videoDuration: 1.2,
+      link: "https://www.linkedin.com/feed/update/urn:li:activity:7298170681614028800/",
     },
     {
       id: 4,
@@ -54,6 +57,7 @@ import {
       ],
       video: highlightFourthVideo,
       videoDuration: 2,
+      link: "https://glitchclub.org/",
     },
     {
       id: 5,
@@ -63,6 +67,7 @@ import {
       ],
       video: highlightFifthVideo,
       videoDuration: 8,
+      link: "https://iliad.stanford.edu/",
     },
   ];
   
