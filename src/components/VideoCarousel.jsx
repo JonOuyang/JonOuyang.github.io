@@ -40,23 +40,39 @@ const VideoCarousel = () => {
   };
 
   useGSAP(() => {
-    if (sliderContainerRef.current) {
-      gsap.to(sliderContainerRef.current, {
-        transform: `translateX(${-100 * videoId}%)`,
-        duration: 2,
-        ease: "power2.inOut",
-      });
-    }
+  const row = sliderContainerRef.current;          // the strip that slides left/right
+  if (!row) return;
 
-    ScrollTrigger.create({
-      trigger: sliderContainerRef.current,
-      start: "top center+=200",
-      once: true,
-      onEnter: () => {
-        setVideo((prev) => ({ ...prev, startPlay: true, isPlaying: true }));
-      },
-    });
-  }, [videoId]);
+  /* 1. figure out sizes ----------------------------------------------------- */
+  const slide     = row.children[videoId];         // currently-active slide element
+  if (!slide) return;
+
+  const slideW    = slide.offsetWidth;             // full width of that slide
+  const gap       = parseFloat(
+                      getComputedStyle(row).columnGap || "0"
+                    );                             // flex gap in px
+  const viewportW = row.parentElement.offsetWidth; // width of the visible area
+
+  /* 2. pixel offset that puts this slide dead-centre ----------------------- */
+  const leftEdge  = (slideW + gap) * videoId;      // where that slide starts
+  const centerX   = leftEdge - (viewportW - slideW) / 2;
+
+  /* 3. animate the row ------------------------------------------------------ */
+  gsap.to(row, {
+    x: -centerX,                  // negative because we move the row left
+    duration: 0.8,
+    ease: "power2.inOut",
+  });
+
+  /* 4. autoplay once the row is in view ------------------------------------ */
+  ScrollTrigger.create({
+    trigger: slide,               // watch the active slide itself
+    start: "top center+=200",
+    once: true,
+    onEnter: () =>
+      setVideo((prev) => ({ ...prev, startPlay: true, isPlaying: true })),
+  });
+}, [videoId]);
 
   useEffect(() => {
     if (prevVideoId !== undefined && prevVideoId !== videoId) {
