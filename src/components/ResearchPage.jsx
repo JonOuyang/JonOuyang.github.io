@@ -1,0 +1,111 @@
+// src/pages/ResearchPage.jsx
+
+import React from 'react';
+import { researchData } from '../research-components/researchData'; // Adjust path if needed
+
+// A helper function to parse authors and highlight your name
+const Author = ({ authors }) => {
+  const parts = authors.split('**');
+  return (
+    <p className="text-gray-400 text-sm leading-relaxed">
+      {parts.map((part, index) =>
+        index % 2 === 1 ? <strong key={index} className="text-sky-300 font-semibold">{part}</strong> : part
+      )}
+    </p>
+  );
+};
+
+// A single publication item - UPDATED FOR UNIFORM IMAGES
+const PublicationItem = ({ paper }) => (
+  <div className="flex flex-col md:flex-row gap-6 mb-10">
+    {/* Left side: Image */}
+    {/* CHANGE 1: Added a fixed height 'h-28' to the container div */}
+    <div className="flex-shrink-0 md:w-52 h-28">
+      <img
+        src={paper.image}
+        alt={`Thumbnail for ${paper.title}`}
+        // CHANGE 2: Changed 'h-auto' to 'h-full' to make the image fill the container
+        className="w-full h-full object-cover rounded-md shadow-lg"
+      />
+    </div>
+
+    {/* Right side: Details */}
+    <div className="flex-grow">
+      <h3 className="text-lg font-semibold text-sky-100 mb-1">{paper.title}</h3>
+      <Author authors={paper.authors} />
+      <p className="text-gray-200 italic text-sm mt-1">{paper.conference}</p>
+      <div className="flex items-center gap-4 mt-3">
+        {paper.pdf && <a href={paper.pdf} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-200 transition-colors">PDF</a>}
+        {paper.code && <a href={paper.code} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-200 transition-colors">Code</a>}
+        {paper.website && <a href={paper.website} target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-200 transition-colors">Website</a>}
+      </div>
+    </div>
+  </div>
+);
+
+// The main Research Page component
+const ResearchPage = () => {
+  const papersByYear = researchData.reduce((acc, paper) => {
+    const year = paper.year;
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(paper);
+    return acc;
+  }, {});
+  
+  const sortedYears = Object.keys(papersByYear).sort((a, b) => b - a);
+
+  return (
+    <div className="bg-black text-white min-h-screen font-sans">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative flex flex-col lg:flex-row py-12">
+          <div className="hidden lg:block absolute top-12 bottom-12 left-[30%] w-px bg-white/30" />
+          <aside className="lg:w-[30%] lg:sticky lg:top-12 self-start lg:pr-12">
+            <div className="flex flex-col items-center lg:items-start">
+              <img
+                src="https://media.licdn.com/dms/image/v2/D5603AQHOo_tLVHW_fg/profile-displayphoto-shrink_400_400/B56ZZUYX4QGoAk-/0/1745172399166?e=1756944000&v=beta&t=TGFV8WZgpGQS72cKDXfXwN-kloF2B3HWNC2jNplZI4w"
+                alt="Jonathan Ouyang"
+                className="w-32 h-32 rounded-full object-cover mb-4 shadow-md"
+              />
+              <h1 className="text-2xl font-bold text-sky-100">Jonathan Ouyang</h1>
+              <h2 className="text-md text-gray-400 mb-4">Undergraduate Researcher, UCLA</h2>
+              <p className="text-sm text-gray-500 text-center lg:text-left mb-6">
+                I build robots that see, listen, and move with intent. 
+                At UCLA, I research the intersection of computer vision, language, and human-robot interaction—teaching machines to understand us and act accordingly. 
+                I care about making intelligence intuitive: gaze-guided control, vision-language agents, real-world deployment. 
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
+                <a href="#" className="text-sky-400 hover:text-sky-200">Google Scholar</a>
+                <a href="#" className="text-sky-400 hover:text-sky-200">GitHub</a>
+                <a href="#" className="text-sky-400 hover:text-sky-200">Twitter</a>
+                <a href="#" className="text-sky-400 hover:text-sky-200">Email</a>
+              </div>
+            </div>
+          </aside>
+          <main className="lg:w-[70%] lg:pl-12">
+            <h1 className="text-4xl font-bold text-sky-100 mb-10 pt-10 lg:pt-0">Publications</h1>
+            <p className="text-gray-400 mb-12">
+              For a complete list, please see my <a href="#" className="text-sky-400 hover:underline">Google Scholar</a> profile.
+              Selected publications are listed below.
+            </p>
+            <div className="space-y-12">
+              {sortedYears.map(year => (
+                <section key={year} className="relative">
+                  <h2 className="absolute -top-4 right-0 text-7xl font-bold text-gray-800/80 -z-10 select-none">
+                    {year}
+                  </h2>
+                  {papersByYear[year].map(paper => (
+                    <PublicationItem key={paper.title} paper={paper} />
+                  ))}
+                </section>
+              ))}
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ResearchPage;

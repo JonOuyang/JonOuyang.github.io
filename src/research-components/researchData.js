@@ -1,40 +1,85 @@
+// src/data/researchData.js
+
 export const researchData = [
-    {
-      id: 1,
-      date: "Jan 2025 - Present",
-      title: "Visiting Researcher",
-      company: "Stanford, Intelligent and Interactive Autonomous Systems Group (advised by Prof. Dorsa Sadigh)",
-      description: "Researching shared autonomy in driving in collaboration with the Toyota Research Instititute (TRI)",
-    },
-    {
-      id: 2,
-      date: "Sep 2024 - Present",
-      title: "Undergraduate Researcher",
-      company: "UCLA, Robot Intelligence Laboratory (advised by Prof. Yuchen Cui)",
-      description: `Researching effective computer vision methods to incorporate human gaze information in robot policy learning.
-      
-      Dabbling in the crossfire of Computer Vision, Large Language Models, Vision Language Models, Reinforcement Learning, Imitation Learning, Imitation Learning, and Diffusion`,
-    },
-    {
-      id: 3,
-      date: "Jan 2025 - Feb 2025",
-      title: "Visiting Researcher",
-      company: "SJSU, AI/Deep Learning FPGA/DSP Laboratory (advised by Prof. Chang Choo)",
-      description: `Researching Computer Vision implementation in Athletics (Swimming), in collaboration with the SJSU NCAA Division 1 Women's Swim Team`,
-    },
-    {
-      id: 4,
-      date: "Apr 2024 - Jan 2023",
-      title: "Graduate Research Advisor",
-      company: "SJSU, AI/Deep Learning FPGA/DSP Laboratory (advised by Prof. Chang Choo)",
-      description: `Personally oversaw and advised Graduate M.S. student's thesis project`,
-    },
-    {
-      id: 5,
-      date: "Feb 2023 - Apr 2024",
-      title: "Laboratory Intern",
-      company: "SJSU, AI/Deep Learning FPGA/DSP Laboratory (advised by Prof. Chang Choo)",
-      description: `Researched Computer Vision implementation in Athletics (Weightlifting) and assisted with a master's thesis project`,
-    },
-    // Add more experiences here...
-  ];
+  // Add your newest papers here
+  {
+    year: 2026,
+    image: 'https://media.licdn.com/dms/image/v2/D560BAQGrCVs1ojx3oA/company-logo_200_200/company-logo_200_200/0/1691024285196/stanford_university_department_of_computer_science_logo?e=2147483647&v=beta&t=ekeefbiDnq-rY1R9wZ9-WAp6bKJ2VNfuIRz6zGixGSI', // Replace with your image path
+    title: 'In Progress Project',
+    authors: 'Megha Srivastava, **Jonathan Ouyang**, Eric Ziyang Zhou, Yuchen Cui, Dorsa Sadigh, and Toyota Research Institute', // Use **Your Name** to highlight
+    conference: 'Targeting International Conference on Learning Representations (ICLR), 2026',
+    pdf: null, // Link to PDF
+    code: 'https://github.com/JonOuyang/ILIAD-CARLA', // Link to Code
+    website: null, // Link to website page (optional)
+  },
+  {
+    year: 2026,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'In Progress Project',
+    authors: '**Jonathan Ouyang***, Yike Shi*, and Yuchen Cui', // Use **Your Name** to highlight
+    conference: 'Targeting International Conference on Robotics and Automation (ICRA), 2026',
+    pdf: null, // Link to PDF
+    code: 'https://github.com/UCLA-Robot-Intelligence-Lab/Gaze-ALOHA', // Link to Code
+    website: 'https://gaze-aloha.github.io/', // Link to website page (optional)
+  },
+  {
+    year: 2025,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Intent at a Glance: Gaze-Guided Robotic Manipulation via Foundation Models',
+    authors: '**Jonathan Ouyang***, Yike Shi*, and Yuchen Cui', // Use **Your Name** to highlight
+    conference: 'Under Review at Conference on Robot Learning (CORL), 2025',
+    pdf: null, // Link to PDF
+    code: 'https://github.com/UCLA-Robot-Intelligence-Lab/Gaze-ALOHA', // Link to Code
+    website: 'https://gaze-aloha.github.io/', // Link to website page (optional)
+  },
+  {
+    year: 2025,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Intent at a Glance: Gaze-Guided Robotic Manipulation via Foundation Models',
+    authors: 'Tracey Yee Hsin Tay, Xu Yan*, **Jonathan Ouyang***, Daniel Wu, William Jiang, Jonathan Kao, and Yuchen Cui', // Use **Your Name** to highlight
+    conference: 'Robotics: Science and Systems (RSS) Workshop FM4RoboPlan, 2025',
+    pdf: '#', // Link to PDF
+    code: 'https://github.com/UCLA-Robot-Intelligence-Lab/Gaze-ALOHA', // Link to Code
+    website: 'https://gamma0.vercel.app/', // Link to website page (optional)
+  },
+  {
+    year: 2024,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Swimmer Detection and Pose Estimation',
+    authors: 'Austin Adams, **Joathan Ouyang**, Chang Choo',
+    conference: 'Master’s Thesis, San Jose State University (SJSU), 2024',
+    pdf: null,
+    code: null,
+    website: null,
+  },
+  {
+    year: 2024,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Optimization of Swim Pose Estimation and Recognition with Data Augmentation',
+    authors: '**Jonathan Ouyang**, Derrick Trinh, Chang Choo',
+    conference: 'IEEE Southwest Symposium on Image Analysis and Interpretation (SSIAI), 2024',
+    pdf: null,
+    code: null,
+    website: null,
+  },
+  {
+    year: 2023,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Design and Analysis of an FPGA-based CNN for Exercise Recognition',
+    authors: 'Derrick Trinh, **Jonathan Ouyang**, Chang Choo',
+    conference: 'IEEE Tron Symposium (TRONSHOW), 2023',
+    pdf: null,
+    code: null,
+    website: null,
+  },
+  {
+    year: 2023,
+    image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
+    title: 'Design and Analysis of an FPGA-based CNN for Exercise Recognition',
+    authors: 'Derrick Trinh, **Jonathan Ouyang**, Chang Choo',
+    conference: 'Master’s Thesis, San Jose State University (SJSU), 2023',
+    pdf: null,
+    code: null,
+    website: null,
+  },
+];

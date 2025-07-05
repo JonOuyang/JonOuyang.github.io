@@ -11,6 +11,7 @@ import { experiencesData } from './experience-components/experience';
 import { extracurricularData } from './experience-components/extracurriculars';
 import { researchData } from './research-components/researchData';
 import Timeline from './experience-components/ExperienceTimeline';
+import ResearchPage from './components/ResearchPage';
 
 const App = () => {
   return (
@@ -42,7 +43,8 @@ const App = () => {
           <main className="bg-black">
           <Navbar />
           <GlowingHeader>Research</GlowingHeader>
-          <Timeline experiences={researchData} />
+          {/* <Timeline experiences={researchData} /> */}
+          <ResearchPage></ResearchPage>
          </main>
         } />
         <Route path="/contact" element={ // contact page
