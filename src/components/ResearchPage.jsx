@@ -77,7 +77,7 @@ const ResearchPage = () => {
               </p>
               <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
                 <a href="#" className="text-sky-400 hover:text-sky-200">Google Scholar</a>
-                <a href="#" className="text-sky-400 hover:text-sky-200">GitHub</a>
+                <a href="https://github.com/JonOuyang" className="text-sky-400 hover:text-sky-200">GitHub</a>
                 <a href="#" className="text-sky-400 hover:text-sky-200">Twitter</a>
                 <a href="#" className="text-sky-400 hover:text-sky-200">Email</a>
               </div>
