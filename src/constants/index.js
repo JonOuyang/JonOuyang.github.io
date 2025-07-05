@@ -22,9 +22,8 @@ import {
     {
       id: 1, // Google Gemini API Developer Competition
       textLists: [
-        "Google Gemini API Developer Competition",
-        "Grand Prize Winner",
-        "1981 DeLorean + 60K USD Cash"
+        "Grand Prize Winner | 2024 Google Gemini API Developer Competition",
+        "Won a 1981 Custom EV DeLorean + 60K USD Cash ($300k USD Value)"
       ],
       video: highlightFirstVideo,
       videoDuration: 4,
@@ -32,7 +31,7 @@ import {
     {
       id: 2, // Google Promotional Shoot
       textLists: [
-        "Google Video Shoot", 
+        "Google Gemini Promotional Video Shoot", 
         "March 5, 2025 at UCLA"
       ],
       video: highlightSecondVideo,
@@ -41,8 +40,8 @@ import {
     {
       id: 3, // starting at Amazon
       textLists: [
-        "Incoming at Amazon",
-        "2025 Summer at Culver City"
+        "Software Engineer Intern at Amazon Culver City campus",
+        "Amazon Studio, Catalog Exports Team"
       ],
       video: highlightThirdVideo,
       videoDuration: 1.2,
@@ -50,7 +49,7 @@ import {
     {
       id: 4,
       textLists: [
-        "Founder & President of GLITCH", 
+        "Founder & President of GLITCH, established Spring Quarter 2025", 
         "UCLA's Premier Hackathon Club"
       ],
       video: highlightFourthVideo,
@@ -59,9 +58,8 @@ import {
     {
       id: 5,
       textLists: [
-        "Joined Stanford ILIAD Lab",
-        "Researching Shared Autonomy in Driving",
-        "In Collaboration with Toyota Research Institute (TRI)",
+        "Recruited by Stanford Intelligent and Interactive Autonomous Systems Group (ILIAD)",
+        "Collaborating with the Toyota Research Institute (TRI)",
       ],
       video: highlightFifthVideo,
       videoDuration: 8,
