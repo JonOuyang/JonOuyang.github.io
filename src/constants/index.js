@@ -1,11 +1,11 @@
 import {
     blackImg,
     blueImg,
-    highlightFifthVideo,
     highlightFirstVideo,
-    highlightFourthVideo,
     highlightSecondVideo,
     highlightThirdVideo,
+    highlightFourthVideo,
+    highlightFifthVideo,
     whiteImg,
     yellowImg,
   } from "../utils";
@@ -45,7 +45,7 @@ import {
         "2025 Summer at Culver City"
       ],
       video: highlightThirdVideo,
-      videoDuration: 2,
+      videoDuration: 1.2,
     },
     {
       id: 4,
@@ -54,17 +54,17 @@ import {
         "UCLA's Premier Hackathon Club"
       ],
       video: highlightFourthVideo,
-      videoDuration: 3.63,
+      videoDuration: 2,
     },
     {
-      id: 4,
+      id: 5,
       textLists: [
         "Joined Stanford ILIAD Lab",
         "Researching Shared Autonomy in Driving",
-        "In Collaboration with Toyota Research Institute",
+        "In Collaboration with Toyota Research Institute (TRI)",
       ],
       video: highlightFifthVideo,
-      videoDuration: 3.63,
+      videoDuration: 8,
     },
   ];
   
