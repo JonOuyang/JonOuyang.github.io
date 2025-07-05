@@ -80,7 +80,7 @@ const VideoCarousel = () => {
     }
   }, [startPlay, videoId, isPlaying, loadedData, prevVideoId]);
 
-  // --- PROGRESS BAR EFFECT (CORRECTED) ---
+  // --- PROGRESS BAR EFFECT ---
   useEffect(() => {
     videoRef.current.forEach((_, i) => {
       if (i !== videoId) {
@@ -177,10 +177,13 @@ const VideoCarousel = () => {
   return (
     <>
       <div className="flex items-center">
-        <div ref={sliderContainerRef} className="flex w-full"> 
+        <div
+          ref={sliderContainerRef}
+          className="flex w-full gap-4 sm:gap-8"   /* ← visible space (8 px / 16 px) */
+        >
           {hightlightsSlides.map((list, i) => (
-            <div key={list.id} className="sm:pr-20 pr-10 w-full flex-shrink-0">
-              <div className="video-carousel_container">
+            <div key={list.id} className="w-full flex-shrink-0">
+              <div className="video-carousel_container relative pb-16">
                 <div className="w-full h-full flex-center rounded-3xl overflow-hidden bg-black">
                   <video
                     id={`video-${i}`}
@@ -202,9 +205,10 @@ const VideoCarousel = () => {
                     <source src={list.video} type="video/mp4" />
                   </video>
                 </div>
-                <div className="absolute top-12 left-[5%] z-10">
+
+                <div className="absolute bottom-0 left-0 w-full flex-center flex-col text-center">
                   {list.textLists.map((text, idx) => (
-                    <p key={idx} className="md:text-2xl text-xl font-medium">
+                    <p key={idx} className="text-gray-400 text-xl font-normal">
                       {text}
                     </p>
                   ))}
@@ -224,7 +228,6 @@ const VideoCarousel = () => {
               ref={(el) => (videoDivRef.current[i] = el)}
               onClick={() => handleProcess("video-select", i)}
             >
-              {/* FIX APPLIED HERE: bg-white is removed and replaced with a neutral color */}
               <span
                 className="absolute top-0 left-0 h-full w-0 rounded-full bg-gray-400"
                 ref={(el) => (videoSpanRef.current[i] = el)}
