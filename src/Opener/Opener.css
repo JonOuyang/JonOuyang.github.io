@@ -1,0 +1,58 @@
+.opener-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: -70vw;
+  width: 70vw;
+  height: 100vh;
+  background-color: black;
+  transition: left 1s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay.visible {
+  left: 0;
+}
+
+.text-container {
+  text-align: center;
+  color: white;
+  /* --- CHANGE 1: Move the whole text block up slightly --- */
+  transform: translateY(-24vh);
+}
+
+/* We don't need .name-text anymore if GlowingHeader handles its own styles */
+.name-text {
+  font-size: 5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* --- CHANGE 2: Styling for the subtitle and its fade transition --- */
+.subtitle-text {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  opacity: 0; /* Start invisible */
+  transition: opacity 0.5s ease-in-out; /* The "cool" transition */
+}
+
+.subtitle-text.visible {
+  opacity: 1; /* Fade to visible */
+}

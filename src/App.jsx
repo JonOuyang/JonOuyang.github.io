@@ -11,6 +11,7 @@ import { experienceData } from './experience-components/experiences';
 import { researchData } from './research-components/researchData';
 import ExperienceGraph from './experience-components/ExperienceGraph';
 import ResearchPage from './components/ResearchPage';
+import Opener from './Opener/Opener';
 
 const App = () => {
   return (
@@ -24,6 +25,12 @@ const App = () => {
           <Features />
           <HowItWorks/>
           <Footer/>
+         </main>
+        } />
+        <Route path="/test-home" element={ // test dev homepage
+          <main className="bg-black">
+          <Navbar />
+          <Opener />
          </main>
         } />
         <Route path="/work-history" element={ // work history page
