@@ -26,7 +26,7 @@ export const researchData = [
     year: 2025,
     image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
     title: 'Intent at a Glance: Gaze-Guided Robotic Manipulation via Foundation Models',
-    authors: '**Jonathan Ouyang***, Yike Shi*, and Yuchen Cui', // Use **Your Name** to highlight
+    authors: '**Tracey Yee Hsin Tay, Xu Yan*, **Jonathan Ouyang***, Daniel Wu, William Jiang, Jonathan Kao, and Yuchen Cui', // Use **Your Name** to highlight
     conference: 'Under Review at Conference on Robot Learning (CORL), 2025',
     pdf: null, // Link to PDF
     code: 'https://github.com/UCLA-Robot-Intelligence-Lab/Gaze-ALOHA', // Link to Code

@@ -7,10 +7,9 @@ import Footer from './components/Footer';
 import GlowingHeader from './components/GlowingHeader';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { experiencesData } from './experience-components/experience';
-import { extracurricularData } from './experience-components/extracurriculars';
+import { experienceData } from './experience-components/experiences';
 import { researchData } from './research-components/researchData';
-import Timeline from './experience-components/ExperienceTimeline';
+import ExperienceGraph from './experience-components/ExperienceGraph';
 import ResearchPage from './components/ResearchPage';
 
 const App = () => {
@@ -34,9 +33,10 @@ const App = () => {
           <h1 style={{ textAlign: 'center', color: '#e2e8f0' }}>
             Professional Work History. For Research history, please view the Research page.
           </h1>
-          <Timeline experiences={experiencesData} />
-          <GlowingHeader>Extracurriculars</GlowingHeader>
-          <Timeline experiences={extracurricularData} />
+          <ExperienceGraph
+            experiences={experienceData.experiences}
+            branches={experienceData.branches}
+          />
          </main>
         } />
         <Route path="/research" element={ // research page
