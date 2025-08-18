@@ -31,6 +31,7 @@ const App = () => {
           <main className="bg-black">
           <Navbar />
           <Opener />
+          <Footer />
          </main>
         } />
         <Route path="/work-history" element={ // work history page
