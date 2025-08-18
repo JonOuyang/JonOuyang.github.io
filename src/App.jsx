@@ -31,6 +31,9 @@ const App = () => {
           <main className="bg-black">
           <Navbar />
           <Opener />
+          <Highlights />
+          <Features />
+          <HowItWorks/>
           <Footer />
          </main>
         } />

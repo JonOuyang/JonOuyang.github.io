@@ -1,75 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import './Opener.css';
-import GlowingHeader from '../components/GlowingHeader'; // 1. Import the GlowingHeader
+import GlowingHeader from '../components/GlowingHeader';
 
 const Opener = () => {
   const [isOverlayVisible, setOverlayVisible] = useState(false);
-  
-  // --- New state and data for the subtitle ---
-  const subtitles = [
-    "student at university", // The final text
-    "first random text",
-    "a second cool phrase",
-    "another interesting line"
-  ];
-  const [subtitleIndex, setSubtitleIndex] = useState(0);
-  const [subtitleIsVisible, setSubtitleIsVisible] = useState(true); // For fade transition
-  // ---------------------------------------------
 
-  const animationDelay = 1500; // 1.5 seconds
+  // Fade duration must match your CSS `.subtitle-text` transition
+  const FADE_MS = 500;
+
+  // Absolute schedule (ms) from component mount for each fade-in
+  const timeline = [
+    { text: 'Leader, Innovator, and Dreamer', at: 1200 },
+    { text: 'Computer Vision Specialist',       at: 3200 },
+    { text: 'Researcher at UCLA, Stanford, SJSU', at: 5600 },
+    { text: 'CS @ UCLA, Class of 2028',             at: 8200 },
+    // Add more lines as needed...
+  ];
+
+  // We render current line from timeline[subtitleIndex]
+  const [subtitleIndex, setSubtitleIndex] = useState(-1); // -1 = nothing yet
+  const [subtitleIsVisible, setSubtitleIsVisible] = useState(false);
+
+  const animationDelay = 700; // when your overlay itself appears
 
   useEffect(() => {
-    // Timer for the main black overlay
-    const overlayTimer = setTimeout(() => {
-      setOverlayVisible(true);
-    }, animationDelay);
+    const timers = [];
 
-    // --- New timer logic for cycling subtitles ---
-    // Note: The total time for a cycle is the interval (1000ms) + transition time (500ms)
-    const switchSubtitle = (index) => {
-      // Don't do anything if it's the last subtitle
-      if (index >= subtitles.length - 1) {
-        // Ensure the final text is set and visible
-        setSubtitleIndex(subtitles.length - 1);
-        setSubtitleIsVisible(true);
-        return;
+    // 1) Show main overlay after a delay
+    timers.push(setTimeout(() => setOverlayVisible(true), animationDelay));
+
+    // 2) Schedule each subtitle’s fade-in precisely
+    //    - For each item i>0, schedule a fade-out right before the next fade-in.
+    const sorted = [...timeline].sort((a, b) => a.at - b.at);
+
+    sorted.forEach((item, i) => {
+      const isFirst = i === 0;
+
+      // Fade out previous line right before this line fades in (skip for the first)
+      if (!isFirst) {
+        const fadeOutAt = Math.max(0, item.at - FADE_MS);
+        timers.push(setTimeout(() => setSubtitleIsVisible(false), fadeOutAt));
       }
 
-      // Set up the next switch
-      setTimeout(() => {
-        setSubtitleIsVisible(false); // Fade out
-
+      // At the exact `at` time, switch text and fade in
+      timers.push(
         setTimeout(() => {
-          setSubtitleIndex(index + 1); // Change text
-          setSubtitleIsVisible(true); // Fade in
-          switchSubtitle(index + 1); // Recurse for the next one
-        }, 500); // This should match your CSS transition time
-      }, 2000); // How long each text stays on screen
-    };
+          setSubtitleIndex(i);
+          setSubtitleIsVisible(true);
+        }, item.at)
+      );
+    });
 
-    // Start the subtitle switching process
-    switchSubtitle(0);
-    // --------------------------------------------
-
-    // Clean up timers when the component is unmounted
-    return () => clearTimeout(overlayTimer);
+    // Cleanup
+    return () => timers.forEach(clearTimeout);
   }, []);
+
+  const currentText = subtitleIndex >= 0 ? timeline[subtitleIndex].text : '';
 
   return (
     <div className="opener-container">
-      <video autoPlay loop muted playsInline className="background-video">
-        <source src="/assets/videos/frame_hsr.mp4" type="video/mp4" />
+      <video autoPlay muted playsInline className="background-video">
+        <source src="/assets/videos/final_display_reencoded.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      
+
       <div className={`overlay ${isOverlayVisible ? 'visible' : ''}`}>
         <div className="text-container">
-          {/* 2. Use the GlowingHeader component */}
-          <GlowingHeader>FIRST LAST</GlowingHeader>
+          <GlowingHeader>Jonathan Ouyang</GlowingHeader>
 
-          {/* 3. Subtitle element with dynamic class for transitions */}
+          {/* Subtitle with fade class toggle */}
           <p className={`subtitle-text ${subtitleIsVisible ? 'visible' : ''}`}>
-            {subtitles[subtitleIndex]}
+            {currentText}
           </p>
         </div>
       </div>
