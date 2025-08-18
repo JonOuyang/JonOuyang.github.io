@@ -67,8 +67,11 @@ const App = () => {
         <Route path="/beta" element={ // beta testing page
           <main className="bg-black">
           <Navbar />
-          <GlowingHeader>Beta Testing</GlowingHeader>
-          <h1 style={{ textAlign: 'center', color: '#e2e8f0' }}>Anything you see in this page is considered to be under development. Elements on this page may be used in other pages in the future.</h1>
+          <Opener />
+          <Highlights />
+          <Features />
+          <HowItWorks/>
+          <Footer />
          </main>
         } />
       </Routes>
