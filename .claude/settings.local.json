@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof:*)",
+      "Bash(kill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(find:*)",
+      "Bash(open:*)",
+      "Bash(scutil:*)",
+      "Bash(networksetup:*)",
+      "Bash(networksetup -getwebproxy:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -30,7 +30,7 @@ const ModelView = ({ index, groupRef, gsapType, controlRef, setRotationState, si
         onEnd={() => setRotationState(controlRef.current.getAzimuthalAngle())}
       /> 
 
-      <group ref={groupRef} name={`${index === 1} ? 'small' : 'large`} position={[0, 0 ,0]}>
+      <group ref={groupRef} name={index === 1 ? 'small' : 'large'} position={[0, 0 ,0]}>
         <Suspense fallback={<Loader />}>
           <IPhone 
             scale={index === 1 ? [15, 15, 15] : [17, 17, 17]}
