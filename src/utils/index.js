@@ -3,7 +3,8 @@ import hero from "/assets/images/hero.jpeg";
 export const heroImg = hero;
 
 import hmv from "/assets/videos/hero.mp4";
-import smallmv from "/assets/videos/smallHero.mp4";
+// smallHero.mp4 removed - using hero.mp4 for all screen sizes
+import smallmv from "/assets/videos/hero.mp4";
 
 import highlightFirstmv from "/assets/videos/personal-website-highlight1.mp4";
 import highlightSectmv from "/assets/videos/personal-website-highlight2.mp4";

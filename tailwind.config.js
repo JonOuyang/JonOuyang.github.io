@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}"
-  ],
+  content: {
+    files: [
+      "./index.html",
+      "./src/**/*.{js,jsx,ts,tsx}"
+    ],
+    // Extract only class patterns we actually use
+    extract: {
+      jsx: (content) => {
+        // More efficient regex extraction
+        return content.match(/className="[^"]*"/g) || []
+      }
+    }
+  },
   theme: {
     extend: {
       colors: {
@@ -17,6 +26,11 @@ export default {
         zinc: "#101010",
       },
     },
+  },
+  // Only generate utilities we actually use
+  corePlugins: {
+    // Disable unused features for faster builds
+    preflight: true,
   },
   plugins: [],
 };
