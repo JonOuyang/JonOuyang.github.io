@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+
 .opener-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  position: relative;
+  background-color: #000;
 }
 
 .background-video {
@@ -12,6 +15,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 0;
 }
 
 .overlay {
@@ -34,80 +38,83 @@
 
 .text-container {
   text-align: center;
-  color: white;
-  /* --- CHANGE 1: Move the whole text block up slightly --- */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   transform: translateY(-24vh);
 }
 
-/* We don't need .name-text anymore if GlowingHeader handles its own styles */
-.name-text {
-  font-size: 5rem;
-  font-weight: bold;
-  margin: 0;
+/* --- ASCII Styles --- */
+.ascii-wrapper {
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
-/* --- CHANGE 2: Styling for the subtitle and its fade transition --- */
-/* 🔥 Subtitle: bigger, crisp, and animated in */
-.subtitle-text {
-  position: relative;
-  margin-top: 0.9rem;
-
-  /* Size: responsive and bold */
-  font-size: clamp(24px, 4.2vw, 56px);
+.ascii-text {
+  font-family: 'Roboto Mono', monospace;
+  
+  /*
+     3. SIZE FIX:
+     Increased from 4px to 10px.
+     Since we lowered the resolution in the JS (fewer characters),
+     we can make the font much bigger on screen.
+  */
+  font-size: 16px; 
+  
+  /* Line height tunes the vertical gap between dots */
+  line-height: 0.6; 
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-
-  /* Color + glow */
-  color: #f8fafc; /* near-white */
-  text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.35),
-    0 0 22px rgba(99, 102, 241, 0.28); /* indigo-ish aura */
-
-  /* Entrance transition (match your 500ms in JS) */
-  opacity: 0;
-  transform: translateY(14px) scale(0.985);
-  filter: blur(6px);
-  transition:
-    opacity 500ms ease,
-    transform 500ms cubic-bezier(.16,1,.3,1),
-    filter 500ms ease;
+  white-space: pre;
+  text-align: center;
+  display: inline-block;
 }
 
-/* When visible: crisp and in place */
+/* Blue Shine Effect */
+.shine-effect {
+  background: linear-gradient(
+    120deg, 
+    #333 0%, 
+    #666 40%, 
+    #e0f7ff 45%, 
+    #00ccff 50%, 
+    #e0f7ff 55%, 
+    #666 60%, 
+    #333 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shineMove 4s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.5));
+}
+
+@keyframes shineMove {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* Mobile scaling */
+@media (max-width: 768px) {
+  .ascii-text {
+    font-size: 8px; /* Smaller on mobile */
+  }
+}
+
+.subtitle-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.5rem;
+  min-height: 1.5em;
+  color: #ddd;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+}
+
 .subtitle-text.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-/* ✨ Animated gradient underline (appears with the subtitle) */
-.subtitle-text::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.38em;
-  width: 100%;
-  height: 3px;
-  border-radius: 3px;
-
-  background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
-  box-shadow: 0 0 18px rgba(167, 139, 250, 0.4);
-
-  transform: scaleX(0.25);
-  transform-origin: left;
-  opacity: 0;
-  transition:
-    transform 600ms cubic-bezier(.2,.7,.2,1),
-    opacity 600ms ease;
-}
-
-.subtitle-text.visible::after {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-/* Optional: subtle letter spacing tightening on larger screens */
-@media (min-width: 900px) {
-  .subtitle-text { letter-spacing: 0.01em; }
+  transform: translateY(0);
 }

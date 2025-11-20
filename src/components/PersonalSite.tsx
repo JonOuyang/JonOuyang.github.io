@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, extend, useFrame } from "@react-three/fiber";
-import { OrbitControls, shaderMaterial } from "@react-three/drei";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, shaderMaterial, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import "./DisintegratingGallery.css";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
@@ -11,13 +11,14 @@ import helvetiker from "three/examples/fonts/helvetiker_regular.typeface.json";
 // Shared anchor points for both planes and particle spawn
 const spreadScaleX = 3.2; // stronger horizontal spread
 const spreadScaleY = 2.0; // stronger vertical spread
-const depthScale = 2.0; // more distinct depth layering
+const depthScale = 4.0; // more distinct depth layering
 const imagePositions = [
-  [-3.4, 2.8, -0.8],
+  // [-3.4, 2.8, -0.8],
+  [0, 0, 0],
   [-1.4, 2.9, 1.2],
   [0.6, 2.7, -1.4],
   [2.6, 2.9, 1.4],
-  [4.2, 2.6, -1.6],
+  [3.0, 2.6, -1.6],
   [-3.6, 1.4, 1.6],
   [-1.2, 1.6, -1.5],
   [1.0, 1.5, 1.4],
@@ -29,10 +30,10 @@ const imagePositions = [
   [-3.2, -1.3, -1.6],
   [-0.8, -1.1, 1.5],
   [1.4, -1.2, -1.4],
-  [3.4, -1.25, 1.6],
+  [2.8, -1.0, 1.6],
   [-2.6, -2.4, 1.4],
   [0.2, -2.3, -1.5],
-  [2.8, -2.35, 1.5],
+  [2.0, -1.6, 1.5],
 ].map(
   ([x, y, z]) =>
     new THREE.Vector3(x * spreadScaleX, y * spreadScaleY, z * depthScale)
@@ -61,7 +62,29 @@ const planeSizes = [
   { w: 4.7, h: 3.5 },
   { w: 4.2, h: 3.2 },
 ];
-const PARTICLE_COUNT = 20000;
+const PARTICLE_COUNT = 30000;
+
+// Static layout bounds of the collage so we can scale the whole scene to fit the viewport.
+const layoutBounds = (() => {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+
+  imagePositions.forEach((pos, idx) => {
+    const halfW = planeSizes[idx].w / 2;
+    const halfH = planeSizes[idx].h / 2;
+    minX = Math.min(minX, pos.x - halfW);
+    maxX = Math.max(maxX, pos.x + halfW);
+    minY = Math.min(minY, pos.y - halfH);
+    maxY = Math.max(maxY, pos.y + halfH);
+  });
+
+  return {
+    width: maxX - minX,
+    height: maxY - minY,
+  };
+})();
 
 const clusterPalette = [
   "#FF7A18",
@@ -95,6 +118,87 @@ const clusterPalette = [
   "#FF6F61",
   "#F79256",
 ];
+
+const imageSources = [
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+  "/assets/images/test.png",
+];
+
+type PixelSampler = (u: number, v: number) => { r: number; g: number; b: number } | null;
+
+const makePixelSampler = (image: TexImageSource | null): PixelSampler | null => {
+  if (!image || typeof (image as any).width === "undefined") return null;
+  const width = (image as any).width as number;
+  const height = (image as any).height as number;
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  ctx.drawImage(image as any, 0, 0, width, height);
+  const data = ctx.getImageData(0, 0, width, height).data;
+
+  return (u, v) => {
+    const clampedU = Math.min(0.9999, Math.max(0, u));
+    const clampedV = Math.min(0.9999, Math.max(0, v));
+    const x = Math.floor(clampedU * width);
+    const y = Math.floor(clampedV * height);
+    const idx = (y * width + x) * 4;
+    if (idx + 3 >= data.length) return null;
+    return {
+      r: data[idx] / 255,
+      g: data[idx + 1] / 255,
+      b: data[idx + 2] / 255,
+    };
+  };
+};
+
+const makeCoverTexture = (
+  baseTexture: THREE.Texture,
+  planeAspect: number,
+  textureAspect: number
+) => {
+  const tex = baseTexture.clone();
+  tex.needsUpdate = true;
+  tex.center.set(0.5, 0.5);
+
+  if (!textureAspect || !isFinite(textureAspect)) return tex;
+
+  let repeatX = 1;
+  let repeatY = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  if (planeAspect > textureAspect) {
+    repeatX = textureAspect / planeAspect;
+    offsetX = (1 - repeatX) / 2;
+  } else {
+    repeatY = planeAspect / textureAspect;
+    offsetY = (1 - repeatY) / 2;
+  }
+
+  tex.repeat.set(repeatX, repeatY);
+  tex.offset.set(offsetX, offsetY);
+  return tex;
+};
 
 const ParticleMaterial = shaderMaterial(
   {
@@ -145,7 +249,7 @@ const ParticleMaterial = shaderMaterial(
     uniform float uAlpha;
 
     void main() {
-      float dist = length(gl_PointCoord - 0.5);
+      float dist = length(gl_PointCoord - 0.1);
       float soft = smoothstep(0.5, 0.08, dist);
       gl_FragColor = vec4(vColor, soft * uAlpha);
     }
@@ -156,7 +260,8 @@ extend({ ParticleMaterial });
 const ImageGallery: React.FC<{
   morphTriggered: boolean;
   morphStartTimeRef: React.MutableRefObject<number | null>;
-}> = ({ morphTriggered, morphStartTimeRef }) => {
+  coverTextures: THREE.Texture[];
+}> = ({ morphTriggered, morphStartTimeRef, coverTextures }) => {
   const meshRefs = useRef<THREE.Mesh[]>([]);
   const materialRefs = useRef<THREE.MeshBasicMaterial[]>([]);
   const delays = useMemo(
@@ -176,7 +281,8 @@ const ImageGallery: React.FC<{
     meshRefs.current.forEach((mesh, idx) => {
       if (!mesh) return;
       const material = materialRefs.current[idx];
-      const pop = Math.min(1, Math.max(0, (elapsed - delays[idx]) / 0.9));
+      const popDuration = 0.45; // faster reveal
+      const pop = Math.min(1, Math.max(0, (elapsed - delays[idx]) / popDuration));
       const eased = 1 - Math.pow(1 - pop, 3);
 
       let scale = eased;
@@ -184,7 +290,8 @@ const ImageGallery: React.FC<{
 
       if (morphTriggered && morphStartTimeRef.current !== null) {
         const fadeElapsed = t - morphStartTimeRef.current;
-        const fade = Math.min(1, Math.max(0, fadeElapsed / 0.35));
+        const fadeDuration = 0.7; // linger longer before disappearing
+        const fade = Math.min(1, Math.max(0, fadeElapsed / fadeDuration));
         scale *= 1 - fade;
         opacity = 1 - fade;
       }
@@ -208,7 +315,7 @@ const ImageGallery: React.FC<{
           <planeGeometry args={[planeSizes[idx].w, planeSizes[idx].h]} />
           <meshBasicMaterial
             ref={(el) => (materialRefs.current[idx] = el!)}
-            color={clusterPalette[idx % clusterPalette.length]}
+            map={coverTextures[idx % coverTextures.length]}
             transparent
             opacity={0}
           />
@@ -222,7 +329,15 @@ const ParticleSystem: React.FC<{
   morphTarget: number;
   alphaTarget: number;
   scrollBlow: number;
-}> = ({ morphTarget, alphaTarget, scrollBlow }) => {
+  pixelSamplers: (PixelSampler | null)[];
+  textureAspects: number[];
+}> = ({
+  morphTarget,
+  alphaTarget,
+  scrollBlow,
+  pixelSamplers,
+  textureAspects,
+}) => {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const geometry = useMemo(() => {
     const font = new FontLoader().parse(
@@ -237,7 +352,9 @@ const ParticleSystem: React.FC<{
     });
     textGeo.center();
 
-    const sampler = new MeshSurfaceSampler(new THREE.Mesh(textGeo)).build();
+    const surfaceSamplerInstance = new MeshSurfaceSampler(
+      new THREE.Mesh(textGeo)
+    ).build();
     const targetArray = new Float32Array(PARTICLE_COUNT * 3);
     const startArray = new Float32Array(PARTICLE_COUNT * 3);
     const colorArray = new Float32Array(PARTICLE_COUNT * 3);
@@ -245,7 +362,7 @@ const ParticleSystem: React.FC<{
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const temp = new THREE.Vector3();
-      sampler.sample(temp);
+      surfaceSamplerInstance.sample(temp);
       targetArray[i * 3] = temp.x * 1.275;
       targetArray[i * 3 + 1] = temp.y * 0.72;
       targetArray[i * 3 + 2] = temp.z;
@@ -253,13 +370,34 @@ const ParticleSystem: React.FC<{
       const imgIndex = Math.floor(Math.random() * imagePositions.length);
       const pos = imagePositions[imgIndex];
       const size = planeSizes[imgIndex];
-      startArray[i * 3] = pos.x + (Math.random() - 0.5) * size.w;
-      startArray[i * 3 + 1] = pos.y + (Math.random() - 0.5) * size.h;
+      const ox = (Math.random() - 0.5) * size.w;
+      const oy = (Math.random() - 0.5) * size.h;
+      startArray[i * 3] = pos.x + ox;
+      startArray[i * 3 + 1] = pos.y + oy;
       startArray[i * 3 + 2] = pos.z + (Math.random() - 0.5) * 0.25;
 
-      const c = new THREE.Color(
-        clusterPalette[imgIndex % clusterPalette.length]
-      );
+      const u = ox / size.w + 0.5;
+      const v = 1 - (oy / size.h + 0.5);
+      let su = u;
+      let sv = v;
+      const planeAspect = size.w / size.h;
+      const textureAspect = textureAspects[imgIndex] ?? 1;
+      if (textureAspect > 0) {
+        if (planeAspect > textureAspect) {
+          const repeatX = textureAspect / planeAspect;
+          const offsetX = (1 - repeatX) / 2;
+          su = offsetX + u * repeatX;
+        } else {
+          const repeatY = planeAspect / textureAspect;
+          const offsetY = (1 - repeatY) / 2;
+          sv = offsetY + v * repeatY;
+        }
+      }
+      const pixelSampler = pixelSamplers[imgIndex];
+      const sampled = pixelSampler?.(su, sv);
+      const c = sampled
+        ? new THREE.Color(sampled.r, sampled.g, sampled.b)
+        : new THREE.Color(clusterPalette[imgIndex % clusterPalette.length]);
       colorArray[i * 3] = c.r;
       colorArray[i * 3 + 1] = c.g;
       colorArray[i * 3 + 2] = c.b;
@@ -273,7 +411,7 @@ const ParticleSystem: React.FC<{
     g.setAttribute("aColor", new THREE.BufferAttribute(colorArray, 3));
     g.setAttribute("aSeed", new THREE.BufferAttribute(seedArray, 1));
     return g;
-  }, []);
+  }, [pixelSamplers, textureAspects]);
 
   const morphRef = useRef(0);
   const alphaRef = useRef(0);
@@ -288,7 +426,7 @@ const ParticleSystem: React.FC<{
     const rising = targetMorph > current;
 
     // brief hold after shatter so particles linger at origin
-    const holdDuration = 0.35;
+    const holdDuration = 0.45;
     if (rising && morphStartRef.current === null) {
       morphStartRef.current = t;
     }
@@ -300,7 +438,7 @@ const ParticleSystem: React.FC<{
     if (!holdActive) {
       // Smooth ramp: slow at start, accelerates as morph progresses
       const blend = THREE.MathUtils.clamp(current, 0, 1);
-      const rate = rising ? THREE.MathUtils.lerp(0.12, 2.7, blend) : 2.0;
+      const rate = rising ? THREE.MathUtils.lerp(0.14, 5.4, blend) : 2.0;
       const deltaStep = THREE.MathUtils.clamp(rate * delta, 0, 1);
       const next = current + (targetMorph - current) * deltaStep;
       morphRef.current = THREE.MathUtils.clamp(next, 0, 1);
@@ -324,6 +462,82 @@ const ParticleSystem: React.FC<{
         depthWrite={false}
       />
     </points>
+  );
+};
+
+const useResponsiveLayoutScale = () => {
+  const { viewport } = useThree();
+  return useMemo(() => {
+    const margin = 0.9; // keep a little breathing room inside the frustum
+    const safeWidth = viewport.width * margin;
+    const safeHeight = viewport.height * margin;
+    const widthScale = safeWidth / layoutBounds.width;
+    const heightScale = safeHeight / layoutBounds.height;
+    const scaled = Math.min(widthScale, heightScale, 1);
+    return Math.max(scaled, 0.4); // avoid collapsing to zero on extreme ratios
+  }, [viewport.width, viewport.height]);
+};
+
+const SceneContent: React.FC<{
+  morphTarget: number;
+  alphaTarget: number;
+  scrollBlow: number;
+  morphStartTimeRef: React.MutableRefObject<number | null>;
+}> = ({ morphTarget, alphaTarget, scrollBlow, morphStartTimeRef }) => {
+  const textures = useTexture(imageSources) as THREE.Texture[];
+  textures.forEach((tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+  });
+  const sceneScale = useResponsiveLayoutScale();
+  const textureAspects = useMemo(
+    () =>
+      imagePositions.map((_, idx) => {
+        const tex = textures[idx % textures.length];
+        const img = tex.image as TexImageSource;
+        if (img && (img as any).height) {
+          return ((img as any).width as number) /
+            ((img as any).height as number);
+        }
+        return 1;
+      }),
+    [textures]
+  );
+
+  const coverTextures = useMemo(
+    () =>
+      imagePositions.map((_, idx) => {
+        const tex = textures[idx % textures.length];
+        const planeAspect = planeSizes[idx].w / planeSizes[idx].h;
+        return makeCoverTexture(tex, planeAspect, textureAspects[idx]);
+      }),
+    [textures, textureAspects]
+  );
+
+  const pixelSamplers = useMemo(
+    () =>
+      imagePositions.map((_, idx) => {
+        const tex = textures[idx % textures.length];
+        return makePixelSampler(tex.image as TexImageSource);
+      }),
+    [textures]
+  );
+
+  return (
+    <group scale={[sceneScale, sceneScale, sceneScale]}>
+      <ImageGallery
+        morphTriggered={morphTarget > 0.1}
+        morphStartTimeRef={morphStartTimeRef}
+        coverTextures={coverTextures}
+      />
+      <ParticleSystem
+        morphTarget={morphTarget}
+        alphaTarget={alphaTarget}
+        scrollBlow={scrollBlow}
+        pixelSamplers={pixelSamplers}
+        textureAspects={textureAspects}
+      />
+    </group>
   );
 };
 
@@ -362,15 +576,14 @@ const PersonalSite: React.FC = () => {
           <ambientLight intensity={0.7} />
           <directionalLight position={[4, 6, 6]} intensity={1.1} />
           <directionalLight position={[-4, -2, -4]} intensity={0.35} />
-          <ImageGallery
-            morphTriggered={morphTarget > 0.1}
-            morphStartTimeRef={morphStartTimeRef}
-          />
-          <ParticleSystem
-            morphTarget={morphTarget}
-            alphaTarget={alphaTarget}
-            scrollBlow={scrollBlow}
-          />
+          <Suspense fallback={null}>
+            <SceneContent
+              morphTarget={morphTarget}
+              alphaTarget={alphaTarget}
+              scrollBlow={scrollBlow}
+              morphStartTimeRef={morphStartTimeRef}
+            />
+          </Suspense>
           <OrbitControls enableZoom={false} enablePan={false} />
         </Canvas>
       </div>
