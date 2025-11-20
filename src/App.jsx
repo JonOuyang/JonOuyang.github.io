@@ -12,6 +12,7 @@ const GlowingHeader = lazy(() => import('./components/GlowingHeader'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const ExperienceGraph = lazy(() => import('./experience-components/ExperienceGraph'));
 const Opener = lazy(() => import('./Opener/Opener'));
+const PersonalSite = lazy(() => import('./components/PersonalSite.tsx'));
 
 import { experienceData } from './experience-components/experiences';
 import { researchData } from './research-components/researchData';
@@ -92,6 +93,14 @@ const App = () => {
               <Features />
               <HowItWorks/>
               <Footer />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/beta-2" element={ // beta 2 page
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <PersonalSite />
             </Suspense>
          </main>
         } />

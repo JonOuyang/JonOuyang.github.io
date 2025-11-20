@@ -15,6 +15,7 @@ import {
     { name: "Work History", path: "/work-history" },
     { name: "Research", path: "/research" },
     { name: "Contact", path: "/contact" },
+    { name: "Beta 2", path: "/beta-2" },
     { name: "Beta Testing", path: "/beta" },
   ];
   
