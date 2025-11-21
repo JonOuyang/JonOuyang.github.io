@@ -10,11 +10,14 @@ const HowItWorks = lazy(() => import('./components/HowItWorks'));
 const Footer = lazy(() => import('./components/Footer'));
 const GlowingHeader = lazy(() => import('./components/GlowingHeader'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
-const ExperienceGraph = lazy(() => import('./experience-components/ExperienceGraph'));
+const GitHubExperience = lazy(() => import('./experience-components/GitHubExperience'));
 const Opener = lazy(() => import('./Opener/Opener'));
 const PersonalSite = lazy(() => import('./components/PersonalSite.tsx'));
+const PublicHome = lazy(() => import('./components/PublicHome'));
 
 import { experienceData } from './experience-components/experiences';
+import { extracurricularData } from './experience-components/extracurriculars';
+import { contributorsData } from './experience-components/contributors';
 import { researchData } from './research-components/researchData';
 
 // Loading fallback component
@@ -24,22 +27,38 @@ const Loading = () => (
   </div>
 );
 
+const ExperimentalHome = () => (
+  <main className="bg-black">
+    <Navbar />
+    <Suspense fallback={<Loading />}>
+      <Hero />
+      <Highlights />
+      <Features />
+      <HowItWorks />
+      <Footer />
+    </Suspense>
+  </main>
+);
+
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={ // homepage
-          <main className="bg-black">
-            <Navbar />
-            <Hero />
-            <Suspense fallback={<Loading />}>
-              <Highlights />
-              <Features />
-              <HowItWorks/>
-              <Footer/>
-            </Suspense>
-         </main>
-        } />
+        <Route
+          path="/"
+          element={
+            <>
+              <Navbar />
+              <Suspense fallback={<Loading />}>
+                <PublicHome />
+              </Suspense>
+            </>
+          }
+        />
+        <Route
+          path="/experimental-home"
+          element={<ExperimentalHome />}
+        />
         <Route path="/test-home" element={ // test dev homepage
           <main className="bg-black">
             <Navbar />
@@ -56,13 +75,10 @@ const App = () => {
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <GlowingHeader>Experience</GlowingHeader>
-              <h1 style={{ textAlign: 'center', color: '#e2e8f0' }}>
-                Professional Work History. For Research history, please view the Research page.
-              </h1>
-              <ExperienceGraph
-                experiences={experienceData.experiences}
-                branches={experienceData.branches}
+              <GitHubExperience
+                workData={experienceData}
+                extracurricularData={extracurricularData}
+                contributors={contributorsData}
               />
             </Suspense>
          </main>

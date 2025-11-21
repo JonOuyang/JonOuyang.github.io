@@ -3,42 +3,74 @@ export const experienceData = {
     {
       id: "exp1",
       date: "2024 - Present",
-      title: "Lead AI Researcher",
-      company: "Future Systems Inc.",
-      description: "Pioneering research in generative models and large language model optimization. Published three papers on emergent abilities.",
+      title: "Visiting Researcher",
+      company: "Stanford ILIAD Lab",
+      description: "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
       branches: ["main", "ai-ml"]
     },
     {
       id: "exp2",
-      date: "2022 - 2024",
-      title: "Senior Software Engineer",
-      company: "Innovatech",
-      description: "Led a team of 5 to build a scalable microservices architecture for a flagship fintech product. Improved system reliability by 40%.",
-      branches: ["main", "swe"]
+      date: "2024",
+      title: "Grand Prize Winner",
+      company: "Google Gemini API Competition",
+      description: "Won Grand Prize ($300k+ DeLorean) among 45,000 developers from 119 countries. Built next-generation multimodal computer-use agent with autonomous UI control.",
+      branches: ["main", "ai-ml"]
     },
     {
       id: "exp3",
-      date: "2021 - 2022",
-      title: "Machine Learning Engineer",
-      company: "DataDriven Co.",
-      description: "Developed and deployed a recommendation engine that increased user engagement by 25%. Worked with PyTorch and AWS SageMaker.",
-      branches: ["swe", "ai-ml"]
+      date: "2023 - Present",
+      title: "Undergraduate Researcher",
+      company: "UCLA Robot Intelligence Lab",
+      description: "Co-first-author on GAMMA (RSS 2025). Adapted Action Chunking Transformer to ALOHA robot achieving 90% success rate. Built gaze-assisted robotic control improving speed by 250%.",
+      branches: ["ai-ml", "main"]
     },
     {
       id: "exp4",
-      date: "Summer 2020",
-      title: "Software Engineering Intern",
-      company: "Big Tech Corp",
-      description: "Contributed to the primary consumer-facing application, fixing bugs and implementing new features in React and TypeScript.",
-      branches: ["swe"]
+      date: "Summer 2024",
+      title: "Software Engineer Intern",
+      company: "Amazon Prime Video Studios",
+      description: "Built Java catalog compiler processing 7M+ titles/day. Automated metadata ingestion eliminating 90% of errors. Integrated with Apple, Google, Samsung for cross-platform deployment.",
+      branches: ["swe", "main"]
     },
     {
       id: "exp5",
-      date: "2019 - 2021",
-      title: "Columnist & Developer",
-      company: "Daily Bruin",
-      description: "Wrote a weekly column on technology's impact on campus life. Developed interactive data visualizations for online articles.",
-      branches: ["main"]
+      date: "2023 - 2024",
+      title: "Applied AI Engineer",
+      company: "UCLA Daily Bruin",
+      description: "Optimized React website reducing bundle size 40% and supporting 60k+ concurrent users. Built 'Olivier' RAG chatbot using Pinecone + Redis + OpenAI. Designed Redis caching absorbing 80% of read traffic.",
+      branches: ["swe", "ai-ml"]
+    },
+    {
+      id: "exp6",
+      date: "Summer 2023",
+      title: "Computer Vision Intern",
+      company: "Sighthound, Inc.",
+      description: "Built VLM annotation tool using PaliGemma + OWL-ViT improving labeling throughput by 50%. Created image augmentation pipeline increasing dataset size 6× and boosting model accuracy by 5%.",
+      branches: ["ai-ml", "swe"]
+    },
+    {
+      id: "exp7",
+      date: "2022 - 2023",
+      title: "Graduate Research Advisor",
+      company: "SJSU AI/DL FPGA/DSP Lab",
+      description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
+      branches: ["ai-ml", "main"]
+    },
+    {
+      id: "exp8",
+      date: "2023",
+      title: "Hackathon Projects",
+      company: "CalHacks & eBay Competition",
+      description: "Built Project Montgomery (math/physics animation generator with Next.js + FastAPI). Fine-tuned Microsoft Phi-3 achieving 10% precision/recall lift for eBay ML Competition.",
+      branches: ["swe", "ai-ml"]
+    },
+    {
+      id: "exp9",
+      date: "2022 - 2023",
+      title: "Full-Stack Developer",
+      company: "UCLA Projects",
+      description: "Built Bruin Bite app (100+ users) with React + Golang + Docker. Created UCLA Course Navigator with React + Vue + Node.js + MongoDB. Developed Berry Tongue Chrome extension for language learning.",
+      branches: ["swe"]
     }
   ],
   branches: {

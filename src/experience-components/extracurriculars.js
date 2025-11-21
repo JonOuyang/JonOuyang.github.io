@@ -1,31 +1,41 @@
-export const extracurricularData = [
+export const extracurricularData = {
+  experiences: [
     {
-      id: 1,
+      id: "extra1",
       date: "Jan 2025 - Present",
-      title: "GLITCH President & Founder",
-      company: "UCLA's Premier Hackathon Club",
-      description: "We at GLITCH are comitted to training students to compete in hackathons and building interesting projects nonstop. We also host hackathons, working closely with companies such as Google and NVIDIA.",
+      title: "President & Founder",
+      company: "GLITCH",
+      description: "Founded UCLA's premier hackathon club. Train students to compete in hackathons and build projects. Host hackathons with Google and NVIDIA partnerships.",
+      branches: ["main", "leadership"]
     },
     {
-      id: 2,
+      id: "extra2",
       date: "Oct 2024 - Present",
-      title: "ACM Board Operations Officer",
-      company: "UCLA's Biggest CS Club",
-      description: `Working to organize events such as the yearly Tech Gala and quarterly General Meeting for ACM.`,
+      title: "Board Operations Officer",
+      company: "ACM at UCLA",
+      description: "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
+      branches: ["main", "leadership"]
     },
     {
-      id: 3,
+      id: "extra3",
       date: "Oct 2024 - Present",
-      title: "VEST Technical Recruiter & Developer",
-      company: "UCLA's Tech Entrepreneurship and Consulting Club ",
-      description: `One of three technical recruiters in charge of interviewing potential candidates`,
+      title: "Technical Recruiter & Developer",
+      company: "VEST",
+      description: "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
+      branches: ["main", "tech"]
     },
     {
-      id: 4,
+      id: "extra4",
       date: "Sep 2024 - Present",
-      title: "Daily Bruin Software Engineer",
-      company: "UCLA's Main Student-Run Newspaper",
-      description: `Working on Main-site team to maintain and update the main newspaper website. Also working on a RAG bot called Oliver trained to answer questions using Daily Bruin articles as reference.`,
-    },
-    // Add more experiences here...
-  ];
+      title: "Software Engineer",
+      company: "Daily Bruin",
+      description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
+      branches: ["tech", "main"]
+    }
+  ],
+  branches: {
+    main: { name: "Main", color: "#ff7b00" },
+    leadership: { name: "Leadership", color: "#a371f7" },
+    tech: { name: "Technical", color: "#00aaff" }
+  }
+};

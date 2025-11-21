@@ -10,11 +10,15 @@ import {
     yellowImg,
   } from "../utils";
   
-  export const navLists = [
+  export const publicNavItems = [
     { name: "Home", path: "/" },
     { name: "Work History", path: "/work-history" },
     { name: "Research", path: "/research" },
     { name: "Contact", path: "/contact" },
+  ];
+  
+  export const experimentalNavItems = [
+    { name: "Home (Experimental)", path: "/experimental-home" },
     { name: "Beta 2", path: "/beta-2" },
     { name: "Beta Testing", path: "/beta" },
   ];
