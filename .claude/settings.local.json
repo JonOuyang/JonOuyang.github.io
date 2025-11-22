@@ -9,7 +9,8 @@
       "Bash(scutil:*)",
       "Bash(networksetup:*)",
       "Bash(networksetup -getwebproxy:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

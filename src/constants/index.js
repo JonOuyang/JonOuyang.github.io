@@ -13,6 +13,7 @@ import {
   export const publicNavItems = [
     { name: "Home", path: "/" },
     { name: "Work History", path: "/work-history" },
+    { name: "Projects", path: "/projects" },
     { name: "Research", path: "/research" },
     { name: "Contact", path: "/contact" },
   ];

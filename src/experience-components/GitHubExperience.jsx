@@ -1,4 +1,8 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Import centralized work history data
+import { workHistoryData, getAllFolders, getRootFiles } from "./workHistoryData";
 
 // --- CONFIGURATION ---
 const LANE_SPACING = 180;
@@ -56,6 +60,7 @@ const buildGraph = (experiences, branches) => {
 };
 
 const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("work");
   const [activeBranch, setActiveBranch] = useState("main");
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
@@ -85,12 +90,39 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
     setBranchDropdownOpen(false);
   };
 
+  // Build files list from centralized data
+  const allFolders = getAllFolders();
+  const rootFiles = getRootFiles();
+
   const files = [
-    { type: 'folder', name: "Portfolio", msg: "added readme descriptions for files", time: "6 months ago" },
-    { type: 'file', name: "README.md", msg: "Update README.md", time: "6 months ago" },
-    { type: 'file', name: "CV.pdf", msg: "Updated formatting for ATS", time: "2 days ago" },
-    { type: 'file', name: "Resume.pdf", msg: "Compressed version", time: "3 months ago" },
+    // Folders first
+    ...allFolders.map(folder => ({
+      type: 'folder',
+      name: folder.name,
+      msg: folder.msg,
+      time: folder.date,
+      link: `/work-history/${folder.path}`
+    })),
+    // Then root files
+    ...rootFiles.map(file => ({
+      type: 'file',
+      name: file.name,
+      msg: file.msg,
+      time: file.date,
+      fileType: file.type,
+      file: file.file || null,
+      content: file.content || null
+    }))
   ];
+
+  const handleFileClick = (f) => {
+    if (f.link) {
+      navigate(f.link);
+    } else if (f.file) {
+      window.open(f.file, '_blank');
+    }
+    // For markdown/code files without external links, could show a modal or navigate
+  };
 
   return (
     <div className="gh-wrapper">
@@ -245,7 +277,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
         {/* LEFT COLUMN */}
         <div className="gh-main">
-            
+
             {/* CONTROL BAR */}
             <div className="gh-controls">
                 <div style={{position:'relative'}}>
@@ -289,10 +321,15 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                 </div>
                 <div>
                     {files.map((f, i) => (
-                        <div key={i} className="gh-file-row">
+                        <div
+                            key={i}
+                            className="gh-file-row"
+                            onClick={() => handleFileClick(f)}
+                            style={{ cursor: (f.link || f.file) ? 'pointer' : 'default' }}
+                        >
                             <div className="gh-row-icon">{f.type === 'folder' ? <Icons.Folder /> : <Icons.File />}</div>
                             <div className="gh-row-name">
-                                <a href="#" className="gh-link">{f.name}</a>
+                                <span className={(f.link || f.file) ? "gh-link" : ""}>{f.name}</span>
                             </div>
                             <div className="gh-row-msg">{f.msg}</div>
                             <div className="gh-row-time">{f.time}</div>
