@@ -193,9 +193,9 @@ const SpotlightCard = ({ project, globalMousePos }) => {
         }}
       />
 
-      {/* Inner card container - Glass Sheet */}
+      {/* Inner card container - Split Dashboard */}
       <div
-        className="relative rounded-3xl overflow-hidden border border-white/10 group-hover:border-white/30 bg-[#121212] transition-colors duration-300"
+        className="relative rounded-3xl overflow-hidden border border-white/10 group-hover:border-white/30 bg-[#050505] transition-colors duration-300 flex flex-col"
       >
         {/* Border Glow Layer 1 - Thick bright edge */}
         <div
@@ -221,45 +221,38 @@ const SpotlightCard = ({ project, globalMousePos }) => {
           }}
         />
 
-        {/* Deep charcoal background */}
-        <div className="absolute inset-0 z-0 bg-[#121212]" />
-
-        {/* Ghost Image with Spotlight Reveal */}
-        {project.image && (
-          <div
-            className="absolute inset-0 z-[1] overflow-hidden"
-            style={{
-              mask: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 85%)',
-              WebkitMask: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 85%)',
-            }}
-          >
+        {/* TOP SECTION - Image Window (60%) */}
+        <div className="relative h-[200px] m-3 mb-0 rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/25 transition-colors duration-300">
+          {project.image && (
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-full object-cover transition-all duration-500 ease-out opacity-20 grayscale group-hover:opacity-50 group-hover:grayscale-0 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
             />
-          </div>
-        )}
+          )}
+          {/* Subtle inner shadow for depth */}
+          <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.3)' }} />
+        </div>
 
-        {/* Content */}
-        <div className="relative z-10 p-6 sm:p-8 h-full flex flex-col justify-end min-h-[320px]">
+        {/* BOTTOM SECTION - Text Console (40%) */}
+        <div className="relative z-10 p-5 pt-4 flex flex-col flex-1 bg-[#050505]">
           {/* Title - Bright White */}
-          <h3 className="text-white font-bold text-xl sm:text-2xl mb-2 tracking-tight">
+          <h3 className="text-white font-bold text-lg sm:text-xl mb-1.5 tracking-tight">
             {project.title}
           </h3>
 
           {/* Description - Light Grey */}
-          <p className="text-white/70 text-sm leading-relaxed line-clamp-2 max-w-[90%]">
+          <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-3">
             {project.desc}
           </p>
 
           {/* Tech Stack Tags */}
           {project.tags && project.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-auto">
               {project.tags.slice(0, 3).map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-white/40 border border-white/10 rounded-md"
+                  className="px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-white/60 border border-white/20 rounded-md bg-white/5 transition-colors duration-200 hover:border-white/40 hover:text-white/80"
                 >
                   {tag}
                 </span>
@@ -269,11 +262,11 @@ const SpotlightCard = ({ project, globalMousePos }) => {
         </div>
 
         {/* Arrow Button - Bottom Right */}
-        <div className="absolute bottom-6 right-6 z-10">
-          <div className="w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-all duration-300 bg-white/5 border border-white/20 group-hover:bg-white/10 group-hover:border-white/40">
+        <div className="absolute bottom-5 right-5 z-10">
+          <div className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 bg-white/5 border border-white/20 group-hover:bg-white/10 group-hover:border-white/40">
             <ArrowUpRight
-              size={18}
-              className="text-white transition-colors duration-300"
+              size={16}
+              className="text-white/70 group-hover:text-white transition-colors duration-300"
             />
           </div>
         </div>
