@@ -18,76 +18,72 @@ export const projectsData = {
           title: "SABRE",
           desc: "SABRE: Shared Autonomy for Battlefield Responds and Engagement",
           image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
-          glowColor: "rgba(234, 179, 8, 1)", // Gold
+          glowColor: "rgba(34, 197, 94, 1)", // Military Tactical Green
           tags: ["Python", "ROS2", "Computer Vision"]
         },
         {
           id: 2,
-          title: "Sir Syncs A Lot",
-          desc: "Control your computer using your phone. An extension of a computer use agent.",
-          image: "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          glowColor: "rgba(147, 51, 234, 1)", // Purple
-          tags: ["React Native", "WebSocket", "Node.js"]
+          title: "LEVIATHAN",
+          desc: "Bringing Big Insights No Matter The Crew Size. Your AI Co-Pilot for smart fishing.",
+          image: "https://img.nauticexpo.com/images_ne/photo-g/28032-18598681.webp",
+          glowColor: "rgba(6, 182, 212, 1)", // Deep Ocean Teal
+          tags: ["Python", "ROS2", "Computer Vision"]
         },
         {
           id: 3,
-          title: "Project Montgomery",
-          desc: "Physics and math animation generator using Manim and Gemini",
-          image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
-          glowColor: "rgba(59, 130, 246, 1)", // Blue
-          tags: ["Python", "Manim", "Gemini API"]
+          title: "Bruin Bite",
+          desc: "Find and review the best dining hallds and food spots on UCLA campus.",
+          image: "https://wp.dailybruin.com/images/2024/09/web.regissue.quad_.diningplancritiques.file_.jpg",
+          glowColor: "rgba(255, 184, 28, 1)", // UCLA Gold
+          tags: ["Python", "ROS2", "Computer Vision"]
         },
         {
           id: 4,
-          title: "Auth System",
-          desc: "JWT-based multi-factor authentication microservice.",
-          image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
-          glowColor: "rgba(34, 197, 94, 1)", // Green
-          tags: ["Go", "JWT", "Redis"]
+          title: "Sir Syncs A Lot",
+          desc: "Control your computer using your phone. An extension of a computer use agent.",
+          image: "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          glowColor: "rgba(168, 85, 247, 1)", // Electric Purple - Tech/Sync vibes
+          tags: ["React Native", "WebSocket", "Node.js"]
         },
         {
           id: 5,
-          title: "Cloud Manager",
-          desc: "AWS wrapper for managing EC2 instances effortlessly.",
-          image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-          glowColor: "rgba(236, 72, 153, 1)", // Pink
-          tags: ["AWS", "Terraform", "Python"]
+          title: "Berry Tongue",
+          desc: "An AI-powered language learning Chrome extension to help you learn vocabulary in context.",
+          image: "https://holdenfg.org/wp-content/uploads/2021/03/alex-ushakoff-6MynOBZgig0-unsplash-1920x1280.jpg.webp",
+          glowColor: "rgba(236, 72, 153, 1)", // Berry Magenta/Pink
+          tags: ["Python", "Manim", "Gemini API"]
         },
         {
           id: 6,
-          title: "Task Scheduler",
-          desc: "Distributed task queue with priority scheduling and retries.",
-          image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&q=80",
-          glowColor: "rgba(249, 115, 22, 1)", // Orange
-          tags: ["Go", "Redis", "gRPC"]
+          title: "UCLA Course Planner",
+          desc: "Plan your UCLA courses with ease using this intuitive web app.",
+          image: "https://www.mccormick.northwestern.edu/images/news/2022/02/undergraduate-launches-course-planning-web-application-header.jpg",
+          glowColor: "rgba(45, 127, 198, 1)", // UCLA Blue
+          tags: ["Go", "JWT", "Redis"]
         },
         {
           id: 7,
-          ranking: 7,
-          title: "GraphQL Gateway",
-          desc: "Unified API gateway aggregating multiple microservices.",
-          image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80"
+          title: "Project Oliver",
+          desc: "RAG Chatbot to answer questions by citing UCLA Daily Bruin Newspaper articles",
+          image: "https://hips.hearstapps.com/hmg-prod/images/small-fluffy-dog-breeds-maltipoo-663009b6293cc.jpg?crop=0.668xw:1.00xh;0.143xw,0",
+          glowColor: "rgba(251, 207, 157, 1)", // Warm Cream - Fluffy dog warmth
+          tags: ["Gemini", "Pinecone", "Python"]
         },
         {
           id: 8,
-          ranking: 8,
-          title: "ML Pipeline",
-          desc: "End-to-end machine learning pipeline with automated training.",
-          image: "https://images.unsplash.com/photo-1527474305487-b87b222841cc?w=800&q=80"
+          title: "Persistence",
+          desc: "AI powered to do list, task manager, and reminder web/mobile app.",
+          image: "https://images.squarespace-cdn.com/content/v1/5e6a7ab5992a417f3a08b6a4/c1e0bf5b-3c3b-43cf-8a55-4703e95495a3/iStock-1473980728.jpg",
+          glowColor: "rgba(249, 115, 22, 1)", // Vibrant Orange - Productivity/Energy
+          tags: ["Go", "Redis", "gRPC"]
         },
         {
           id: 9,
-          ranking: 9,
-          title: "Chat Platform",
-          desc: "Real-time messaging app with WebSocket and Redis pub/sub.",
-          image: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&q=80"
-        },
-        {
-          id: 10,
-          ranking: 10,
-          title: "CI/CD Pipeline",
-          desc: "Automated deployment pipeline with Docker and Kubernetes.",
-          image: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=800&q=80"
+          title: "Project Montgomery",
+          desc: "Math and physics animation generator for students and educators.",
+          image: "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
+          glowColor: "rgba(34, 211, 238, 1)", // Scientific Cyan - Math/Physics
+          tags: ["Gemini", "Manim Animation Engine"]
         },
       ]
     },

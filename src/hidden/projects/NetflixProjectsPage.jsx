@@ -2,6 +2,7 @@
 // Professional Portfolio - Spotlight Bento Grid
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { projectsData } from './netflixProjectsData';
 import {
   Play,
@@ -26,6 +27,7 @@ const getYouTubeVideoId = (url) => {
 };
 
 const HeroSection = ({ hero }) => {
+  const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
   const timeoutRef = useRef(null);
@@ -119,15 +121,23 @@ const HeroSection = ({ hero }) => {
         </p>
 
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2.5 px-7 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl hover:scale-[1.02]">
-            <Play fill="currentColor" size={18} />
-            Watch Documentary
+          <button
+            onClick={() => navigate('/experimental-projects/0')}
+            className="flex items-center gap-2.5 px-7 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl hover:scale-[1.02]"
+          >
+            <ArrowUpRight size={18} />
+            Read More
           </button>
 
-          <button className="flex items-center gap-2.5 px-7 py-3 bg-white/10 text-white rounded-full hover:bg-white/20 transition-all duration-200 font-semibold text-base backdrop-blur-sm border border-white/20">
-            <Code size={18} />
-            View Source
-          </button>
+          <a
+            href="https://ai.google.dev/competition/projects/jayu"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2.5 px-7 py-3 bg-white/10 text-white rounded-full hover:bg-white/20 transition-all duration-200 font-semibold text-base backdrop-blur-sm border border-white/20"
+          >
+            <Play fill="currentColor" size={18} />
+            Watch Demo
+          </a>
         </div>
       </div>
 
@@ -143,6 +153,7 @@ const HeroSection = ({ hero }) => {
 
 const SpotlightCard = ({ project, globalMousePos }) => {
   const cardRef = useRef(null);
+  const navigate = useNavigate();
   const [localMousePos, setLocalMousePos] = useState({ x: 0, y: 0 });
 
   const glowColor = project.glowColor || 'rgba(147, 51, 234, 1)';
@@ -159,10 +170,15 @@ const SpotlightCard = ({ project, globalMousePos }) => {
     });
   }, [globalMousePos]);
 
+  const handleClick = () => {
+    navigate(`/experimental-projects/${project.id}`);
+  };
+
   return (
     <div
       ref={cardRef}
       className="relative rounded-3xl cursor-pointer group"
+      onClick={handleClick}
       style={{
         '--mouse-x': `${localMousePos.x}px`,
         '--mouse-y': `${localMousePos.y}px`,
@@ -171,25 +187,25 @@ const SpotlightCard = ({ project, globalMousePos }) => {
     >
       {/* Outer Glow Layer 1 - Wide soft ambient */}
       <div
-        className="absolute -inset-[5px] rounded-3xl pointer-events-none blur-2xl opacity-100"
+        className="absolute -inset-[8px] rounded-3xl pointer-events-none blur-2xl opacity-100"
         style={{
-          background: `radial-gradient(490px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 50%)`,
+          background: `radial-gradient(550px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 45%)`,
         }}
       />
 
       {/* Outer Glow Layer 2 - Tighter, brighter */}
       <div
-        className="absolute -inset-[3px] rounded-3xl pointer-events-none blur-lg opacity-100"
+        className="absolute -inset-[5px] rounded-3xl pointer-events-none blur-xl opacity-100"
         style={{
-          background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 40%)`,
+          background: `radial-gradient(420px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 35%)`,
         }}
       />
 
       {/* Outer Glow Layer 3 - Sharp edge bleed */}
       <div
-        className="absolute -inset-[1px] rounded-3xl pointer-events-none blur-sm opacity-100"
+        className="absolute -inset-[2px] rounded-3xl pointer-events-none blur-md opacity-100"
         style={{
-          background: `radial-gradient(280px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, var(--glow-color) 30%, transparent 60%)`,
+          background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, var(--glow-color) 35%, transparent 55%)`,
         }}
       />
 
@@ -201,8 +217,8 @@ const SpotlightCard = ({ project, globalMousePos }) => {
         <div
           className="absolute inset-0 rounded-3xl pointer-events-none z-50"
           style={{
-            background: `radial-gradient(350px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, var(--glow-color) 40%, transparent 70%)`,
-            padding: '3.5px',
+            background: `radial-gradient(420px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, var(--glow-color) 45%, transparent 65%)`,
+            padding: '4.5px',
             mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             maskComposite: 'xor',
             WebkitMaskComposite: 'xor',
@@ -213,15 +229,15 @@ const SpotlightCard = ({ project, globalMousePos }) => {
         <div
           className="absolute inset-0 rounded-3xl pointer-events-none z-50"
           style={{
-            background: `radial-gradient(245px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, transparent 50%)`,
-            padding: '1.5px',
+            background: `radial-gradient(320px circle at var(--mouse-x) var(--mouse-y), var(--glow-color) 0%, transparent 45%)`,
+            padding: '2px',
             mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             maskComposite: 'xor',
             WebkitMaskComposite: 'xor',
           }}
         />
 
-        {/* TOP SECTION - Image Window (60%) */}
+        {/* TOP SECTION - Image Window (Recessed Screen) */}
         <div className="relative h-[200px] m-3 mb-0 rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/25 transition-colors duration-300">
           {project.image && (
             <img
@@ -230,8 +246,12 @@ const SpotlightCard = ({ project, globalMousePos }) => {
               className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
             />
           )}
+          {/* Recessed Screen Bezel - Inner ring for embedded look */}
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 pointer-events-none z-20" />
+          {/* Seamless Vignette - Blends into console body */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-10" />
           {/* Subtle inner shadow for depth */}
-          <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.3)' }} />
+          <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.4)' }} />
         </div>
 
         {/* BOTTOM SECTION - Text Console (40%) */}
@@ -246,13 +266,24 @@ const SpotlightCard = ({ project, globalMousePos }) => {
             {project.desc}
           </p>
 
-          {/* Tech Stack Tags */}
+          {/* Tech Stack Tags - Dynamic Color Sync */}
           {project.tags && project.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-auto">
               {project.tags.slice(0, 3).map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-white/60 border border-white/20 rounded-md bg-white/5 transition-colors duration-200 hover:border-white/40 hover:text-white/80"
+                  className="px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-white/50 border border-white/15 rounded-md bg-white/5 transition-all duration-300"
+                  style={{
+                    '--tag-glow': glowColor.replace('1)', '0.6)'),
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = glowColor.replace('1)', '0.5)');
+                    e.currentTarget.style.color = glowColor;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '';
+                    e.currentTarget.style.color = '';
+                  }}
                 >
                   {tag}
                 </span>
@@ -261,12 +292,27 @@ const SpotlightCard = ({ project, globalMousePos }) => {
           )}
         </div>
 
-        {/* Arrow Button - Bottom Right */}
+        {/* Arrow Button - Dynamic Color Sync */}
         <div className="absolute bottom-5 right-5 z-10">
-          <div className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 bg-white/5 border border-white/20 group-hover:bg-white/10 group-hover:border-white/40">
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 bg-white/5 border border-white/20"
+            style={{
+              '--btn-glow': glowColor,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = glowColor;
+              e.currentTarget.style.borderColor = glowColor;
+              e.currentTarget.querySelector('svg').style.color = '#000';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '';
+              e.currentTarget.style.borderColor = '';
+              e.currentTarget.querySelector('svg').style.color = '';
+            }}
+          >
             <ArrowUpRight
               size={16}
-              className="text-white/70 group-hover:text-white transition-colors duration-300"
+              className="text-white/70 transition-colors duration-300"
             />
           </div>
         </div>
@@ -317,7 +363,7 @@ const SpotlightBentoGrid = ({ projects }) => {
 
 const ProjectsPage = () => {
   const { hero, rows } = projectsData;
-  const projects = rows[0]?.items.slice(0, 6) || [];
+  const projects = rows[0]?.items || [];
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen font-sans text-white overflow-x-hidden">
