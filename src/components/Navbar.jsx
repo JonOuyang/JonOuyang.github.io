@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="flex flex-1 justify-center max-sm:hidden">
           {navItems.map((nav) => (
             <Link key={nav.name} to={nav.path}>
-              <div className="px-5 text-sm cursor-pointer text-gray hover:text-white transition-all">
+              <div className="px-4 py-2 mx-1 text-sm cursor-pointer text-gray hover:text-white hover:bg-gray-700/50 rounded-md transition-all">
                 {nav.name}
               </div>
             </Link>

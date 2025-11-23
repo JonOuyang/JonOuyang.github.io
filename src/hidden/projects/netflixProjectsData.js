@@ -4,13 +4,10 @@ export const projectsData = {
   hero: {
     id: 0,
     title: "Full-Stack Architecture",
-    description: "Explore my portfolio of software engineering projects, from AI-powered applications to full-stack web development. Dive into the code that powers scalable solutions.",
-    image: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop",
-    ranking: "#1 in Projects",
-    match: "98% Match",
-    year: "2024",
-    rating: "TV-14",
-    duration: "Senior Level"
+    description: "JAYU is a computer use agent built using the Google Gemini 1.5 models. It directly interacts with your computer, clicking buttons, typing text, and analyzing context to perform full tasks.",
+    image: "https://i.ytimg.com/vi/G4RNny8s8Vw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBhEE_8-GHJqjDvT4PZniym9ovniw",
+    video: "https://www.youtube.com/watch?v=G4RNny8s8Vw",
+    ranking: "Winner of the 2024 Google Gemini API Developer Competition"
   },
   rows: [
     {
@@ -18,45 +15,51 @@ export const projectsData = {
       items: [
         {
           id: 1,
-          ranking: 1,
-          title: "E-Commerce API",
-          desc: "A scalable RESTful API built with Node.js and Redis caching.",
-          image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80"
+          title: "SABRE",
+          desc: "SABRE: Shared Autonomy for Battlefield Responds and Engagement",
+          image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
+          glowColor: "rgba(234, 179, 8, 1)", // Gold
+          tags: ["Python", "ROS2", "Computer Vision"]
         },
         {
           id: 2,
-          ranking: 2,
-          title: "Neural Net Viz",
-          desc: "Interactive 3D visualization of neural networks using Three.js.",
-          image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
+          title: "Sir Syncs A Lot",
+          desc: "Control your computer using your phone. An extension of a computer use agent.",
+          image: "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          glowColor: "rgba(147, 51, 234, 1)", // Purple
+          tags: ["React Native", "WebSocket", "Node.js"]
         },
         {
           id: 3,
-          ranking: 3,
-          title: "Crypto Dashboard",
-          desc: "Real-time websocket data tracking for major cryptocurrencies.",
-          image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80"
+          title: "Project Montgomery",
+          desc: "Physics and math animation generator using Manim and Gemini",
+          image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
+          glowColor: "rgba(59, 130, 246, 1)", // Blue
+          tags: ["Python", "Manim", "Gemini API"]
         },
         {
           id: 4,
-          ranking: 4,
           title: "Auth System",
           desc: "JWT-based multi-factor authentication microservice.",
-          image: "https://images.unsplash.com/photo-1510915361402-280e1553e5bc?w=800&q=80"
+          image: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
+          glowColor: "rgba(34, 197, 94, 1)", // Green
+          tags: ["Go", "JWT", "Redis"]
         },
         {
           id: 5,
-          ranking: 5,
           title: "Cloud Manager",
           desc: "AWS wrapper for managing EC2 instances effortlessly.",
-          image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80"
+          image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+          glowColor: "rgba(236, 72, 153, 1)", // Pink
+          tags: ["AWS", "Terraform", "Python"]
         },
         {
           id: 6,
-          ranking: 6,
           title: "Task Scheduler",
           desc: "Distributed task queue with priority scheduling and retries.",
-          image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&q=80"
+          image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&q=80",
+          glowColor: "rgba(249, 115, 22, 1)", // Orange
+          tags: ["Go", "Redis", "gRPC"]
         },
         {
           id: 7,

@@ -135,3 +135,8 @@ export const getAllFolders = () => {
 export const getRootFiles = () => {
   return workHistoryData.rootFiles;
 };
+
+// Helper to get a root file by name
+export const getRootFileByName = (fileName) => {
+  return workHistoryData.rootFiles.find(f => f.name === fileName) || null;
+};

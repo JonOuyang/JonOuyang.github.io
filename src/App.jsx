@@ -13,14 +13,16 @@ const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const GitHubExperience = lazy(() => import('./experience-components/GitHubExperience'));
 const GitHubRepoViewer = lazy(() => import('./experience-components/GitHubRepoViewer'));
 const ProjectsPage = lazy(() => import('./projects-components/ProjectsPage'));
-const Opener = lazy(() => import('./Opener/Opener'));
 const PersonalSite = lazy(() => import('./components/PersonalSite.tsx'));
 const PublicHome = lazy(() => import('./components/PublicHome'));
+
+// Hidden/Experimental components
+const Opener = lazy(() => import('./hidden/home/Opener/Opener'));
+const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage'));
 
 import { experienceData } from './experience-components/experiences';
 import { extracurricularData } from './experience-components/extracurriculars';
 import { contributorsData } from './experience-components/contributors';
-import { researchData } from './research-components/researchData';
 
 // Loading fallback component
 const Loading = () => (
@@ -29,23 +31,11 @@ const Loading = () => (
   </div>
 );
 
-const ExperimentalHome = () => (
-  <main className="bg-black">
-    <Navbar />
-    <Suspense fallback={<Loading />}>
-      <Hero />
-      <Highlights />
-      <Features />
-      <HowItWorks />
-      <Footer />
-    </Suspense>
-  </main>
-);
-
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* === VISIBLE ROUTES === */}
         <Route
           path="/"
           element={
@@ -57,23 +47,7 @@ const App = () => {
             </>
           }
         />
-        <Route
-          path="/experimental-home"
-          element={<ExperimentalHome />}
-        />
-        <Route path="/test-home" element={ // test dev homepage
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <Opener />
-              <Highlights />
-              <Features />
-              <HowItWorks/>
-              <Footer />
-            </Suspense>
-         </main>
-        } />
-        <Route path="/work-history" element={ // work history page
+        <Route path="/work-history" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -85,7 +59,7 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/work-history/:folderPath" element={ // dynamic folder view
+        <Route path="/work-history/:folderPath" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -93,7 +67,7 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/work-history/:folderPath/:fileName" element={ // dynamic file view
+        <Route path="/work-history/:folderPath/:fileName" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -101,16 +75,15 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/research" element={ // research page
+        <Route path="/research" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <GlowingHeader>Research</GlowingHeader>
               <ResearchPage></ResearchPage>
             </Suspense>
          </main>
         } />
-        <Route path="/projects" element={ // projects page
+        <Route path="/projects" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -118,7 +91,7 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/contact" element={ // contact page
+        <Route path="/contact" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -126,7 +99,24 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/beta" element={ // beta testing page
+
+        {/* === HIDDEN/EXPERIMENTAL ROUTES === */}
+        <Route
+          path="/experimental-home"
+          element={
+            <main className="bg-black">
+              <Navbar />
+              <Suspense fallback={<Loading />}>
+                <Hero />
+                <Highlights />
+                <Features />
+                <HowItWorks />
+                <Footer />
+              </Suspense>
+            </main>
+          }
+        />
+        <Route path="/test-home" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -138,7 +128,19 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/beta-2" element={ // beta 2 page
+        <Route path="/beta" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <Opener />
+              <Highlights />
+              <Features />
+              <HowItWorks/>
+              <Footer />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/beta-2" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
@@ -146,9 +148,16 @@ const App = () => {
             </Suspense>
          </main>
         } />
+        <Route path="/experimental-projects" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <NetflixProjectsPage />
+            </Suspense>
+         </main>
+        } />
       </Routes>
     </BrowserRouter>
-    
   )
 }
 

@@ -20,6 +20,7 @@ import {
   
   export const experimentalNavItems = [
     { name: "Home (Experimental)", path: "/experimental-home" },
+    { name: "Projects (Netflix)", path: "/experimental-projects" },
     { name: "Beta 2", path: "/beta-2" },
     { name: "Beta Testing", path: "/beta" },
   ];

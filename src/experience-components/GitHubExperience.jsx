@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import centralized work history data
@@ -65,6 +65,20 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
   const [activeBranch, setActiveBranch] = useState("main");
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const [hoveredNode, setHoveredNode] = useState(null);
+  const dropdownRef = useRef(null);
+
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setBranchDropdownOpen(false);
+      }
+    };
+    if (isBranchDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isBranchDropdownOpen]);
 
   // Select data based on active tab
   const currentData = activeTab === "work" ? workData : extracurricularData;
@@ -103,25 +117,20 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
       time: folder.date,
       link: `/work-history/${folder.path}`
     })),
-    // Then root files
+    // Then root files - all link to viewable pages
     ...rootFiles.map(file => ({
       type: 'file',
       name: file.name,
       msg: file.msg,
       time: file.date,
-      fileType: file.type,
-      file: file.file || null,
-      content: file.content || null
+      link: `/work-history/root/${file.name}`
     }))
   ];
 
   const handleFileClick = (f) => {
     if (f.link) {
       navigate(f.link);
-    } else if (f.file) {
-      window.open(f.file, '_blank');
     }
-    // For markdown/code files without external links, could show a modal or navigate
   };
 
   return (
@@ -280,7 +289,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
             {/* CONTROL BAR */}
             <div className="gh-controls">
-                <div style={{position:'relative'}}>
+                <div style={{position:'relative'}} ref={dropdownRef}>
                     <button className="gh-branch-btn" onClick={toggleBranchDropdown}>
                         <Icons.Branch />
                         {branches[activeBranch]?.name || "all"}

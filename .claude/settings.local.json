@@ -10,7 +10,9 @@
       "Bash(networksetup:*)",
       "Bash(networksetup -getwebproxy:*)",
       "Bash(curl:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

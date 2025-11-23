@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FileViewer from "./FileViewer";
-import { workHistoryData, getFolderByPath, getFileFromFolder, getAllFolders, getRootFiles } from "./workHistoryData";
+import { workHistoryData, getFolderByPath, getFileFromFolder, getAllFolders, getRootFiles, getRootFileByName } from "./workHistoryData";
 
 // --- ICONS ---
 const Icons = {
@@ -25,9 +25,14 @@ const GitHubRepoViewer = () => {
 
   const [expandedFolders, setExpandedFolders] = useState({});
 
+  // Check if viewing root files (special case)
+  const isRootView = folderPath === "root";
+
   // Get current folder and file data
-  const currentFolder = getFolderByPath(folderPath);
-  const currentFile = fileName ? getFileFromFolder(folderPath, fileName) : null;
+  const currentFolder = isRootView ? null : getFolderByPath(folderPath);
+  const currentFile = fileName
+    ? (isRootView ? getRootFileByName(fileName) : getFileFromFolder(folderPath, fileName))
+    : null;
   const allFolders = getAllFolders();
   const rootFiles = getRootFiles();
 
@@ -48,10 +53,24 @@ const GitHubRepoViewer = () => {
     setExpandedFolders(prev => ({ ...prev, [path]: !prev[path] }));
   };
 
-  if (!currentFolder) {
+  // For root view, we need either a valid root file or show error
+  // For folder view, we need a valid folder
+  if (!isRootView && !currentFolder) {
     return (
       <div style={{ padding: 40, color: '#e6edf3', textAlign: 'center' }}>
         <h2>Folder not found</h2>
+        <button onClick={handleBackToWorkHistory} style={{ marginTop: 16, padding: '8px 16px', cursor: 'pointer' }}>
+          Back to Work History
+        </button>
+      </div>
+    );
+  }
+
+  // For root view without file, or root file not found
+  if (isRootView && !currentFile) {
+    return (
+      <div style={{ padding: 40, color: '#e6edf3', textAlign: 'center' }}>
+        <h2>File not found</h2>
         <button onClick={handleBackToWorkHistory} style={{ marginTop: 16, padding: '8px 16px', cursor: 'pointer' }}>
           Back to Work History
         </button>
@@ -86,8 +105,8 @@ const GitHubRepoViewer = () => {
         /* SPLIT LAYOUT */
         .gh-split-view {
           display: flex;
-          max-width: 1400px;
-          margin: 0 auto;
+          max-width: 90%;
+          margin: 0 auto 0 5%;
           min-height: calc(100vh - 80px);
         }
 
@@ -101,6 +120,11 @@ const GitHubRepoViewer = () => {
           border-right: 1px solid #30363d;
           padding: 16px;
           overflow-y: auto;
+          overflow-x: hidden;
+        }
+        .gh-file-tree {
+          overflow: hidden;
+          width: 100%;
         }
 
         .gh-sidebar-header {
@@ -125,6 +149,7 @@ const GitHubRepoViewer = () => {
           color: #7d8590;
           font-size: 12px;
           cursor: pointer;
+          overflow: hidden;
         }
         .gh-search-box:hover { border-color: #8b949e; }
 
@@ -140,13 +165,26 @@ const GitHubRepoViewer = () => {
           cursor: pointer;
           user-select: none;
           position: relative;
+          overflow: hidden;
+          width: 100%;
         }
         .gh-tree-item:hover { background: #161b22; }
         .gh-tree-item.active { background: #161b22; }
+        .gh-tree-item-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          flex: 1;
+          min-width: 0;
+        }
+        .gh-tree-item svg {
+          flex-shrink: 0;
+        }
         .gh-tree-children {
           margin-left: 16px;
           border-left: 1px solid #21262d;
           padding-left: 8px;
+          overflow: hidden;
         }
         .gh-tree-chevron {
           width: 16px;
@@ -155,6 +193,7 @@ const GitHubRepoViewer = () => {
           align-items: center;
           justify-content: center;
           color: #7d8590;
+          flex-shrink: 0;
         }
 
         /* RIGHT CONTENT PANE */
@@ -255,7 +294,7 @@ const GitHubRepoViewer = () => {
           </div>
 
           {/* File Tree */}
-          <div>
+          <div className="gh-file-tree">
             {/* All Folders */}
             {allFolders.map((folder) => (
               <div key={folder.path}>
@@ -270,7 +309,7 @@ const GitHubRepoViewer = () => {
                     {expandedFolders[folder.path] ? <Icons.ChevronDown /> : <Icons.ChevronRight />}
                   </span>
                   <Icons.Folder />
-                  <span>{folder.name}</span>
+                  <span className="gh-tree-item-name">{folder.name}</span>
                 </div>
 
                 {/* Files inside folder */}
@@ -283,7 +322,7 @@ const GitHubRepoViewer = () => {
                         onClick={() => navigate(`/work-history/${folder.path}/${file.name}`)}
                       >
                         <Icons.File />
-                        <span>{file.name}</span>
+                        <span className="gh-tree-item-name">{file.name}</span>
                       </div>
                     ))}
                   </div>
@@ -295,11 +334,11 @@ const GitHubRepoViewer = () => {
             {rootFiles.map((file, i) => (
               <div
                 key={i}
-                className="gh-tree-item"
-                onClick={handleBackToWorkHistory}
+                className={`gh-tree-item ${isRootView && currentFile?.name === file.name ? 'active' : ''}`}
+                onClick={() => navigate(`/work-history/root/${file.name}`)}
               >
                 <Icons.File />
-                <span>{file.name}</span>
+                <span className="gh-tree-item-name">{file.name}</span>
               </div>
             ))}
           </div>
@@ -310,17 +349,26 @@ const GitHubRepoViewer = () => {
           {/* BREADCRUMB */}
           <div className="gh-breadcrumb">
             <span className="gh-breadcrumb-link" onClick={handleBackToWorkHistory}>work-history</span>
-            <span className="gh-breadcrumb-separator">/</span>
-            <span
-              className={currentFile ? "gh-breadcrumb-link" : "gh-breadcrumb-current"}
-              onClick={currentFile ? handleBackToFolder : undefined}
-            >
-              {currentFolder.name}
-            </span>
-            {currentFile && (
+            {isRootView ? (
               <>
                 <span className="gh-breadcrumb-separator">/</span>
-                <span className="gh-breadcrumb-current">{currentFile.name}</span>
+                <span className="gh-breadcrumb-current">{currentFile?.name}</span>
+              </>
+            ) : (
+              <>
+                <span className="gh-breadcrumb-separator">/</span>
+                <span
+                  className={currentFile ? "gh-breadcrumb-link" : "gh-breadcrumb-current"}
+                  onClick={currentFile ? handleBackToFolder : undefined}
+                >
+                  {currentFolder?.name}
+                </span>
+                {currentFile && (
+                  <>
+                    <span className="gh-breadcrumb-separator">/</span>
+                    <span className="gh-breadcrumb-current">{currentFile.name}</span>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -330,8 +378,8 @@ const GitHubRepoViewer = () => {
             <div className="gh-commit-header">
               <div className="gh-avatar"></div>
               <span style={{fontWeight:600, color: '#e6edf3'}}>JonOuyang</span>
-              <span className="gh-commit-msg">{currentFile ? currentFile.msg : currentFolder.msg}</span>
-              <span style={{whiteSpace:'nowrap'}}>a6fd9b5 · {currentFile ? currentFile.date : currentFolder.date}</span>
+              <span className="gh-commit-msg">{currentFile ? currentFile.msg : currentFolder?.msg}</span>
+              <span style={{whiteSpace:'nowrap'}}>a6fd9b5 · {currentFile ? currentFile.date : currentFolder?.date}</span>
               <div style={{display:'flex', gap:4, marginLeft:10}}>
                 <Icons.List />
                 <span>24 commits</span>
@@ -350,7 +398,7 @@ const GitHubRepoViewer = () => {
                   <div className="gh-row-msg"></div>
                   <div className="gh-row-time"></div>
                 </div>
-                {currentFolder.files.map((file, i) => (
+                {currentFolder?.files.map((file, i) => (
                   <div key={i} className="gh-file-row" onClick={() => handleFileClick(file)}>
                     <div className="gh-row-icon"><Icons.File /></div>
                     <div className="gh-row-name">{file.name}</div>
@@ -363,7 +411,7 @@ const GitHubRepoViewer = () => {
           </div>
 
           {/* README (only show in folder view) */}
-          {!currentFile && currentFolder.readme && (
+          {!currentFile && currentFolder?.readme && (
             <div className="gh-readme">
               <div className="gh-readme-head">
                 <div className="gh-readme-title">
