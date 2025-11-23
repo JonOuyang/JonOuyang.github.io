@@ -122,7 +122,7 @@ const HeroSection = ({ hero }) => {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/experimental-projects/0')}
+            onClick={() => navigate('/projects/0')}
             className="flex items-center gap-2.5 px-7 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl hover:scale-[1.02]"
           >
             <ArrowUpRight size={18} />
@@ -171,7 +171,7 @@ const SpotlightCard = ({ project, globalMousePos }) => {
   }, [globalMousePos]);
 
   const handleClick = () => {
-    navigate(`/experimental-projects/${project.id}`);
+    navigate(`/projects/${project.id}`);
   };
 
   return (

@@ -198,7 +198,7 @@ const ProjectDetailPage = () => {
 
         {/* Footer Nav */}
         <div className="border-t border-white/10 mt-20 pt-10">
-          <button onClick={() => navigate('/experimental-projects')} className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2">
+          <button onClick={() => navigate('/projects')} className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2">
             <ArrowLeft size={16} /> Back to all projects
           </button>
         </div>

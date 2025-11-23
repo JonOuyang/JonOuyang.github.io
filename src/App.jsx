@@ -88,7 +88,15 @@ const App = () => {
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <ProjectsPage />
+              <NetflixProjectsPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/projects/:projectId" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <ProjectDetailPage />
             </Suspense>
          </main>
         } />
@@ -149,19 +157,11 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/experimental-projects" element={
+        <Route path="/old-projects" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <NetflixProjectsPage />
-            </Suspense>
-         </main>
-        } />
-        <Route path="/experimental-projects/:projectId" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <ProjectDetailPage />
+              <ProjectsPage />
             </Suspense>
          </main>
         } />

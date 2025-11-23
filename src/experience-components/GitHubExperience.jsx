@@ -173,11 +173,11 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
         .gh-btn-sub:hover { background-color: #30363d; }
         
         /* TABS */
-        .gh-tabs { display: flex; gap: 8px; padding: 0 32px; border-bottom: 1px solid #30363d; margin-top: 16px; overflow-x: auto; }
-        .gh-tab { 
-          padding: 0 12px 8px 12px; font-size: 14px; color: #e6edf3; 
-          border-bottom: 2px solid transparent; cursor: pointer; 
-          display: flex; align-items: center; gap: 8px; white-space: nowrap; 
+        .gh-tabs { display: flex; gap: 8px; padding: 0 32px; padding-left: 5%; border-bottom: 1px solid #30363d; margin-top: 0; overflow-x: auto; }
+        .gh-tab {
+          padding: 0 12px 4px 12px; font-size: 14px; color: #e6edf3;
+          border-bottom: 2px solid transparent; cursor: pointer;
+          display: flex; align-items: center; gap: 8px; white-space: nowrap;
         }
         .gh-tab.active { border-bottom-color: #f78166; font-weight: 600; }
         .gh-tab-icon { color: #7d8590; }

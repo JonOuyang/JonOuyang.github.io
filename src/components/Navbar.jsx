@@ -19,7 +19,7 @@ const Navbar = () => {
           className="flex items-center gap-2 focus:outline-none active:opacity-80"
           title="Double-click to toggle public/experimental"
         >
-          <img src={appleImg} alt="Apple" width={14} height={18} />
+          <img src="https://cdn-icons-png.flaticon.com/512/2395/2395608.png" alt="Logo" width={24} height={24} />
           <span className="text-xs uppercase tracking-wide text-gray-400">
             {mode === "public" ? "Public" : "Experimental"}
           </span>
