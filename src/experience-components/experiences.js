@@ -55,22 +55,6 @@ export const experienceData = {
       company: "SJSU AI/DL FPGA/DSP Lab",
       description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
       branches: ["ai-ml", "main"]
-    },
-    {
-      id: "exp8",
-      date: "2023",
-      title: "Hackathon Projects",
-      company: "CalHacks & eBay Competition",
-      description: "Built Project Montgomery (math/physics animation generator with Next.js + FastAPI). Fine-tuned Microsoft Phi-3 achieving 10% precision/recall lift for eBay ML Competition.",
-      branches: ["swe", "ai-ml"]
-    },
-    {
-      id: "exp9",
-      date: "2022 - 2023",
-      title: "Full-Stack Developer",
-      company: "UCLA Projects",
-      description: "Built Bruin Bite app (100+ users) with React + Golang + Docker. Created UCLA Course Navigator with React + Vue + Node.js + MongoDB. Developed Berry Tongue Chrome extension for language learning.",
-      branches: ["swe"]
     }
   ],
   branches: {

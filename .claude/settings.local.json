@@ -12,7 +12,11 @@
       "Bash(curl:*)",
       "Bash(npm install:*)",
       "Bash(cat:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(/tmp/original.jsx)",
+      "Bash(git checkout:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(/tmp/previous_version.jsx)"
     ],
     "deny": [],
     "ask": []
