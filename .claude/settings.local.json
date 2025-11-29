@@ -16,7 +16,8 @@
       "Bash(/tmp/original.jsx)",
       "Bash(git checkout:*)",
       "WebFetch(domain:github.com)",
-      "Bash(/tmp/previous_version.jsx)"
+      "Bash(/tmp/previous_version.jsx)",
+      "Bash(dir /s /a nul)"
     ],
     "deny": [],
     "ask": []

@@ -3,17 +3,17 @@ export const experienceData = {
     {
       id: "exp1",
       date: "2024 - Present",
+      title: "Incoming Software Engineer Intern",
+      company: "Google",
+      description: "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
+      branches: ["main", "swe"]
+    },
+    {
+      id: "exp1",
+      date: "2024 - Present",
       title: "Visiting Researcher",
       company: "Stanford ILIAD Lab",
       description: "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
-      branches: ["main", "ai-ml"]
-    },
-    {
-      id: "exp2",
-      date: "2024",
-      title: "Grand Prize Winner",
-      company: "Google Gemini API Competition",
-      description: "Won Grand Prize ($300k+ DeLorean) among 45,000 developers from 119 countries. Built next-generation multimodal computer-use agent with autonomous UI control.",
       branches: ["main", "ai-ml"]
     },
     {
@@ -35,7 +35,12 @@ export const experienceData = {
     {
       id: "exp5",
       date: "2023 - 2024",
-      title: "Applied AI Engineer",
+      title: "Software Engineer",
+      branchTitles: {
+        "ai-ml": "AI Engineer",
+        "swe": "Software Engineer",
+        "main": "Software Engineer"
+      },
       company: "UCLA Daily Bruin",
       description: "Optimized React website reducing bundle size 40% and supporting 60k+ concurrent users. Built 'Olivier' RAG chatbot using Pinecone + Redis + OpenAI. Designed Redis caching absorbing 80% of read traffic.",
       branches: ["swe", "ai-ml"]
@@ -52,6 +57,22 @@ export const experienceData = {
       id: "exp7",
       date: "2022 - 2023",
       title: "Graduate Research Advisor",
+      company: "SJSU AI/DL FPGA/DSP Lab",
+      description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
+      branches: ["ai-ml", "main"]
+    },
+    {
+      id: "exp8",
+      date: "2022 - 2023",
+      title: "Visiting Researcher",
+      company: "SJSU AI/DL FPGA/DSP Lab",
+      description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
+      branches: ["ai-ml", "main"]
+    },
+    {
+      id: "exp9",
+      date: "2022 - 2023",
+      title: "Laboratory Intern",
       company: "SJSU AI/DL FPGA/DSP Lab",
       description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
       branches: ["ai-ml", "main"]
