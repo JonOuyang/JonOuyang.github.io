@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 const PublicHome = () => {
+  const [useResearchPhoto, setUseResearchPhoto] = useState(true);
+
+  const handleDoubleClick = () => {
+    setUseResearchPhoto(!useResearchPhoto);
+  };
+
   return (
     <main className="bg-black text-white min-h-screen flex flex-col items-center justify-center px-6 py-16 relative">
       
@@ -49,13 +55,19 @@ const PublicHome = () => {
         <div className="mx-auto md:order-last order-first relative">
           {/* Back Glow */}
           <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
-          
+
           {/* Profile Image - Full Color */}
-          <img
-            src="https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"
-            alt="Jonathan Ouyang"
-            className="relative w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border border-zinc-800 shadow-2xl transition-transform duration-700 ease-out hover:scale-105"
-          />
+          <div
+            className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-zinc-800 shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
+            onDoubleClick={handleDoubleClick}
+            title="Double-click to toggle image"
+          >
+            <img
+              src={useResearchPhoto ? "/assets/images/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+              alt="Jonathan Ouyang"
+              className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
+            />
+          </div>
         </div>
 
       </div>

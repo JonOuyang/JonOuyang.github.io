@@ -15,7 +15,6 @@ import {
     { name: "Work History", path: "/work-history" },
     { name: "Projects", path: "/projects" },
     { name: "Research", path: "/research" },
-    { name: "Contact", path: "/contact" },
   ];
   
   export const experimentalNavItems = [

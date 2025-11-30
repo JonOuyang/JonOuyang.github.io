@@ -8,28 +8,28 @@ const GRAPH_OFFSET = 35; // Moved slightly right to allow for the 'rail'
 const ROW_HEIGHT = 110;  // Generous height for connecting curves
 const NODE_RADIUS = 5;
 
-// --- BRANCH PALETTE ---
+// --- BRANCH PALETTE (Void/Cybernetic Theme) ---
 const BRANCH_CONFIG = {
   main: {
     index: 0,
-    color: "#00aaff", // Bright Blue
+    color: "#818CF8", // Periwinkle - Matches Site Theme
     name: "main",
-    labelBg: "rgba(0, 170, 255, 0.1)",
-    labelBorder: "#00aaff"
+    labelBg: "transparent",
+    labelBorder: "#818CF8"
   },
   "ai-ml": {
     index: 1,
-    color: "#d74cf6", // Neon Pink/Purple
+    color: "#E879F9", // Fuchsia - Complimentary
     name: "ai-ml",
-    labelBg: "rgba(215, 76, 246, 0.1)",
-    labelBorder: "#d74cf6"
+    labelBg: "transparent",
+    labelBorder: "#E879F9"
   },
   swe: {
     index: 2,
-    color: "#3fb950", // Neon Green
+    color: "#22D3EE", // Cyan - High Contrast
     name: "swe",
-    labelBg: "rgba(63, 185, 80, 0.1)",
-    labelBorder: "#3fb950"
+    labelBg: "transparent",
+    labelBorder: "#22D3EE"
   },
 };
 
@@ -41,12 +41,12 @@ const Icons = {
     </svg>
   ),
   Folder: () => (
-    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="#54aeff">
+    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="#D4D4D8" className="file-icon">
       <path d="M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1h6.5a1.75 1.75 0 0 1 1.75 1.75v8a1.75 1.75 0 0 1-1.75 1.75h-13A1.75 1.75 0 0 1 0 12.75v-10c0-.464.184-.909.513-1.237Z"></path>
     </svg>
   ),
   File: () => (
-    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor">
+    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="#D4D4D8" className="file-icon">
       <path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path>
     </svg>
   ),
@@ -258,18 +258,23 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
   return (
     <div className="gh-wrapper">
       <style>{`
-        .gh-wrapper { background-color: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; width: 100%; min-height: 100vh; }
+        /* Agent Gradient Variable */
+        :root {
+          --agent-gradient: linear-gradient(to right, #818CF8, #A78BFA);
+        }
+
+        .gh-wrapper { background-color: #000000; color: #A1A1AA; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; width: 100%; min-height: 100vh; }
         .gh-wrapper * { box-sizing: border-box; }
-        
-        .gh-link { color: #e6edf3; text-decoration: none; font-weight: 600; }
-        .gh-link:hover { text-decoration: underline; color: #58a6ff; }
+
+        .gh-link { color: #FFFFFF; text-decoration: none; font-weight: 600; }
+        .gh-link:hover { text-decoration: underline; }
 
         /* Tabs */
-        .gh-tabs { display: flex; gap: 8px; padding: 16px 32px; border-bottom: 1px solid #30363d; background: #010409; }
-        .gh-tab { padding: 8px 16px; font-size: 14px; color: #7d8590; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
-        .gh-tab.active { border-bottom-color: #f78166; font-weight: 600; color: #e6edf3; }
-        .gh-tab:hover { color: #e6edf3; }
-        
+        .gh-tabs { display: flex; gap: 8px; padding: 16px 32px; border-bottom: 1px solid #27272A; background: #000000; }
+        .gh-tab { padding: 8px 16px; font-size: 14px; color: #A1A1AA; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .gh-tab.active { border-bottom-color: #A78BFA; font-weight: 600; color: #FFFFFF; }
+        .gh-tab:hover { color: #FFFFFF; background: var(--agent-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
         /* Layout */
         .gh-container { display: flex; max-width: 1280px; margin: 0 auto; padding: 24px 32px; gap: 24px; align-items: flex-start; }
         .gh-main { flex: 1; min-width: 0; }
@@ -278,24 +283,26 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
         /* Controls */
         .gh-controls { display: flex; justify-content: space-between; margin-bottom: 16px; }
-        .gh-branch-btn { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
-        .gh-branch-btn:hover { background: #30363d; color: #e6edf3; }
-        .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #161b22; border: 1px solid #30363d; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        .gh-branch-btn { background: transparent; border: 1px solid #27272A; color: #A1A1AA; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
+        .gh-branch-btn:hover { background: rgba(129, 140, 248, 0.1); border-color: #818CF8; color: #FFFFFF; }
+        .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #050505; border: 1px solid #27272A; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
 
         /* File Box */
-        .gh-file-box { border: 1px solid #30363d; border-radius: 6px; background: #0d1117; margin-bottom: 24px; }
-        .gh-commit-header { background: #161b22; padding: 12px 16px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #7d8590; border-top-left-radius: 6px; border-top-right-radius: 6px; }
-        .gh-file-row { display: flex; align-items: center; padding: 8px 16px; border-top: 1px solid #21262d; font-size: 14px; color: #e6edf3; cursor: pointer; }
-        .gh-file-row:hover { background-color: #161b22; text-decoration: none; }
+        .gh-file-box { border: 1px solid #27272A; border-radius: 6px; background: transparent; margin-bottom: 24px; }
+        .gh-commit-header { background: #050505; padding: 12px 16px; border-bottom: 1px solid #27272A; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #A1A1AA; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+        .gh-file-row { display: flex; align-items: center; padding: 8px 16px; border-top: 1px solid #27272A; font-size: 14px; color: #FFFFFF; cursor: pointer; }
+        .gh-file-row:hover { background-color: rgba(129, 140, 248, 0.05); text-decoration: none; }
+        .gh-file-row:hover .file-icon { fill: #A78BFA; transition: fill 0.2s; }
         .gh-file-row:first-of-type { border-top: none; }
+        .file-icon { transition: fill 0.2s; }
 
         /* GRAPH CONTAINER */
-        .gh-readme { border: 1px solid #30363d; border-radius: 6px; margin-top: 16px; background: #0d1117; overflow: hidden; display: flex; flex-direction: column; }
-        .gh-readme-head { padding: 10px 16px; border-bottom: 1px solid #30363d; background: #161b22; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 20; }
+        .gh-readme { border: 1px solid #27272A; border-radius: 6px; margin-top: 16px; background: transparent; overflow: hidden; display: flex; flex-direction: column; }
+        .gh-readme-head { padding: 10px 16px; border-bottom: 1px solid #27272A; background: #050505; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 20; color: #FFFFFF; }
 
         .graph-wrapper { display: flex; position: relative; }
-        .graph-svg-container { flex: 0 0 ${width}px; background: #0d1117; position: relative; }
-        .graph-content-list { flex: 1; min-width: 0; background: #0d1117; position: relative; }
+        .graph-svg-container { flex: 0 0 ${width}px; background: #000000; position: relative; }
+        .graph-content-list { flex: 1; min-width: 0; background: #000000; position: relative; }
 
         /* Commit Rows */
         .exp-row {
@@ -308,22 +315,22 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
             transition: background 0.15s;
             position: relative;
         }
-        .exp-row:hover { background: rgba(56, 139, 253, 0.05); }
-        .exp-row.active { background: rgba(56, 139, 253, 0.1); border-left: 2px solid #58a6ff; padding-left: 18px; }
+        .exp-row:hover { background: rgba(129, 140, 248, 0.05); }
+        .exp-row.active { background: rgba(167, 139, 250, 0.1); border-left: 2px solid #A78BFA; padding-left: 18px; }
 
-        .exp-title { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .exp-meta { font-size: 12px; color: #7d8590; display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, monospace; }
+        .exp-title { font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .exp-meta { font-size: 12px; color: #A1A1AA; display: flex; align-items: center; gap: 8px; font-family: ui-monospace, SFMono-Regular, monospace; }
 
-        /* Tag Badges */
+        /* Tag Badges - Transparent Pills with Colored Borders */
         .tag-badge {
-            font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 12px;
-            border: 1px solid transparent; display: inline-block; line-height: 1.2;
+            font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+            border: 1px solid; display: inline-block; line-height: 1.2; background: transparent;
         }
 
         /* Details Pane */
-        .exp-details { padding: 20px 24px; background: #161b22; border-bottom: 1px solid #30363d; animation: fadeIn 0.2s ease-out; }
-        .markdown-bullet { display: flex; gap: 10px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; color: #e6edf3; }
-        .bullet-point { color: #58a6ff; font-weight: bold; user-select: none; }
+        .exp-details { padding: 20px 24px; background: #050505; border-bottom: 1px solid #27272A; animation: fadeIn 0.2s ease-out; }
+        .markdown-bullet { display: flex; gap: 10px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; color: #A1A1AA; }
+        .bullet-point { color: #818CF8; font-weight: bold; user-select: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
@@ -345,28 +352,28 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
             <div style={{position:'relative'}} ref={dropdownRef}>
                 <button className="gh-branch-btn" onClick={() => setBranchDropdownOpen(!isBranchDropdownOpen)}>
                     <Icons.Branch />
-                    <span style={{color: '#e6edf3'}}>
+                    <span style={{color: '#FFFFFF'}}>
                         {activeBranch === "all" ? "All Branches" : BRANCH_CONFIG[activeBranch]?.name}
                     </span>
                     <span style={{fontSize:'10px', marginLeft: 4}}>▼</span>
                 </button>
                 {isBranchDropdownOpen && (
                     <div className="gh-dropdown">
-                        <div style={{padding:'8px 12px', fontWeight:'600', borderBottom:'1px solid #30363d', fontSize: '12px', color: '#e6edf3'}}>Switch branches</div>
+                        <div style={{padding:'8px 12px', fontWeight:'600', borderBottom:'1px solid #27272A', fontSize: '12px', color: '#FFFFFF'}}>Switch branches</div>
                         {Object.keys(BRANCH_CONFIG).map(key => (
-                            <div key={key} style={{padding:'8px 16px', borderBottom:'1px solid #21262d', cursor:'pointer', fontSize:'12px', display:'flex', alignItems:'center', gap: 8}} onClick={() => selectBranch(key)}>
+                            <div key={key} style={{padding:'8px 16px', borderBottom:'1px solid #27272A', cursor:'pointer', fontSize:'12px', display:'flex', alignItems:'center', gap: 8}} onClick={() => selectBranch(key)}>
                                 <div style={{width:8, height:8, borderRadius:'50%', background: BRANCH_CONFIG[key].color}}></div>
-                                <span style={{color: '#e6edf3'}}>{key === activeBranch ? <strong>{BRANCH_CONFIG[key].name}</strong> : BRANCH_CONFIG[key].name}</span>
+                                <span style={{color: '#FFFFFF'}}>{key === activeBranch ? <strong>{BRANCH_CONFIG[key].name}</strong> : BRANCH_CONFIG[key].name}</span>
                             </div>
                         ))}
-                        <div style={{padding:'8px 16px', cursor:'pointer', fontSize:'12px', color: '#7d8590'}} onClick={() => selectBranch("all")}>Show All</div>
+                        <div style={{padding:'8px 16px', cursor:'pointer', fontSize:'12px', color: '#A1A1AA'}} onClick={() => selectBranch("all")}>Show All</div>
                     </div>
                 )}
             </div>
             <div style={{display:'flex', gap:8, marginLeft:'auto'}}>
                 <button className="gh-branch-btn">Go to file</button>
                 <button className="gh-branch-btn">Add file <span style={{fontSize:'10px', marginLeft:4}}>▼</span></button>
-                <button className="gh-branch-btn" style={{background:'#238636', borderColor:'#238636'}}>
+                <button className="gh-branch-btn" style={{background: 'linear-gradient(to right, #818CF8, #A78BFA)', borderColor: 'transparent', color: '#FFFFFF'}}>
                     <Icons.Code /> Code <span style={{fontSize:'10px', marginLeft:4}}>▼</span>
                 </button>
             </div>
@@ -375,19 +382,19 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
           {/* FILE LIST (Mini) */}
           <div className="gh-file-box">
              <div className="gh-commit-header">
-                <div style={{width:20, height:20, borderRadius:'50%', background:'#30363d'}}></div>
-                <span style={{fontWeight:600, color:'#e6edf3'}}>JonOuyang</span>
-                <span style={{marginLeft: 8, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:'60%'}}>
+                <div style={{width:20, height:20, borderRadius:'50%', background:'#27272A'}}></div>
+                <span style={{fontWeight:600, color:'#FFFFFF'}}>JonOuyang</span>
+                <span style={{marginLeft: 8, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:'60%', color:'#A1A1AA'}}>
                     refactor: optimize graph topology for merge commits
                 </span>
-                <span style={{marginLeft:'auto', fontFamily:'monospace', fontSize:12, color: '#7d8590'}}>{getHash('latest')}</span>
+                <span style={{marginLeft:'auto', fontFamily:'monospace', fontSize:12, color: '#818CF8'}}>{getHash('latest')}</span>
              </div>
              {files.map((f, i) => (
                 <div key={i} className="gh-file-row" onClick={() => f.link && navigate(f.link)}>
-                    <div style={{width:24, color: f.type === 'folder' ? '#54aeff' : '#7d8590'}}>{f.type === 'folder' ? <Icons.Folder /> : <Icons.File />}</div>
+                    <div style={{width:24}}>{f.type === 'folder' ? <Icons.Folder /> : <Icons.File />}</div>
                     <div style={{flex: '0 0 200px', overflow:'hidden'}}><span className="gh-link">{f.name}</span></div>
-                    <div style={{flex: '0 0 350px', color:'#7d8590', fontSize:13, marginLeft: '20%'}}>{f.msg}</div>
-                    <div style={{fontSize: 12, color: '#7d8590', marginLeft: 'auto'}}>{f.time}</div>
+                    <div style={{flex: '0 0 350px', color:'#A1A1AA', fontSize:13, marginLeft: '20%'}}>{f.msg}</div>
+                    <div style={{fontSize: 12, color: '#A1A1AA', marginLeft: 'auto'}}>{f.time}</div>
                 </div>
              ))}
           </div>
@@ -395,13 +402,28 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
           {/* --- THE GRAPH --- */}
           <div className="gh-readme">
              <div className="gh-readme-head">
-                <Icons.List /> README.md <span style={{color:'#7d8590', fontWeight:400, marginLeft:6}}> (Visualized)</span>
+                <Icons.List /> README.md <span style={{color:'#A1A1AA', fontWeight:400, marginLeft:6}}> (Visualized)</span>
              </div>
              
              <div className="graph-wrapper">
                 {/* SVG CANVAS */}
                 <div className="graph-svg-container">
                     <svg width={width} height={height} style={{display:'block'}}>
+                        {/* SVG Filters for Glowing Effect */}
+                        <defs>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                            <linearGradient id="laserGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style={{stopColor: '#818CF8', stopOpacity: 1}} />
+                                <stop offset="100%" style={{stopColor: '#A78BFA', stopOpacity: 1}} />
+                            </linearGradient>
+                        </defs>
+
                         {/* 1. EDGES (Lines) - Draw first so dots sit on top */}
                         {/* Sort edges: rightmost branches first (lowest layer), main branch last (top layer) */}
                         {[...edges]
@@ -414,7 +436,6 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                             })
                             .map((edge, i) => {
                                 const d = getPath(edge.from.x, edge.from.y, edge.to.x, edge.to.y);
-                                // Force main branch edges to be blue
                                 const edgeColor = edge.branch === 'main' ? BRANCH_CONFIG.main.color : edge.color;
                                 return (
                                     <path
@@ -439,7 +460,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                     y1={node.y}
                                     x2={width}
                                     y2={node.y}
-                                    stroke="rgba(48, 54, 61, 0.3)"
+                                    stroke="rgba(39, 39, 42, 0.3)"
                                     strokeWidth="1"
                                     opacity={opacity}
                                     style={{transition: 'opacity 0.3s'}}
@@ -471,7 +492,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                     {isActive && <circle cx={node.x} cy={node.y} r={9} fill={displayColor} fillOpacity={0.3} />}
 
                                     {/* The Dot */}
-                                    <circle cx={node.x} cy={node.y} r={NODE_RADIUS} fill="#0d1117" stroke={displayColor} strokeWidth="2.5" />
+                                    <circle cx={node.x} cy={node.y} r={NODE_RADIUS} fill="#000000" stroke={displayColor} strokeWidth="2.5" />
 
                                     {/* Inner dot for Merges (GitKraken style) */}
                                     {isMerge && <circle cx={node.x} cy={node.y} r={2} fill={displayColor} />}
@@ -505,8 +526,8 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                     ))}
                                 </div>
                                 <div className="exp-meta">
-                                    <span style={{color: node.color}}>{node.hash}</span>
-                                    <span style={{fontWeight:600, color:'#e6edf3'}}>{node.company}</span>
+                                    <span style={{color: '#818CF8', fontFamily: 'ui-monospace, SFMono-Regular, monospace'}}>{node.hash}</span>
+                                    <span style={{fontWeight:600, color:'#FFFFFF'}}>{node.company}</span>
                                     <span>•</span>
                                     <span>{node.date}</span>
                                 </div>
@@ -514,18 +535,18 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
                             {expandedNodeId === node.id && (
                                 <div className="exp-details">
-                                    <div className="markdown-bullet" style={{marginBottom:12, fontStyle:'italic', color:'#7d8590'}}>
+                                    <div className="markdown-bullet" style={{marginBottom:12, fontStyle:'italic', color:'#A1A1AA'}}>
                                         {/* Dynamic commit message style header */}
                                         Merge {node.branches.join(' & ')} history at {node.company}
                                     </div>
                                     <div className="markdown-body">
                                         {node.bullets ? node.bullets.map((bullet, i) => (
                                             <div key={i} className="markdown-bullet">
-                                                <span className="bullet-point" style={{color: node.color}}>+</span>
+                                                <span className="bullet-point">+</span>
                                                 <span>{bullet}</span>
                                             </div>
                                         )) : (
-                                            <div style={{fontStyle:'italic', color:'#7d8590'}}>No detailed description provided.</div>
+                                            <div style={{fontStyle:'italic', color:'#A1A1AA'}}>No detailed description provided.</div>
                                         )}
                                     </div>
                                 </div>
@@ -539,45 +560,45 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
         {/* SIDEBAR */}
         <div className="gh-sidebar">
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-              <h3 style={{fontSize:16, fontWeight:600, color:'#e6edf3', margin:'0 0 12px 0'}}>About</h3>
-              <p style={{fontSize:14, color:'#e6edf3', lineHeight:'1.5', margin:'0 0 16px 0'}}>
+           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+              <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
+              <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
                   Visualizing my professional timeline as a git repository.
               </p>
               <div>
-                  <span style={{display:'inline-block', background:'rgba(56,139,253,0.15)', color:'#4493f8', padding:'2px 10px', borderRadius:12, fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
-                  <span style={{display:'inline-block', background:'rgba(56,139,253,0.15)', color:'#4493f8', padding:'2px 10px', borderRadius:12, fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
-                  <span style={{display:'inline-block', background:'rgba(56,139,253,0.15)', color:'#4493f8', padding:'2px 10px', borderRadius:12, fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
+                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
+                  <span style={{display:'inline-block', background:'transparent', color:'#A78BFA', padding:'2px 10px', borderRadius:999, border:'1px solid #A78BFA', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
+                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
               </div>
               <div style={{marginTop: 16}}>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#7d8590'}}><Icons.Book /> Readme</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#7d8590'}}><Icons.Star /> 12 stars</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#7d8590'}}><Icons.Eye /> 2 watching</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#7d8590'}}><Icons.Fork /> 0 forks</div>
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Book /> Readme</div>
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Star /> 12 stars</div>
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Eye /> 2 watching</div>
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Fork /> 0 forks</div>
               </div>
            </div>
 
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#e6edf3', margin:'0 0 12px 0'}}>Releases</h3>
-               <p style={{fontSize:12, color:'#7d8590', margin:0}}>No releases published</p>
+           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Releases</h3>
+               <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No releases published</p>
            </div>
 
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#e6edf3', margin:'0 0 12px 0'}}>Packages</h3>
-               <p style={{fontSize:12, color:'#7d8590', margin:0}}>No packages published</p>
+           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Packages</h3>
+               <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No packages published</p>
            </div>
 
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#e6edf3', margin:'0 0 12px 0', display:'flex', alignItems:'center'}}>
-                   Contributors <span style={{backgroundColor:'#21262d', color:'#e6edf3', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #30363d', marginLeft:8}}>{contributors.length}</span>
+           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0', display:'flex', alignItems:'center'}}>
+                   Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #27272A', marginLeft:8}}>{contributors.length}</span>
                </h3>
                <ul style={{listStyle:'none', padding:0, margin:0}}>
                   {contributors.map((c, i) => (
                       <li key={i} style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}>
-                          <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
+                          <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #27272A', objectFit:'cover'}} />
                           <div>
-                              <a href={c.link} style={{color:'#e6edf3', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
-                              <div style={{fontSize:12, color:'#7d8590'}}>{c.description}</div>
+                              <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
+                              <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
                           </div>
                       </li>
                   ))}
@@ -585,7 +606,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
            </div>
 
            <div style={{border:'none'}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#e6edf3', margin:'0 0 12px 0'}}>Languages</h3>
+               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Languages</h3>
                <div style={{display:'flex', height:8, borderRadius:6, overflow:'hidden', marginBottom:12}}>
                     <div style={{width: '70%', backgroundColor: '#3572A5'}}></div>
                     <div style={{width: '25%', backgroundColor: '#f1e05a'}}></div>
@@ -593,13 +614,13 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                </div>
                <ul style={{listStyle:'none', padding:0, margin:0}}>
                     <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#3572A5'}}></span> <span style={{color:'#e6edf3', fontWeight:600}}>Python</span> <span style={{color:'#7d8590', fontWeight:400}}>70%</span>
+                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#3572A5'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Python</span> <span style={{color:'#A1A1AA', fontWeight:400}}>70%</span>
                     </li>
                     <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#f1e05a'}}></span> <span style={{color:'#e6edf3', fontWeight:600}}>JavaScript</span> <span style={{color:'#7d8590', fontWeight:400}}>25%</span>
+                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#f1e05a'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>JavaScript</span> <span style={{color:'#A1A1AA', fontWeight:400}}>25%</span>
                     </li>
                     <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#89e051'}}></span> <span style={{color:'#e6edf3', fontWeight:600}}>Shell</span> <span style={{color:'#7d8590', fontWeight:400}}>5%</span>
+                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#89e051'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Shell</span> <span style={{color:'#A1A1AA', fontWeight:400}}>5%</span>
                     </li>
                </ul>
            </div>

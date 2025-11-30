@@ -100,14 +100,6 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/contact" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <GlowingHeader>Contacts</GlowingHeader>
-            </Suspense>
-         </main>
-        } />
 
         {/* === HIDDEN/EXPERIMENTAL ROUTES === */}
         <Route

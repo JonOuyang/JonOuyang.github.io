@@ -17,9 +17,17 @@ export const extracurricularData = {
       branches: ["main", "leadership"]
     },
     {
+      id: "extra2",
+      date: "Oct 2024 - Present",
+      title: "Board Operations Intern",
+      company: "ACM at UCLA",
+      description: "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
+      branches: ["main", "leadership"]
+    },
+    {
       id: "extra3",
       date: "Oct 2024 - Present",
-      title: "Technical Recruiter & Developer",
+      title: "Technical Recruiter",
       company: "VEST",
       description: "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
       branches: ["main", "tech"]
@@ -31,7 +39,38 @@ export const extracurricularData = {
       company: "Daily Bruin",
       description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
       branches: ["tech", "main"]
-    }
+    },
+    {
+      id: "extra4",
+      date: "Sep 2024 - Present",
+      title: "Software Engineer",
+      company: "Daily Bruin",
+      description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
+      branches: ["tech", "main"]
+    },
+    {
+      id: "extra4",
+      date: "Sep 2024 - Present",
+      title: "Software Engineer",
+      company: "Daily Bruin",
+      description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
+      branches: ["tech", "main"]
+    },{
+      id: "extra4",
+      date: "Sep 2024 - Present",
+      title: "Software Engineer",
+      company: "Daily Bruin",
+      description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
+      branches: ["tech", "main"]
+    },
+    {
+      id: "extra4",
+      date: "Sep 2024 - Present",
+      title: "Software Engineer",
+      company: "Daily Bruin",
+      description: "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
+      branches: ["tech", "main"]
+    },
   ],
   branches: {
     main: { name: "Main", color: "#ff7b00" },
