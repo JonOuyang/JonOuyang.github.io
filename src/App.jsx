@@ -3,7 +3,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Lazy load components that aren't immediately visible
 const Highlights = lazy(() => import('./components/Highlights'));
 const Features = lazy(() => import('./components/Features'));
 const HowItWorks = lazy(() => import('./components/HowItWorks'));
@@ -16,7 +15,6 @@ const ProjectsPage = lazy(() => import('./projects-components/ProjectsPage'));
 const PersonalSite = lazy(() => import('./components/PersonalSite.tsx'));
 const PublicHome = lazy(() => import('./components/PublicHome'));
 
-// Hidden/Experimental components
 const Opener = lazy(() => import('./hidden/home/Opener/Opener'));
 const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage'));
@@ -25,7 +23,6 @@ import { experienceData } from './experience-components/experiences';
 import { extracurricularData } from './experience-components/extracurriculars';
 import { contributorsData } from './experience-components/contributors';
 
-// Loading fallback component
 const Loading = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px', color: 'white' }}>
     Loading...

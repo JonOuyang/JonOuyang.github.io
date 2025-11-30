@@ -1,22 +1,16 @@
-// src/experience-components/workHistoryData.js
 // Centralized data structure for all work-history subpages
 
-// Import JS data for code display
 import { contributorsData } from "./contributors.js";
 import { experienceData } from "./experiences.js";
 import { extracurricularData } from "./extracurriculars.js";
-
-// Import PDF files
 import coverLetterPdf from "./files/Ouyang_Jonathan_Cover_Letter.pdf";
 import resumePdf from "./files/Jonathan Ouyang Resume.pdf";
 import resumeAltPdf from "./files/Jonathan_Ouyang_resume.pdf";
 
-// Generate raw code strings from data
 const contributorsRaw = `export const contributorsData = ${JSON.stringify(contributorsData, null, 2)};`;
 const experiencesRaw = `export const experienceData = ${JSON.stringify(experienceData, null, 2)};`;
 const extracurricularsRaw = `export const extracurricularData = ${JSON.stringify(extracurricularData, null, 2)};`;
 
-// README content
 const mainReadme = `# Work History
 
 This repository contains my professional timeline visualized as a git graph.

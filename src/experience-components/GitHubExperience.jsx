@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllFolders, getRootFiles } from "./workHistoryData"; 
+import { getAllFolders, getRootFiles } from "./workHistoryData";
 
 // --- CONFIGURATION ---
 const LANE_WIDTH = 50; 
@@ -96,7 +96,6 @@ const getHash = (str) => {
 
 // --- GRAPH ALGORITHM ---
 const buildGraph = (experiences) => {
-  // 1. Setup Nodes
   const nodes = experiences.map((exp, idx) => {
     // Determine visual column: Prefer 'main', then 'ai-ml', then 'swe'
     let primaryBranch = 'swe';
@@ -118,23 +117,16 @@ const buildGraph = (experiences) => {
   });
 
   const edges = [];
-  
-  // 2. Generate Edges (Lines connecting nodes)
-  // We iterate Top-Down (Newest to Oldest).
+
+  // Generate Edges: Iterate Top-Down (Newest to Oldest)
   // For each node, we look DOWN for the next node that shares a branch.
-  
+
   // Track the last seen node index for each branch
   const lastSeenIndex = { main: null, 'ai-ml': null, swe: null };
 
-  // Traverse Newest -> Oldest to find connections
   nodes.forEach((node) => {
       node.branches.forEach(branchName => {
-          // If we have a previous node (visually above) in this branch, connect it?
-          // Actually, in Git Graph logic (Newest at Top), the parent is BELOW.
-          // So Node(0) connects to Node(1).
-          // We need to look "back" or maintain state.
-          
-          // Let's do it simply:
+          // In Git Graph logic (Newest at Top), the parent is BELOW.
           // Find the *next* node in the array (index > current) that ALSO has this branch.
           const parentNode = nodes.slice(node.id + 1).find(n => n.branches.includes(branchName));
           
@@ -159,20 +151,18 @@ const buildGraph = (experiences) => {
 const getPath = (fromX, fromY, toX, toY) => {
     const r = 20; // Radius of curve
     const verticalGap = toY - fromY;
-    
-    // 1. Same Column (Straight Line)
+
+    // Same Column (Straight Line)
     if (fromX === toX) {
         return `M ${fromX} ${fromY} L ${toX} ${toY}`;
     }
 
-    // 2. Branching/Merging (Curved)
-    // We want the line to start vertical, curve, go horizontal, curve, end vertical.
+    // Branching/Merging (Curved)
+    // Line starts vertical, curves, goes horizontal, curves, ends vertical
     // Direction multiplier
-    const dir = toX > fromX ? 1 : -1; 
-    
-    // Visual tweak: "Fork" logic
-    // If we are going Top -> Bottom, and changing columns, it usually looks best
-    // to drop down a bit, then turn.
+    const dir = toX > fromX ? 1 : -1;
+
+    // Visual tweak: "Fork" logic - drop down before turning for better aesthetics
     const midY = fromY + (verticalGap * 0.5); 
 
     return `M ${fromX} ${fromY} 
@@ -188,10 +178,9 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
   const [activeTab, setActiveTab] = useState("work");
   const [activeBranch, setActiveBranch] = useState("all"); 
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
-  const [expandedNodeId, setExpandedNodeId] = useState(null); 
+  const [expandedNodeId, setExpandedNodeId] = useState(null);
   const dropdownRef = useRef(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -424,15 +413,14 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                             </linearGradient>
                         </defs>
 
-                        {/* 1. EDGES (Lines) - Draw first so dots sit on top */}
-                        {/* Sort edges: rightmost branches first (lowest layer), main branch last (top layer) */}
+                        {/* EDGES (Lines) - Draw first so dots sit on top */}
+                        {/* Sort: rightmost branches first (lowest layer), main branch last (top layer) */}
                         {[...edges]
                             .sort((a, b) => {
-                                // Higher index = drawn first = lower layer
-                                // Lower index = drawn last = top layer
+                                // Higher index = drawn first = lower layer; Lower index = drawn last = top layer
                                 const indexA = BRANCH_CONFIG[a.branch].index;
                                 const indexB = BRANCH_CONFIG[b.branch].index;
-                                return indexB - indexA; // Descending order: swe(2), ai-ml(1), main(0)
+                                return indexB - indexA;
                             })
                             .map((edge, i) => {
                                 const d = getPath(edge.from.x, edge.from.y, edge.to.x, edge.to.y);
@@ -450,7 +438,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                 );
                             })}
 
-                        {/* 1.5. HORIZONTAL CONNECTOR LINES */}
+                        {/* HORIZONTAL CONNECTOR LINES */}
                         {nodes.map((node) => {
                             const opacity = getOpacity(node.branches);
                             return (
@@ -468,14 +456,13 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                             );
                         })}
 
-                        {/* 2. NODES (Dots) */}
+                        {/* NODES (Dots) */}
                         {nodes.map((node) => {
                             const opacity = getOpacity(node.branches);
                             const isActive = expandedNodeId === node.id;
                             const isMerge = node.branches.length > 1;
 
-                            // Use the active branch color if a specific branch is selected (except 'main' and 'all')
-                            // For 'main' and 'all', show each node's original primary color
+                            // Use active branch color if specific branch selected (except 'main' and 'all')
                             const displayColor = activeBranch !== 'all' && activeBranch !== 'main' && node.branches.includes(activeBranch)
                                 ? BRANCH_CONFIG[activeBranch].color
                                 : node.color;
@@ -485,16 +472,10 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                    style={{opacity, transition: 'all 0.3s', cursor: 'pointer'}}
                                    onClick={() => setExpandedNodeId(expandedNodeId === node.id ? null : node.id)}
                                 >
-                                    {/* Interaction Target (Invisible larger circle) */}
                                     <circle cx={node.x} cy={node.y} r={15} fill="transparent" />
-
-                                    {/* Active Glow */}
                                     {isActive && <circle cx={node.x} cy={node.y} r={9} fill={displayColor} fillOpacity={0.3} />}
-
-                                    {/* The Dot */}
                                     <circle cx={node.x} cy={node.y} r={NODE_RADIUS} fill="#000000" stroke={displayColor} strokeWidth="2.5" />
 
-                                    {/* Inner dot for Merges (GitKraken style) */}
                                     {isMerge && <circle cx={node.x} cy={node.y} r={2} fill={displayColor} />}
                                 </g>
                             );
@@ -536,7 +517,6 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                             {expandedNodeId === node.id && (
                                 <div className="exp-details">
                                     <div className="markdown-bullet" style={{marginBottom:12, fontStyle:'italic', color:'#A1A1AA'}}>
-                                        {/* Dynamic commit message style header */}
                                         Merge {node.branches.join(' & ')} history at {node.company}
                                     </div>
                                     <div className="markdown-body">

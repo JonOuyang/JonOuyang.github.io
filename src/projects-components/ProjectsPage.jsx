@@ -1,10 +1,7 @@
-// src/projects-components/ProjectsPage.jsx
 // Linear.app Dark Mode Aesthetic - "Magical Software" vibe
 
 import React, { useState } from 'react';
 import { Play } from 'lucide-react';
-
-// Project data for the grid
 const projects = [
   {
     id: 1,
@@ -50,10 +47,7 @@ const projects = [
   },
 ];
 
-// Glassmorphism border style
 const glassBorder = "border border-white/[0.15]";
-
-// Project Card Component
 const ProjectCard = ({ project }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -72,7 +66,6 @@ const ProjectCard = ({ project }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Gradient border effect on hover */}
       <div
         className={`
           absolute inset-0 rounded-xl transition-opacity duration-500
@@ -87,7 +80,6 @@ const ProjectCard = ({ project }) => {
         }}
       />
 
-      {/* Image */}
       <div className="relative h-48 overflow-hidden">
         <img
           src={project.image}
@@ -97,12 +89,10 @@ const ProjectCard = ({ project }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-transparent to-transparent" />
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <h3 className="text-white font-semibold text-lg mb-2">{project.title}</h3>
         <p className="text-gray-400 text-sm mb-4">{project.description}</p>
 
-        {/* Tech Stack Pills */}
         <div className="flex flex-wrap gap-2">
           {project.tech.map((tech, i) => (
             <span
@@ -122,7 +112,6 @@ const ProjectsPage = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
 
-      {/* Background Glow Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute top-[-20%] left-[20%] w-[600px] h-[600px] rounded-full opacity-30"
@@ -138,7 +127,6 @@ const ProjectsPage = () => {
         />
       </div>
 
-      {/* Content Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
 
         {/* ============ SECTION 1: HERO (The Agent) ============ */}
@@ -158,7 +146,6 @@ const ProjectsPage = () => {
                 transformStyle: 'preserve-3d'
               }}
             >
-              {/* Placeholder for Agent Demo Video */}
               <div className="aspect-video bg-gradient-to-br from-[#0a0a0a] to-[#1a1a2e] flex items-center justify-center">
                 <div className="text-center">
                   <div className="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-white/20 flex items-center justify-center">
@@ -168,7 +155,6 @@ const ProjectsPage = () => {
                 </div>
               </div>
 
-              {/* Subtle inner glow */}
               <div className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
                   boxShadow: 'inset 0 0 60px rgba(99, 102, 241, 0.1)'
@@ -193,7 +179,6 @@ const ProjectsPage = () => {
         {/* ============ SECTION 2: SPOTLIGHT (Google Documentary) ============ */}
         <section className="mb-32">
           <div className={`relative rounded-2xl overflow-hidden ${glassBorder} group cursor-pointer`}>
-            {/* Thumbnail */}
             <div className="relative aspect-[21/9] overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop"
@@ -201,10 +186,8 @@ const ProjectsPage = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
-              {/* Dark gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-              {/* Featured Badge - Top Right */}
               <div className="absolute top-6 right-6">
                 <div
                   className="px-4 py-2 rounded-full text-sm font-medium text-white backdrop-blur-md"
@@ -218,7 +201,6 @@ const ProjectsPage = () => {
                 </div>
               </div>
 
-              {/* Play Button - Center */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div
                   className="w-24 h-24 rounded-full border-2 border-white/30 flex items-center justify-center
@@ -229,7 +211,6 @@ const ProjectsPage = () => {
                 </div>
               </div>
 
-              {/* Title Overlay - Bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                   The Story Behind JAYU
@@ -249,7 +230,6 @@ const ProjectsPage = () => {
             <p className="text-gray-400">A collection of software engineering experiments</p>
           </div>
 
-          {/* Masonry-style 3-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} />

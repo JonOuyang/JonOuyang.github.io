@@ -1,6 +1,3 @@
-// src/experience-components/FileViewer.jsx
-// Reusable component for displaying different file types
-
 import React, { useState } from "react";
 
 // Syntax highlighting for code
@@ -14,31 +11,21 @@ const highlightJS = (code) => {
     .replace(/\b(\d+)\b/g, '<span class="fv-number">$1</span>');
 };
 
-// Simple markdown renderer
 const renderMarkdown = (content) => {
   let html = content
-    // Escape HTML
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    // Headers
     .replace(/^### (.*$)/gim, '<h3 class="fv-md-h3">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="fv-md-h2">$1</h2>')
     .replace(/^# (.*$)/gim, '<h1 class="fv-md-h1">$1</h1>')
-    // Bold and italic
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Code blocks
     .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="fv-md-code"><code>$2</code></pre>')
-    // Inline code
     .replace(/`(.+?)`/g, '<code class="fv-md-inline-code">$1</code>')
-    // Lists
     .replace(/^\- (.*$)/gim, '<li>$1</li>')
-    // Links
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="fv-md-link" target="_blank" rel="noopener noreferrer">$1</a>')
-    // Line breaks (but preserve paragraph breaks)
     .replace(/\n\n/g, '</p><p class="fv-md-p">')
     .replace(/\n/g, '<br />');
 
-  // Wrap lists
   html = html.replace(/(<li>.*<\/li>)/s, '<ul class="fv-md-ul">$1</ul>');
 
   return `<p class="fv-md-p">${html}</p>`;
@@ -50,7 +37,6 @@ const Icons = {
   Download: () => <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z"></path><path d="M7.25 7.689V2a.75.75 0 0 1 1.5 0v5.689l1.97-1.969a.749.749 0 1 1 1.06 1.06l-3.25 3.25a.749.749 0 0 1-1.06 0L4.22 6.78a.749.749 0 1 1 1.06-1.06l1.97 1.969Z"></path></svg>,
 };
 
-// Code Viewer Component
 const CodeViewer = ({ file }) => {
   const [copied, setCopied] = useState(false);
   const lines = file.content.split('\n');
@@ -106,7 +92,6 @@ const CodeViewer = ({ file }) => {
   );
 };
 
-// PDF Viewer Component
 const PdfViewer = ({ file }) => {
   const [error, setError] = useState(false);
 
@@ -156,7 +141,6 @@ const PdfViewer = ({ file }) => {
   );
 };
 
-// Image Viewer Component
 const ImageViewer = ({ file }) => {
   const handleDownload = () => {
     const a = document.createElement('a');
@@ -187,7 +171,6 @@ const ImageViewer = ({ file }) => {
   );
 };
 
-// Markdown Viewer Component
 const MarkdownViewer = ({ file }) => {
   const [copied, setCopied] = useState(false);
 
@@ -215,7 +198,6 @@ const MarkdownViewer = ({ file }) => {
   );
 };
 
-// Main FileViewer Component
 const FileViewer = ({ file }) => {
   if (!file) return null;
 

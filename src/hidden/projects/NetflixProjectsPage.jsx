@@ -1,4 +1,3 @@
-// src/hidden/projects/NetflixProjectsPage.jsx
 // Professional Portfolio - Spotlight Bento Grid
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -10,8 +9,6 @@ import {
   ChevronDown,
   ArrowUpRight
 } from 'lucide-react';
-
-// --- Hero Section with Auto-play Video ---
 
 const getYouTubeVideoId = (url) => {
   if (!url) return null;

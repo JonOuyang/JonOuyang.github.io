@@ -5,8 +5,7 @@ import * as THREE from 'three';
 import GlowingHeader from './GlowingHeader';
 import './DisintegratingGallery.css';
 
-// 30 shared anchor points for both planes and particle spawn
-// Arranged in a loose staggered grid for visual depth.
+// 30 shared anchor points for both planes and particle spawn (staggered grid for depth)
 const imagePositions = [
   [-3.8, 2.6, -0.6], [-2.2, 2.8, 0.2], [-0.6, 2.5, -0.4], [1.0, 2.7, 0.15], [2.6, 2.5, -0.55],
   [-3.4, 1.6, 0.4], [-1.8, 1.8, -0.2], [-0.2, 1.6, 0.35], [1.4, 1.7, -0.25], [3.0, 1.6, 0.45],

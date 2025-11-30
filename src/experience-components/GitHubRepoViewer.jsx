@@ -1,6 +1,3 @@
-// src/experience-components/GitHubRepoViewer.jsx
-// Generic folder/file viewer for work-history subpages
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FileViewer from "./FileViewer";
@@ -25,10 +22,7 @@ const GitHubRepoViewer = () => {
 
   const [expandedFolders, setExpandedFolders] = useState({});
 
-  // Check if viewing root files (special case)
   const isRootView = folderPath === "root";
-
-  // Get current folder and file data
   const currentFolder = isRootView ? null : getFolderByPath(folderPath);
   const currentFile = fileName
     ? (isRootView ? getRootFileByName(fileName) : getFileFromFolder(folderPath, fileName))
@@ -36,14 +30,12 @@ const GitHubRepoViewer = () => {
   const allFolders = getAllFolders();
   const rootFiles = getRootFiles();
 
-  // Auto-expand current folder
   useEffect(() => {
     if (folderPath) {
       setExpandedFolders(prev => ({ ...prev, [folderPath]: true }));
     }
   }, [folderPath]);
 
-  // Navigation handlers
   const handleFileClick = (file) => navigate(`/work-history/${folderPath}/${file.name}`);
   const handleBackToFolder = () => navigate(`/work-history/${folderPath}`);
   const handleBackToWorkHistory = () => navigate('/work-history');
@@ -53,8 +45,6 @@ const GitHubRepoViewer = () => {
     setExpandedFolders(prev => ({ ...prev, [path]: !prev[path] }));
   };
 
-  // For root view, we need either a valid root file or show error
-  // For folder view, we need a valid folder
   if (!isRootView && !currentFolder) {
     return (
       <div style={{ padding: 40, color: '#e6edf3', textAlign: 'center' }}>
@@ -66,7 +56,6 @@ const GitHubRepoViewer = () => {
     );
   }
 
-  // For root view without file, or root file not found
   if (isRootView && !currentFile) {
     return (
       <div style={{ padding: 40, color: '#e6edf3', textAlign: 'center' }}>
@@ -293,9 +282,7 @@ const GitHubRepoViewer = () => {
             <span>Go to file</span>
           </div>
 
-          {/* File Tree */}
           <div className="gh-file-tree">
-            {/* All Folders */}
             {allFolders.map((folder) => (
               <div key={folder.path}>
                 <div
@@ -312,7 +299,6 @@ const GitHubRepoViewer = () => {
                   <span className="gh-tree-item-name">{folder.name}</span>
                 </div>
 
-                {/* Files inside folder */}
                 {expandedFolders[folder.path] && (
                   <div className="gh-tree-children">
                     {folder.files.map((file, i) => (
@@ -330,7 +316,6 @@ const GitHubRepoViewer = () => {
               </div>
             ))}
 
-            {/* Root Files */}
             {rootFiles.map((file, i) => (
               <div
                 key={i}
@@ -346,7 +331,6 @@ const GitHubRepoViewer = () => {
 
         {/* RIGHT CONTENT PANE */}
         <div className="gh-content-pane">
-          {/* BREADCRUMB */}
           <div className="gh-breadcrumb">
             <span className="gh-breadcrumb-link" onClick={handleBackToWorkHistory}>work-history</span>
             {isRootView ? (
@@ -373,7 +357,6 @@ const GitHubRepoViewer = () => {
             )}
           </div>
 
-          {/* FILE CONTENT or FOLDER VIEW */}
           <div className="gh-file-box">
             <div className="gh-commit-header">
               <div className="gh-avatar"></div>
@@ -387,10 +370,8 @@ const GitHubRepoViewer = () => {
             </div>
 
             {currentFile ? (
-              // FILE VIEW - Use FileViewer component
               <FileViewer file={currentFile} />
             ) : (
-              // FOLDER VIEW - Show file list
               <>
                 <div className="gh-file-row" onClick={handleBackToWorkHistory}>
                   <div className="gh-row-icon" style={{ color: '#2f81f7' }}>..</div>
@@ -410,7 +391,6 @@ const GitHubRepoViewer = () => {
             )}
           </div>
 
-          {/* README (only show in folder view) */}
           {!currentFile && currentFolder?.readme && (
             <div className="gh-readme">
               <div className="gh-readme-head">
