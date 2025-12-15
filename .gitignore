@@ -1,6 +1,7 @@
 /dist
 node_modules/
 hidden-local/
+vite.config.js.timestamp*
 
 # claude
 .claude/*

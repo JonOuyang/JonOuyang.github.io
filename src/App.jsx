@@ -1,21 +1,13 @@
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const Highlights = lazy(() => import('./components/Highlights'));
-const Features = lazy(() => import('./components/Features'));
-const HowItWorks = lazy(() => import('./components/HowItWorks'));
-const Footer = lazy(() => import('./components/Footer'));
-const GlowingHeader = lazy(() => import('./components/GlowingHeader'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const GitHubExperience = lazy(() => import('./experience-components/GitHubExperience'));
 const GitHubRepoViewer = lazy(() => import('./experience-components/GitHubRepoViewer'));
-const ProjectsPage = lazy(() => import('./projects-components/ProjectsPage'));
-const PersonalSite = lazy(() => import('./components/PersonalSite.tsx'));
 const PublicHome = lazy(() => import('./components/PublicHome'));
+const WIP = lazy(() => import('./components/WIP'));
 
-const Opener = lazy(() => import('./hidden/home/Opener/Opener'));
 const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage'));
 
@@ -97,63 +89,15 @@ const App = () => {
             </Suspense>
          </main>
         } />
+        <Route path="/wip" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <WIP />
+            </Suspense>
+         </main>
+        } />
 
-        {/* === HIDDEN/EXPERIMENTAL ROUTES === */}
-        <Route
-          path="/experimental-home"
-          element={
-            <main className="bg-black">
-              <Navbar />
-              <Suspense fallback={<Loading />}>
-                <Hero />
-                <Highlights />
-                <Features />
-                <HowItWorks />
-                <Footer />
-              </Suspense>
-            </main>
-          }
-        />
-        <Route path="/test-home" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <Opener />
-              <Highlights />
-              <Features />
-              <HowItWorks/>
-              <Footer />
-            </Suspense>
-         </main>
-        } />
-        <Route path="/beta" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <Opener />
-              <Highlights />
-              <Features />
-              <HowItWorks/>
-              <Footer />
-            </Suspense>
-         </main>
-        } />
-        <Route path="/beta-2" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <PersonalSite />
-            </Suspense>
-         </main>
-        } />
-        <Route path="/old-projects" element={
-          <main className="bg-black">
-            <Navbar />
-            <Suspense fallback={<Loading />}>
-              <ProjectsPage />
-            </Suspense>
-         </main>
-        } />
       </Routes>
     </BrowserRouter>
   )

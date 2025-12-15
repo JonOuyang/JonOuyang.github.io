@@ -17,7 +17,12 @@
       "Bash(git checkout:*)",
       "WebFetch(domain:github.com)",
       "Bash(/tmp/previous_version.jsx)",
-      "Bash(dir /s /a nul)"
+      "Bash(dir /s /a nul)",
+      "Bash(ls:*)",
+      "Bash(chmod:*)",
+      "Bash(./fix-dev-server.sh)",
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []
