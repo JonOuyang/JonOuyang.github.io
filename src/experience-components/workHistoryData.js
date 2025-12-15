@@ -3,9 +3,9 @@
 import { contributorsData } from "./contributors.js";
 import { experienceData } from "./experiences.js";
 import { extracurricularData } from "./extracurriculars.js";
-const coverLetterPdf = "/resumes/Ouyang_Jonathan_Cover_Letter.pdf";
-const resumePdf = "/resumes/Jonathan Ouyang Resume.pdf";
-const resumeAltPdf = "/resumes/Jonathan_Ouyang_resume.pdf";
+const sweResumePdf = "/resumes/SWE/Jonathan_Ouyang_Resume.pdf";
+const mlResumePdf = "/resumes/ML/Jonathan_Ouyang_Resume.pdf";
+const cvResumePdf = "/resumes/CV/Jonathan_Ouyang_CV.pdf";
 
 const contributorsRaw = `export const contributorsData = ${JSON.stringify(contributorsData, null, 2)};`;
 const experiencesRaw = `export const experienceData = ${JSON.stringify(experienceData, null, 2)};`;
@@ -48,25 +48,28 @@ export const workHistoryData = {
       date: "6 months ago"
     },
     {
-      name: "Ouyang_Jonathan_Cover_Letter.pdf",
+      name: "SWE Resume",
+      actualName: "Jonathan_Ouyang_Resume.pdf",
       type: "pdf",
-      file: coverLetterPdf,
-      msg: "Cover letter template",
-      date: "2 days ago"
-    },
-    {
-      name: "Jonathan Ouyang Resume.pdf",
-      type: "pdf",
-      file: resumePdf,
-      msg: "Full resume",
+      file: sweResumePdf,
+      msg: "Software engineering resume",
       date: "1 week ago"
     },
     {
-      name: "Jonathan_Ouyang_resume.pdf",
+      name: "ML Resume",
+      actualName: "Jonathan_Ouyang_Resume.pdf",
       type: "pdf",
-      file: resumeAltPdf,
-      msg: "Compressed version",
-      date: "3 months ago"
+      file: mlResumePdf,
+      msg: "Machine learning resume",
+      date: "1 week ago"
+    },
+    {
+      name: "CV Resume",
+      actualName: "Jonathan_Ouyang_CV.pdf",
+      type: "pdf",
+      file: cvResumePdf,
+      msg: "Computer vision resume",
+      date: "1 week ago"
     }
   ],
 

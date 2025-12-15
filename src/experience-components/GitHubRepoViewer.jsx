@@ -336,7 +336,7 @@ const GitHubRepoViewer = () => {
             {isRootView ? (
               <>
                 <span className="gh-breadcrumb-separator">/</span>
-                <span className="gh-breadcrumb-current">{currentFile?.name}</span>
+                <span className="gh-breadcrumb-current">{currentFile?.actualName || currentFile?.name}</span>
               </>
             ) : (
               <>
@@ -350,7 +350,7 @@ const GitHubRepoViewer = () => {
                 {currentFile && (
                   <>
                     <span className="gh-breadcrumb-separator">/</span>
-                    <span className="gh-breadcrumb-current">{currentFile.name}</span>
+                    <span className="gh-breadcrumb-current">{currentFile.actualName || currentFile.name}</span>
                   </>
                 )}
               </>
