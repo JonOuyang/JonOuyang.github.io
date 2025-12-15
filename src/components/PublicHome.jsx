@@ -63,7 +63,7 @@ const PublicHome = () => {
             title="Double-click to toggle image"
           >
             <img
-              src={useResearchPhoto ? "/assets/images/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+              src={useResearchPhoto ? "/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
               alt="Jonathan Ouyang"
               className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
             />

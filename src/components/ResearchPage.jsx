@@ -92,7 +92,7 @@ const ResearchPage = () => {
             <div className="flex flex-col items-center lg:items-start">
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4 shadow-md border border-[#27272A]">
                 <img
-                  src="/assets/images/researchheadshot.JPG"
+                  src="/researchheadshot.JPG"
                   alt="Jonathan Ouyang"
                   className="w-full h-full object-cover scale-[3.5] translate-x-[-5px] translate-y-[-20px]"
                 />

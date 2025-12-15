@@ -3,9 +3,9 @@
 import { contributorsData } from "./contributors.js";
 import { experienceData } from "./experiences.js";
 import { extracurricularData } from "./extracurriculars.js";
-import coverLetterPdf from "./files/Ouyang_Jonathan_Cover_Letter.pdf";
-import resumePdf from "./files/Jonathan Ouyang Resume.pdf";
-import resumeAltPdf from "./files/Jonathan_Ouyang_resume.pdf";
+const coverLetterPdf = "/resumes/Ouyang_Jonathan_Cover_Letter.pdf";
+const resumePdf = "/resumes/Jonathan Ouyang Resume.pdf";
+const resumeAltPdf = "/resumes/Jonathan_Ouyang_resume.pdf";
 
 const contributorsRaw = `export const contributorsData = ${JSON.stringify(contributorsData, null, 2)};`;
 const experiencesRaw = `export const experienceData = ${JSON.stringify(experienceData, null, 2)};`;

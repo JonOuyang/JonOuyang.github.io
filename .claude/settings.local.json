@@ -22,7 +22,10 @@
       "Bash(chmod:*)",
       "Bash(./fix-dev-server.sh)",
       "Bash(timeout 10 npm run dev:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(cd:*)",
+      "Bash([ -d assets/videos ])",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []
