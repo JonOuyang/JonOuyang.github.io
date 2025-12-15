@@ -31,6 +31,21 @@ const BRANCH_CONFIG = {
     labelBg: "transparent",
     labelBorder: "#22D3EE"
   },
+  // Added for Extracurriculars
+  leadership: {
+    index: 1,
+    color: "#E879F9", // Reusing Fuchsia
+    name: "leadership",
+    labelBg: "transparent",
+    labelBorder: "#E879F9"
+  },
+  tech: {
+    index: 2,
+    color: "#22D3EE", // Reusing Cyan
+    name: "tech",
+    labelBg: "transparent",
+    labelBorder: "#22D3EE"
+  }
 };
 
 // --- ICONS (Official GitHub Octicons) ---
@@ -97,12 +112,26 @@ const getHash = (str) => {
 // --- GRAPH ALGORITHM ---
 const buildGraph = (experiences) => {
   const nodes = experiences.map((exp, idx) => {
-    // Determine visual column: Prefer 'main', then 'ai-ml', then 'swe'
-    let primaryBranch = 'swe';
-    if (exp.branches.includes('ai-ml')) primaryBranch = 'ai-ml';
-    if (exp.branches.includes('main')) primaryBranch = 'main';
+    // Determine visual column: Prefer 'main', then 'ai-ml'/'leadership', then 'swe'/'tech'
+    let primaryBranch;
+    
+    // Priority: main > ai-ml/leadership (col 1) > swe/tech (col 2)
+    // This priority ensures that if an item is on multiple branches, it snaps to the "trunk-iest" one available.
+    if (exp.branches.includes('main')) {
+        primaryBranch = 'main';
+    } else if (exp.branches.includes('ai-ml')) {
+        primaryBranch = 'ai-ml';
+    } else if (exp.branches.includes('leadership')) {
+        primaryBranch = 'leadership';
+    } else if (exp.branches.includes('swe')) {
+        primaryBranch = 'swe';
+    } else if (exp.branches.includes('tech')) {
+        primaryBranch = 'tech';
+    } else {
+        primaryBranch = exp.branches[0] || 'main'; // Fallback
+    }
 
-    const config = BRANCH_CONFIG[primaryBranch];
+    const config = BRANCH_CONFIG[primaryBranch] || BRANCH_CONFIG['main'];
     
     return {
       ...exp,
@@ -121,9 +150,6 @@ const buildGraph = (experiences) => {
   // Generate Edges: Iterate Top-Down (Newest to Oldest)
   // For each node, we look DOWN for the next node that shares a branch.
 
-  // Track the last seen node index for each branch
-  const lastSeenIndex = { main: null, 'ai-ml': null, swe: null };
-
   nodes.forEach((node) => {
       node.branches.forEach(branchName => {
           // In Git Graph logic (Newest at Top), the parent is BELOW.
@@ -131,12 +157,15 @@ const buildGraph = (experiences) => {
           const parentNode = nodes.slice(node.id + 1).find(n => n.branches.includes(branchName));
           
           if (parentNode) {
-              edges.push({
-                  from: node,      // Child (Newer, Top)
-                  to: parentNode,  // Parent (Older, Bottom)
-                  branch: branchName,
-                  color: BRANCH_CONFIG[branchName].color
-              });
+              const branchConfig = BRANCH_CONFIG[branchName];
+              if (branchConfig) {
+                  edges.push({
+                      from: node,      // Child (Newer, Top)
+                      to: parentNode,  // Parent (Older, Bottom)
+                      branch: branchName,
+                      color: branchConfig.color
+                  });
+              }
           }
       });
   });
@@ -343,17 +372,18 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                 <button className="gh-branch-btn" onClick={() => setBranchDropdownOpen(!isBranchDropdownOpen)}>
                     <Icons.Branch />
                     <span style={{color: '#FFFFFF'}}>
-                        {activeBranch === "all" ? "All Branches" : BRANCH_CONFIG[activeBranch]?.name}
+                        {activeBranch === "all" ? "All Branches" : (BRANCH_CONFIG[activeBranch]?.name || activeBranch)}
                     </span>
                     <span style={{fontSize:'10px', marginLeft: 4}}>▼</span>
                 </button>
                 {isBranchDropdownOpen && (
                     <div className="gh-dropdown">
                         <div style={{padding:'8px 12px', fontWeight:'600', borderBottom:'1px solid #30363d', fontSize: '12px', color: '#FFFFFF'}}>Switch branches</div>
-                        {Object.keys(BRANCH_CONFIG).map(key => (
+                        {/* Dynamic Branch List based on Current Data */}
+                        {Object.keys(currentData.branches).map(key => (
                             <div key={key} style={{padding:'8px 16px', borderBottom:'1px solid #30363d', cursor:'pointer', fontSize:'12px', display:'flex', alignItems:'center', gap: 8}} onClick={() => selectBranch(key)}>
-                                <div style={{width:8, height:8, borderRadius:'50%', background: BRANCH_CONFIG[key].color}}></div>
-                                <span style={{color: '#FFFFFF'}}>{key === activeBranch ? <strong>{BRANCH_CONFIG[key].name}</strong> : BRANCH_CONFIG[key].name}</span>
+                                <div style={{width:8, height:8, borderRadius:'50%', background: BRANCH_CONFIG[key]?.color || '#818CF8'}}></div>
+                                <span style={{color: '#FFFFFF'}}>{key === activeBranch ? <strong>{currentData.branches[key].name}</strong> : currentData.branches[key].name}</span>
                             </div>
                         ))}
                         <div style={{padding:'8px 16px', cursor:'pointer', fontSize:'12px', color: '#A1A1AA'}} onClick={() => selectBranch("all")}>Show All</div>
@@ -499,11 +529,11 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                                     {node.branches.map(b => (
                                         <span key={b} className="tag-badge" 
                                               style={{
-                                                color: BRANCH_CONFIG[b].color, 
-                                                background: BRANCH_CONFIG[b].labelBg,
-                                                border: `1px solid ${BRANCH_CONFIG[b].labelBorder}`
+                                                color: BRANCH_CONFIG[b]?.color || '#fff', 
+                                                background: BRANCH_CONFIG[b]?.labelBg || 'transparent',
+                                                border: `1px solid ${BRANCH_CONFIG[b]?.labelBorder || '#fff'}`
                                               }}>
-                                            {BRANCH_CONFIG[b].name}
+                                            {BRANCH_CONFIG[b]?.name || b}
                                         </span>
                                     ))}
                                 </div>
