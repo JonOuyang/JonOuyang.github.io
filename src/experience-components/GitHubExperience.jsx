@@ -259,7 +259,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
         .gh-link:hover { text-decoration: underline; }
 
         /* Tabs */
-        .gh-tabs { display: flex; gap: 8px; padding: 16px 32px; border-bottom: 1px solid #27272A; background: #000000; }
+        .gh-tabs { display: flex; gap: 8px; padding: 16px 32px; border-bottom: 1px solid #30363d; background: #000000; }
         .gh-tab { padding: 8px 16px; font-size: 14px; color: #A1A1AA; border-bottom: 2px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
         .gh-tab.active { border-bottom-color: #A78BFA; font-weight: 600; color: #FFFFFF; }
         .gh-tab:hover { color: #FFFFFF; background: var(--agent-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -272,22 +272,22 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
         /* Controls */
         .gh-controls { display: flex; justify-content: space-between; margin-bottom: 16px; }
-        .gh-branch-btn { background: transparent; border: 1px solid #27272A; color: #A1A1AA; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
+        .gh-branch-btn { background: transparent; border: 1px solid #30363d; color: #A1A1AA; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
         .gh-branch-btn:hover { background: rgba(129, 140, 248, 0.1); border-color: #818CF8; color: #FFFFFF; }
-        .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #050505; border: 1px solid #27272A; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
+        .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #050505; border: 1px solid #30363d; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
 
         /* File Box */
-        .gh-file-box { border: 1px solid #27272A; border-radius: 6px; background: transparent; margin-bottom: 24px; }
-        .gh-commit-header { background: #050505; padding: 12px 16px; border-bottom: 1px solid #27272A; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #A1A1AA; border-top-left-radius: 6px; border-top-right-radius: 6px; }
-        .gh-file-row { display: flex; align-items: center; padding: 8px 16px; border-top: 1px solid #27272A; font-size: 14px; color: #FFFFFF; cursor: pointer; }
+        .gh-file-box { border: 1px solid #30363d; border-radius: 6px; background: transparent; margin-bottom: 24px; }
+        .gh-commit-header { background: #050505; padding: 12px 16px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #A1A1AA; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+        .gh-file-row { display: flex; align-items: center; padding: 8px 16px; border-top: 1px solid #30363d; font-size: 14px; color: #FFFFFF; cursor: pointer; }
         .gh-file-row:hover { background-color: rgba(129, 140, 248, 0.05); text-decoration: none; }
         .gh-file-row:hover .file-icon { fill: #A78BFA; transition: fill 0.2s; }
         .gh-file-row:first-of-type { border-top: none; }
         .file-icon { transition: fill 0.2s; }
 
         /* GRAPH CONTAINER */
-        .gh-readme { border: 1px solid #27272A; border-radius: 6px; margin-top: 16px; background: transparent; overflow: hidden; display: flex; flex-direction: column; }
-        .gh-readme-head { padding: 10px 16px; border-bottom: 1px solid #27272A; background: #050505; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 20; color: #FFFFFF; }
+        .gh-readme { border: 1px solid #30363d; border-radius: 6px; margin-top: 16px; background: transparent; overflow: hidden; display: flex; flex-direction: column; }
+        .gh-readme-head { padding: 10px 16px; border-bottom: 1px solid #30363d; background: #050505; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 20; color: #FFFFFF; }
 
         .graph-wrapper { display: flex; position: relative; }
         .graph-svg-container { flex: 0 0 ${width}px; background: #000000; position: relative; }
@@ -303,6 +303,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
             cursor: pointer;
             transition: background 0.15s;
             position: relative;
+            border-bottom: 1px solid #30363d;
         }
         .exp-row:hover { background: rgba(129, 140, 248, 0.05); }
         .exp-row.active { background: rgba(167, 139, 250, 0.1); border-left: 2px solid #A78BFA; padding-left: 18px; }
@@ -317,7 +318,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
         }
 
         /* Details Pane */
-        .exp-details { padding: 20px 24px; background: #050505; border-bottom: 1px solid #27272A; animation: fadeIn 0.2s ease-out; }
+        .exp-details { padding: 20px 24px; background: #050505; border-bottom: 1px solid #30363d; animation: fadeIn 0.2s ease-out; }
         .markdown-bullet { display: flex; gap: 10px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; color: #A1A1AA; }
         .bullet-point { color: #818CF8; font-weight: bold; user-select: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
@@ -348,9 +349,9 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
                 </button>
                 {isBranchDropdownOpen && (
                     <div className="gh-dropdown">
-                        <div style={{padding:'8px 12px', fontWeight:'600', borderBottom:'1px solid #27272A', fontSize: '12px', color: '#FFFFFF'}}>Switch branches</div>
+                        <div style={{padding:'8px 12px', fontWeight:'600', borderBottom:'1px solid #30363d', fontSize: '12px', color: '#FFFFFF'}}>Switch branches</div>
                         {Object.keys(BRANCH_CONFIG).map(key => (
-                            <div key={key} style={{padding:'8px 16px', borderBottom:'1px solid #27272A', cursor:'pointer', fontSize:'12px', display:'flex', alignItems:'center', gap: 8}} onClick={() => selectBranch(key)}>
+                            <div key={key} style={{padding:'8px 16px', borderBottom:'1px solid #30363d', cursor:'pointer', fontSize:'12px', display:'flex', alignItems:'center', gap: 8}} onClick={() => selectBranch(key)}>
                                 <div style={{width:8, height:8, borderRadius:'50%', background: BRANCH_CONFIG[key].color}}></div>
                                 <span style={{color: '#FFFFFF'}}>{key === activeBranch ? <strong>{BRANCH_CONFIG[key].name}</strong> : BRANCH_CONFIG[key].name}</span>
                             </div>
@@ -371,7 +372,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
           {/* FILE LIST (Mini) */}
           <div className="gh-file-box">
              <div className="gh-commit-header">
-                <div style={{width:20, height:20, borderRadius:'50%', background:'#27272A'}}></div>
+                <div style={{width:20, height:20, borderRadius:'50%', background:'#30363d'}}></div>
                 <span style={{fontWeight:600, color:'#FFFFFF'}}>JonOuyang</span>
                 <span style={{marginLeft: 8, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:'60%', color:'#A1A1AA'}}>
                     refactor: optimize graph topology for merge commits
@@ -540,7 +541,7 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
 
         {/* SIDEBAR */}
         <div className="gh-sidebar">
-           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
               <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
                   Visualizing my professional timeline as a git repository.
@@ -558,24 +559,24 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
               </div>
            </div>
 
-           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
                <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Releases</h3>
                <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No releases published</p>
            </div>
 
-           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
                <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Packages</h3>
                <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No packages published</p>
            </div>
 
-           <div style={{borderBottom:'1px solid #27272A', paddingBottom: 24, marginBottom: 24}}>
+           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
                <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0', display:'flex', alignItems:'center'}}>
-                   Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #27272A', marginLeft:8}}>{contributors.length}</span>
+                   Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #30363d', marginLeft:8}}>{contributors.length}</span>
                </h3>
                <ul style={{listStyle:'none', padding:0, margin:0}}>
                   {contributors.map((c, i) => (
                       <li key={i} style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}>
-                          <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #27272A', objectFit:'cover'}} />
+                          <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
                           <div>
                               <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
                               <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
