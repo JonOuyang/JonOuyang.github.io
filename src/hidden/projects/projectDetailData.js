@@ -93,7 +93,7 @@ export const projectDetails = {
       github: "#",
       youtube: "#",
     },
-    heroImage: "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
+    heroImage: "/assets/images/sabre.jpg",
     heroCaption: "Figure 1: SABRE drone swarm coordination system.",
     sections: [
       { id: "intro", title: "Introduction" },
@@ -126,7 +126,7 @@ export const projectDetails = {
     links: {
       github: "#",
     },
-    heroImage: "https://img.nauticexpo.com/images_ne/photo-g/28032-18598681.webp",
+    heroImage: "/assets/images/leviathan.jpg",
     heroCaption: "Figure 1: LEVIATHAN marine analytics dashboard.",
     sections: [
       { id: "intro", title: "Introduction" },

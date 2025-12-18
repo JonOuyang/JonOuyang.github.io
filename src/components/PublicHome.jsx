@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Github, Twitter, Mail, ArrowUpRight } from "lucide-react";
+import {
+  Github,
+  Twitter,
+  Mail,
+  ArrowUpRight,
+  BookOpen,
+} from "lucide-react";
 import { projectDetails } from "../hidden/projects/projectDetailData";
 import { researchData } from "../research-components/researchData";
 import { experienceData } from "../experience-components/experiences";
@@ -81,9 +87,9 @@ const PublicHome = () => {
               </div>
 
               <p className="relative text-zinc-400 text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
-                I am an Undergraduate at UCLA studying Computer Science, specializing in building practical, human centered <span className="text-indigo-400 font-medium">AI Agents</span> 
-                Robotics and Computer Vision Research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>. 
-                Previously Interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
+                I am an undergraduate at UCLA studying Computer Science, specializing in building practical, human-centered <span className="text-indigo-400 font-medium">AI Agents</span>.{" "}
+                Robotics and Computer Vision research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>.{" "}
+                Previously interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
               </p>
               
               <div className="flex items-center gap-6 pl-6">
@@ -144,13 +150,16 @@ const PublicHome = () => {
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Selected Work</h2>
               <div className="space-y-8">
                 {Object.entries(projectDetails).map(([id, project]) => {
-                  const links = [
-                    project.links?.article && { label: "article", href: project.links.article },
-                    project.links?.paper && { label: "paper", href: project.links.paper },
-                    project.links?.youtube && { label: "video", href: project.links.youtube },
-                    project.links?.devpost && { label: "website", href: project.links.devpost },
-                    project.links?.github && { label: "code", href: project.links.github },
-                  ].filter(Boolean);
+                  const codeLink = project.links?.github && { type: "code", href: project.links.github };
+                  const paperHref = project.links?.paper || project.links?.article;
+                  const paperLink = paperHref && { type: "paper", href: paperHref };
+                  const fallbackMore =
+                    project.links?.devpost ||
+                    project.links?.website ||
+                    project.links?.youtube ||
+                    (project.links?.article && project.links?.article !== paperHref ? project.links.article : null);
+                  const moreLink = fallbackMore && { type: "more", href: fallbackMore };
+                  const links = [codeLink, paperLink, moreLink].filter(Boolean);
 
                   return (
                     <div
@@ -174,7 +183,7 @@ const PublicHome = () => {
                         <div className="text-xs font-mono text-zinc-500">
                           {project.date || "2024"}
                         </div>
-                        <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+                        <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.12)]">
                           {project.title}
                         </h3>
                         <p className="text-zinc-400 leading-relaxed">
@@ -182,16 +191,25 @@ const PublicHome = () => {
                         </p>
                         {links.length > 0 && (
                           <div className="flex flex-wrap gap-3 text-sm">
-                            {links.map((link) => (
-                              <a
-                                key={link.href}
-                                href={link.href}
-                                className="text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                ({link.label})
-                              </a>
-                            ))}
+                            {links.map((link) => {
+                              const icon =
+                                link.type === "code"
+                                  ? <Github size={18} />
+                                  : link.type === "paper"
+                                  ? <BookOpen size={18} />
+                                  : <ArrowUpRight size={18} />;
+                              return (
+                                <a
+                                  key={link.href}
+                                  href={link.href}
+                                  className="inline-flex items-center text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                                  onClick={(e) => e.stopPropagation()}
+                                  aria-label={link.type}
+                                >
+                                  {icon}
+                                </a>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
@@ -218,11 +236,10 @@ const PublicHome = () => {
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Research</h2>
               <div className="space-y-8">
                 {researchData.map((paper, idx) => {
-                  const links = [
-                    paper.pdf && { label: "paper", href: paper.pdf },
-                    paper.website && { label: "website", href: paper.website },
-                    paper.code && { label: "code", href: paper.code },
-                  ].filter(Boolean);
+                  const codeLink = paper.code && { type: "code", href: paper.code };
+                  const paperLink = paper.pdf && { type: "paper", href: paper.pdf };
+                  const moreLink = paper.website && { type: "more", href: paper.website };
+                  const links = [codeLink, paperLink, moreLink].filter(Boolean);
 
                   return (
                     <div
@@ -243,7 +260,7 @@ const PublicHome = () => {
 
                       <div className="flex-1 space-y-1.5">
                         <div className="text-xs font-mono text-zinc-500">{paper.year}</div>
-                        <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+                        <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.12)]">
                           {paper.title}
                         </h3>
                         <div className="text-zinc-400 leading-relaxed text-sm">
@@ -263,15 +280,24 @@ const PublicHome = () => {
                         <div className="text-sm italic text-zinc-400">{paper.conference || "Preprint"}</div>
                         {links.length > 0 && (
                           <div className="flex flex-wrap gap-3 text-sm">
-                            {links.map((link) => (
-                              <a
-                                key={link.href}
-                                href={link.href}
-                                className="text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
-                              >
-                                ({link.label})
-                              </a>
-                            ))}
+                            {links.map((link) => {
+                              const icon =
+                                link.type === "code"
+                                  ? <Github size={18} />
+                                  : link.type === "paper"
+                                  ? <BookOpen size={18} />
+                                  : <ArrowUpRight size={18} />;
+                              return (
+                                <a
+                                  key={link.href}
+                                  href={link.href}
+                                  className="inline-flex items-center text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                                  aria-label={link.type}
+                                >
+                                  {icon}
+                                </a>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
@@ -302,15 +328,23 @@ const PublicHome = () => {
                     key={exp.id}
                     className="group flex flex-col md:flex-row gap-6 items-start py-8"
                   >
-                    <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-800 relative">
-                      <div className="absolute inset-0 flex items-center justify-center text-lg font-semibold text-white/80">
-                        {exp.company}
-                      </div>
+                    <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                      {exp.image ? (
+                        <img
+                          src={exp.image}
+                          alt={exp.company}
+                          className="h-full w-full object-cover transition duration-500 ease-out brightness-90 group-hover:brightness-110 group-hover:scale-[1.02]"
+                        />
+                      ) : (
+                        <div className="h-full w-full bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center text-lg font-semibold text-white/80">
+                          {exp.company}
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex-1 space-y-1.5">
                       <div className="text-xs font-mono text-zinc-500">{exp.date}</div>
-                      <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+                      <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.12)]">
                         {exp.title} <span className="text-zinc-400 font-normal">@</span> <span className="text-indigo-400">{exp.company}</span>
                       </h3>
                       <p className="text-zinc-400 leading-relaxed">

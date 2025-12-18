@@ -6,7 +6,8 @@ export const experienceData = {
       title: "Incoming Software Engineer Intern",
       company: "Google",
       description: "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
-      branches: ["main", "swe"]
+      branches: ["main", "swe"],
+      image: "/assets/images/google.png"
     },
     {
       id: "exp1",
@@ -14,7 +15,8 @@ export const experienceData = {
       title: "Visiting Researcher",
       company: "Stanford ILIAD Lab",
       description: "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
-      branches: ["main", "ai-ml"]
+      branches: ["main", "ai-ml"],
+      image: "/assets/images/iliad.png"
     },
     {
       id: "exp3",
@@ -22,7 +24,8 @@ export const experienceData = {
       title: "Undergraduate Researcher",
       company: "UCLA Robot Intelligence Lab",
       description: "Co-first-author on GAMMA (RSS 2025). Adapted Action Chunking Transformer to ALOHA robot achieving 90% success rate. Built gaze-assisted robotic control improving speed by 250%.",
-      branches: ["ai-ml", "main"]
+      branches: ["ai-ml", "main"],
+      image: "/assets/images/uril.jpg"
     },
     {
       id: "exp4",
@@ -30,7 +33,8 @@ export const experienceData = {
       title: "Software Engineer Intern",
       company: "Amazon Prime Video Studios",
       description: "Built Java catalog compiler processing 7M+ titles/day. Automated metadata ingestion eliminating 90% of errors. Integrated with Apple, Google, Samsung for cross-platform deployment.",
-      branches: ["swe", "main"]
+      branches: ["swe", "main"],
+      image: "/assets/images/amazon.png"
     },
     {
       id: "exp5",
@@ -43,7 +47,8 @@ export const experienceData = {
       },
       company: "UCLA Daily Bruin",
       description: "Optimized React website reducing bundle size 40% and supporting 60k+ concurrent users. Built 'Olivier' RAG chatbot using Pinecone + Redis + OpenAI. Designed Redis caching absorbing 80% of read traffic.",
-      branches: ["swe", "ai-ml"]
+      branches: ["swe", "ai-ml"],
+      image: "/assets/images/dailybruin.jpg"
     },
     {
       id: "exp6",
@@ -59,7 +64,8 @@ export const experienceData = {
       title: "Graduate Research Advisor",
       company: "SJSU AI/DL FPGA/DSP Lab",
       description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
-      branches: ["ai-ml", "main"]
+      branches: ["ai-ml", "main"],
+      image: "/assets/images/sjsu.jpg"
     },
     {
       id: "exp8",
@@ -67,7 +73,8 @@ export const experienceData = {
       title: "Visiting Researcher",
       company: "SJSU AI/DL FPGA/DSP Lab",
       description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
-      branches: ["ai-ml", "main"]
+      branches: ["ai-ml", "main"],
+      image: "/assets/images/sjsu.jpg"
     },
     {
       id: "exp9",
@@ -75,7 +82,8 @@ export const experienceData = {
       title: "Laboratory Intern",
       company: "SJSU AI/DL FPGA/DSP Lab",
       description: "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
-      branches: ["ai-ml", "main"]
+      branches: ["ai-ml", "main"],
+      image: "/assets/images/sjsu.jpg"
     }
   ],
   branches: {
