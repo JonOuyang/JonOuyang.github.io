@@ -50,34 +50,46 @@ const PublicHome = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-indigo-500/30 pb-32">
+    <div className="relative min-h-screen bg-black text-white font-sans selection:bg-indigo-500/30 pb-32">
+      {/* Ambient lighting */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -right-40 -top-32 w-[48rem] h-[48rem] opacity-20 blur-[120px] bg-[radial-gradient(circle_at_70%_20%,rgba(59,130,246,0.35),transparent_50%)]" />
+      </div>
+      {/* Noise texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-soft-light -z-10"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E\")",
+        }}
+      />
       
-      <div className="max-w-5xl mx-auto px-6">
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
         
         {/* --- HERO SECTION (RESTORED) --- */}
-        <div className="pt-32 pb-32 border-b border-zinc">
+        <div className="pt-32 pb-32">
           <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] items-center">
             
             {/* Left: Text */}
             <div className="space-y-8">
               <div className="space-y-2">
                 <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter whitespace-nowrap">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-zinc-400 drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]">
                     Jonathan Ouyang
                   </span>
                 </h1>
               </div>
 
-              <p className="relative text-gray text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
+              <p className="relative text-zinc-400 text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
                 I am an Undergraduate at UCLA studying Computer Science, specializing in building practical, human centered <span className="text-indigo-400 font-medium">AI Agents</span> 
                 Robotics and Computer Vision Research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>. 
                 Previously Interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
               </p>
               
               <div className="flex items-center gap-6 pl-6">
-                  <a href="https://github.com/jonouyang" target="_blank" rel="noreferrer" className="text-gray hover:text-white transition-colors"><Github size={24} /></a>
-                  <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-gray hover:text-white transition-colors"><Twitter size={24} /></a>
-                  <a href="mailto:jonathanouyang@ucla.edu" className="text-gray hover:text-white transition-colors"><Mail size={24} /></a>
+                  <a href="https://github.com/jonouyang" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Github size={24} /></a>
+                  <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Twitter size={24} /></a>
+                  <a href="mailto:jonathanouyang@ucla.edu" className="text-zinc-400 hover:text-white transition-colors"><Mail size={24} /></a>
               </div>
             </div>
 
@@ -100,22 +112,22 @@ const PublicHome = () => {
         </div>
 
         {/* --- MAIN BODY (SIDEBAR + CONTENT) --- */}
-        <div className="grid lg:grid-cols-[200px_1fr] gap-12 pt-20">
+        <div className="grid lg:grid-cols-[200px_1fr] gap-6 pt-20">
           
           {/* Sidebar Navigation */}
-          <aside className="hidden lg:block h-fit sticky top-24">
-            <h3 className="text-xs font-bold text-gray uppercase tracking-widest mb-6 pl-4">
+          <aside className="hidden lg:block h-fit sticky top-24 self-start">
+            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 pl-4">
               Contents
             </h3>
-            <div className="flex flex-col space-y-1 relative border-l border-zinc">
+            <div className="flex flex-col space-y-1 relative border-l border-white/10">
                {["projects", "research", "experience"].map((section) => (
                  <button
                    key={section}
                    onClick={() => scrollToSection(section)}
-                   className={`pl-4 py-2 text-sm text-left transition-colors border-l-2 -ml-[2px] capitalize ${
+                   className={`relative pl-4 py-2 text-sm text-left transition-colors duration-200 border-l-2 -ml-[2px] capitalize ${
                      activeSection === section
-                       ? "border-indigo-400 text-indigo-400 font-medium"
-                       : "border-transparent text-gray hover:text-gray-100"
+                       ? "border-indigo-400 text-white font-medium"
+                       : "border-transparent text-zinc-400 hover:text-white/80"
                    }`}
                  >
                    {section}
@@ -125,106 +137,197 @@ const PublicHome = () => {
           </aside>
 
           {/* Scrollable Content (Glass Rows) */}
-          <div className="space-y-32">
+          <div className="space-y-20">
 
             {/* PROJECTS */}
             <section id="projects" className="scroll-mt-24">
-              <h2 className="text-sm font-bold text-gray uppercase tracking-widest mb-8">
-                Selected Work
-              </h2>
-              <div className="grid gap-4">
-                {Object.entries(projectDetails).map(([id, project]) => (
-                  <div 
-                    key={id}
-                    onClick={() => navigate(`/projects/${id}`)}
-                    className="group relative bg-white/5 border border-white/5 rounded-xl p-6 transition-all duration-300 hover:border-indigo-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-indigo-500/5 cursor-pointer"
-                  >
-                     <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Selected Work</h2>
+              <div className="space-y-8">
+                {Object.entries(projectDetails).map(([id, project]) => {
+                  const links = [
+                    project.links?.article && { label: "article", href: project.links.article },
+                    project.links?.paper && { label: "paper", href: project.links.paper },
+                    project.links?.youtube && { label: "video", href: project.links.youtube },
+                    project.links?.devpost && { label: "website", href: project.links.devpost },
+                    project.links?.github && { label: "code", href: project.links.github },
+                  ].filter(Boolean);
+
+                  return (
+                    <div
+                      key={id}
+                      onClick={() => navigate(`/projects/${id}`)}
+                      className="group flex flex-col md:flex-row gap-6 items-start py-8 cursor-pointer"
+                    >
+                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                        {project.heroImage ? (
+                          <img
+                            src={project.heroImage}
+                            alt={project.title}
+                            className="h-full w-full object-cover transition duration-500 ease-out brightness-90 group-hover:brightness-110 group-hover:scale-[1.02]"
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-gradient-to-br from-zinc-800 to-zinc-900" />
+                        )}
+                      </div>
+
+                      <div className="flex-1 space-y-1.5">
+                        <div className="text-xs font-mono text-zinc-500">
+                          {project.date || "2024"}
+                        </div>
+                        <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
                           {project.title}
                         </h3>
-                        <span className="font-mono text-xs text-gray pt-1">
-                          {project.date?.split(' ')[1] || '2024'}
-                        </span>
-                     </div>
-                     <p className="text-gray text-sm leading-relaxed max-w-2xl">
-                       {project.subtitle}
-                     </p>
-                     <div className="flex flex-wrap gap-2 mt-4">
-                        <span className="px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium border border-indigo-500/10">
-                          {project.links?.github ? 'Open Source' : 'Product'}
-                        </span>
-                     </div>
-                  </div>
-                ))}
+                        <p className="text-zinc-400 leading-relaxed">
+                          {project.subtitle}
+                        </p>
+                        {links.length > 0 && (
+                          <div className="flex flex-wrap gap-3 text-sm">
+                            {links.map((link) => (
+                              <a
+                                key={link.href}
+                                href={link.href}
+                                className="text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                ({link.label})
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex justify-center pt-1.5">
+                <button
+                  type="button"
+                  onClick={() => navigate("/projects")}
+                  className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                >
+                  View all <ArrowUpRight size={16} />
+                </button>
               </div>
             </section>
 
             {/* RESEARCH */}
-            <section id="research" className="scroll-mt-24">
-              <h2 className="text-sm font-bold text-gray uppercase tracking-widest mb-8">
-                Research
-              </h2>
-              <div className="grid gap-4">
-                {researchData.map((paper, idx) => (
-                   <div 
-                     key={idx}
-                     className="group relative bg-white/5 border border-white/5 rounded-xl p-6 transition-all duration-300 hover:border-indigo-500/30 hover:bg-white/10"
-                   >
-                      <div className="flex justify-between items-start mb-2">
-                         <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">
-                           {paper.title}
-                         </h3>
-                         <span className="font-mono text-xs text-gray pt-1 shrink-0 ml-4">
-                           {paper.year}
-                         </span>
+            <section
+              id="research"
+              className="scroll-mt-24 relative pt-16 before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-indigo-400/30 before:to-transparent before:opacity-80"
+            >
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Research</h2>
+              <div className="space-y-8">
+                {researchData.map((paper, idx) => {
+                  const links = [
+                    paper.pdf && { label: "paper", href: paper.pdf },
+                    paper.website && { label: "website", href: paper.website },
+                    paper.code && { label: "code", href: paper.code },
+                  ].filter(Boolean);
+
+                  return (
+                    <div
+                      key={idx}
+                      className="group flex flex-col md:flex-row gap-6 items-start py-8"
+                    >
+                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                        {paper.image ? (
+                          <img
+                            src={paper.image}
+                            alt={paper.title}
+                            className="h-full w-full object-cover transition duration-500 ease-out brightness-90 group-hover:brightness-110 group-hover:scale-[1.02]"
+                          />
+                        ) : (
+                          <div className="h-full w-full bg-gradient-to-br from-zinc-800 to-zinc-900" />
+                        )}
                       </div>
-                      <div className="text-sm text-gray mt-2">
-                         {paper.authors.split(',').map((author, i) => (
-                          <span key={i} className={author.includes("Jonathan") || author.includes("Ouyang") ? "text-gray-100 font-medium" : ""}>
-                            {author}{i < paper.authors.split(',').length - 1 ? ", " : ""}
-                          </span>
-                        ))}
+
+                      <div className="flex-1 space-y-1.5">
+                        <div className="text-xs font-mono text-zinc-500">{paper.year}</div>
+                        <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+                          {paper.title}
+                        </h3>
+                        <div className="text-zinc-400 leading-relaxed text-sm">
+                          {paper.authors.split(',').map((author, i) => {
+                            const cleanAuthor = author.replace(/\*/g, "").trim();
+                            const highlight = cleanAuthor.includes("Jonathan") || cleanAuthor.includes("Ouyang");
+                            return (
+                              <span
+                                key={i}
+                                className={highlight ? "text-white font-medium" : ""}
+                              >
+                                {cleanAuthor}{i < paper.authors.split(',').length - 1 ? ", " : ""}
+                              </span>
+                            );
+                          })}
+                        </div>
+                        <div className="text-sm italic text-zinc-400">{paper.conference || "Preprint"}</div>
+                        {links.length > 0 && (
+                          <div className="flex flex-wrap gap-3 text-sm">
+                            {links.map((link) => (
+                              <a
+                                key={link.href}
+                                href={link.href}
+                                className="text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                              >
+                                ({link.label})
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <div className="flex items-center justify-between mt-4">
-                         <span className="text-xs font-medium text-indigo-400 uppercase tracking-wide">
-                            {paper.conference || "Preprint"}
-                         </span>
-                         {paper.pdf && (
-                           <a href={paper.pdf} className="flex items-center gap-1 text-xs text-gray hover:text-white transition-colors">
-                             PDF <ArrowUpRight size={12} />
-                           </a>
-                         )}
-                      </div>
-                   </div>
-                ))}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex justify-center pt-1.5">
+                <button
+                  type="button"
+                  onClick={() => navigate("/research")}
+                  className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                >
+                  View all <ArrowUpRight size={16} />
+                </button>
               </div>
             </section>
 
             {/* EXPERIENCE */}
-            <section id="experience" className="scroll-mt-24">
-              <h2 className="text-sm font-bold text-gray uppercase tracking-widest mb-8">
-                Experience
-              </h2>
-              <div className="grid gap-4">
+            <section
+              id="experience"
+              className="scroll-mt-24 relative pt-16 before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-indigo-400/30 before:to-transparent before:opacity-80"
+            >
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Experience</h2>
+              <div className="space-y-8">
                 {experienceData.experiences.map((exp) => (
-                   <div 
-                     key={exp.id}
-                     className="group relative bg-white/5 border border-white/5 rounded-xl p-6 transition-all duration-300 hover:border-indigo-500/30 hover:bg-white/10"
-                   >
-                      <div className="flex justify-between items-start mb-2">
-                         <h3 className="text-lg font-bold text-white">
-                           {exp.title} <span className="text-gray font-normal">@</span> <span className="text-indigo-400">{exp.company}</span>
-                         </h3>
-                         <span className="font-mono text-xs text-gray pt-1 shrink-0 ml-4">
-                           {exp.date}
-                         </span>
+                  <div
+                    key={exp.id}
+                    className="group flex flex-col md:flex-row gap-6 items-start py-8"
+                  >
+                    <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-800 relative">
+                      <div className="absolute inset-0 flex items-center justify-center text-lg font-semibold text-white/80">
+                        {exp.company}
                       </div>
-                      <p className="text-gray text-sm mt-2 leading-relaxed">
+                    </div>
+
+                    <div className="flex-1 space-y-1.5">
+                      <div className="text-xs font-mono text-zinc-500">{exp.date}</div>
+                      <h3 className="text-xl font-bold bg-gradient-to-b from-white via-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(255,255,255,0.18)]">
+                        {exp.title} <span className="text-zinc-400 font-normal">@</span> <span className="text-indigo-400">{exp.company}</span>
+                      </h3>
+                      <p className="text-zinc-400 leading-relaxed">
                         {exp.description}
                       </p>
-                   </div>
+                    </div>
+                  </div>
                 ))}
+              </div>
+              <div className="flex justify-center pt-1.5">
+                <button
+                  type="button"
+                  onClick={() => navigate("/experience")}
+                  className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                >
+                  View all <ArrowUpRight size={16} />
+                </button>
               </div>
             </section>
 
