@@ -6,6 +6,9 @@ import {
   Mail,
   ArrowUpRight,
   BookOpen,
+  Linkedin,
+  Youtube,
+  Phone,
 } from "lucide-react";
 import { projectDetails } from "../hidden/projects/projectDetailData";
 import { researchData } from "../research-components/researchData";
@@ -16,6 +19,9 @@ const PublicHome = () => {
   const [useResearchPhoto, setUseResearchPhoto] = useState(false);
   const [activeSection, setActiveSection] = useState("projects");
   const isScrollingRef = useRef(false);
+  const contactRef = useRef(null);
+  const [contactMouse, setContactMouse] = useState({ x: 0, y: 0 });
+  const [contactHover, setContactHover] = useState(false);
 
   const handleDoubleClick = () => {
     setUseResearchPhoto(!useResearchPhoto);
@@ -27,7 +33,7 @@ const PublicHome = () => {
       if (isScrollingRef.current) return;
 
       const scrollPosition = window.scrollY + 400; // Offset
-      const sections = ["projects", "research", "experience"];
+      const sections = ["projects", "research", "experience", "contact"];
       let current = sections[0];
 
       for (const section of sections) {
@@ -126,7 +132,7 @@ const PublicHome = () => {
               Contents
             </h3>
             <div className="flex flex-col space-y-1 relative border-l border-white/10">
-               {["projects", "research", "experience"].map((section) => (
+               {["projects", "research", "experience", "contact"].map((section) => (
                  <button
                    key={section}
                    onClick={() => scrollToSection(section)}
@@ -362,6 +368,115 @@ const PublicHome = () => {
                 >
                   View all <ArrowUpRight size={16} />
                 </button>
+              </div>
+            </section>
+
+            {/* CONTACT */}
+            <section
+              id="contact"
+              className="scroll-mt-24 relative pt-16 before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-indigo-400/30 before:to-transparent before:opacity-80"
+            >
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Contact</h2>
+              <div
+                ref={contactRef}
+                onMouseMove={(e) => {
+                  if (!contactRef.current) return;
+                  const rect = contactRef.current.getBoundingClientRect();
+                  setContactMouse({
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                  });
+                }}
+                onMouseEnter={() => setContactHover(true)}
+                onMouseLeave={() => {
+                  setContactHover(false);
+                  setContactMouse({ x: 0, y: 0 });
+                }}
+                className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-zinc-900/70 to-zinc-950/70 p-10 shadow-[0_25px_80px_rgba(0,0,0,0.35)] space-y-6 min-h-[320px]"
+                style={{
+                  '--mouse-x': `${contactMouse.x}px`,
+                  '--mouse-y': `${contactMouse.y}px`,
+                }}
+              >
+                <div
+                  className={`pointer-events-none absolute -inset-[8px] rounded-2xl blur-2xl transition-opacity duration-200 ${contactHover ? 'opacity-30' : 'opacity-0'}`}
+                  style={{
+                    background:
+                      'radial-gradient(360px circle at var(--mouse-x) var(--mouse-y), rgba(59,130,246,0.18), transparent 55%)',
+                  }}
+                />
+                <div
+                  className={`pointer-events-none absolute -inset-[3px] rounded-2xl blur-xl transition-opacity duration-200 ${contactHover ? 'opacity-30' : 'opacity-0'}`}
+                  style={{
+                    background:
+                      'radial-gradient(260px circle at var(--mouse-x) var(--mouse-y), rgba(59,130,246,0.24), transparent 50%)',
+                  }}
+                />
+                <p className="text-zinc-400 leading-relaxed">
+                  I love meeting people building practical AI, robotics, and products with polish. Drop me a line and I’ll get back soon.
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <a
+                    href="mailto:jonathanouyang@ucla.edu"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Mail size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">Email</span>
+                      <span className="text-xs text-zinc-400">jonathanouyang@ucla.edu</span>
+                    </div>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Linkedin size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">LinkedIn</span>
+                      <span className="text-xs text-zinc-400">Profile link</span>
+                    </div>
+                  </a>
+                  <a
+                    href="https://twitter.com"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Twitter size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">Twitter / X</span>
+                      <span className="text-xs text-zinc-400">@handle</span>
+                    </div>
+                  </a>
+                  <a
+                    href="https://www.youtube.com"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Youtube size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">YouTube</span>
+                      <span className="text-xs text-zinc-400">Channel</span>
+                    </div>
+                  </a>
+                  <a
+                    href="https://github.com/jonouyang"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Github size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">GitHub</span>
+                      <span className="text-xs text-zinc-400">jonouyang</span>
+                    </div>
+                  </a>
+                  <a
+                    href="tel:+1-000-000-0000"
+                    className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
+                  >
+                    <Phone size={18} />
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm text-white">Phone</span>
+                      <span className="text-xs text-zinc-400">+1 (000) 000-0000</span>
+                    </div>
+                  </a>
+                </div>
               </div>
             </section>
 

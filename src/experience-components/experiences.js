@@ -56,7 +56,8 @@ export const experienceData = {
       title: "Computer Vision Intern",
       company: "Sighthound, Inc.",
       description: "Built VLM annotation tool using PaliGemma + OWL-ViT improving labeling throughput by 50%. Created image augmentation pipeline increasing dataset size 6× and boosting model accuracy by 5%.",
-      branches: ["ai-ml", "swe"]
+      branches: ["ai-ml", "swe"],
+      image: "/assets/images/sighthound.png"
     },
     {
       id: "exp7",
