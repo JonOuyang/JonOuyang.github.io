@@ -1,5 +1,11 @@
 export const contributorsData = [
   {
+    username: "Jonathan Ouyang",
+    description: "GitHub Profile",
+    link: "https://github.com/jonouyang",
+    avatarUrl: "/assets/images/githubpfp.jpeg"
+  },
+  {
     username: "Yuchen Cui",
     description: "UCLA Research Advisor",
     link: "https://yuchencui.cc/",
