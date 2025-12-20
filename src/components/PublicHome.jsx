@@ -85,44 +85,43 @@ const PublicHome = () => {
             {/* Left: Text */}
             <div className="space-y-8">
               <div className="space-y-2">
-                <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter whitespace-nowrap">
+                <h1 className="text-6xl md:text-7xl lg:text-6xl font-bold leading-[0.9] tracking-tighter whitespace-nowrap">
                   <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-zinc-400 drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]">
                     Jonathan Ouyang
                   </span>
                 </h1>
               </div>
 
-              <p className="relative text-zinc-400 text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
-                I am an undergraduate at UCLA studying Computer Science, specializing in building practical, human-centered <span className="text-indigo-400 font-medium">AI Agents</span>.{" "}
-                Robotics and Computer Vision research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>.{" "}
-                Previously interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
-              </p>
-              
-              <div className="flex items-center gap-6 pl-6">
-                  <a href="https://github.com/jonouyang" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Github size={24} /></a>
-                  <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Twitter size={24} /></a>
-                  <a href="mailto:jonathanouyang@ucla.edu" className="text-zinc-400 hover:text-white transition-colors"><Mail size={24} /></a>
+                <p className="relative text-zinc-400 text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
+                  I am an undergraduate at UCLA studying Computer Science, specializing in building practical, human-centered <span className="text-indigo-400 font-medium">AI Agents</span>.{" "}
+                  Robotics and Computer Vision research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>.{" "}
+                  Previously interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
+                </p>
+                
+                <div className="flex items-center gap-6 pl-6">
+                    <a href="https://github.com/jonouyang" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Github size={24} /></a>
+                    <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white transition-colors"><Twitter size={24} /></a>
+                    <a href="mailto:jonathanouyang@ucla.edu" className="text-zinc-400 hover:text-white transition-colors"><Mail size={24} /></a>
+                </div>
               </div>
-            </div>
 
-            {/* Right: Image */}
-            <div className="mx-auto md:order-last order-first relative">
-              <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
-              <div
-                className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
-                onDoubleClick={handleDoubleClick}
-              >
-                <img
-                  src={useResearchPhoto ? "/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
-                  alt="Jonathan Ouyang"
-                  className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
-                />
+              {/* Right: Image */}
+              <div className="mx-auto md:order-last order-first relative">
+                <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
+                <div
+                  className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
+                  onDoubleClick={handleDoubleClick}
+                >
+                  <img
+                    src={useResearchPhoto ? "/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+                    alt="Jonathan Ouyang"
+                    className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
+                  />
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
-
         {/* --- MAIN BODY (SIDEBAR + CONTENT) --- */}
         <div className="grid lg:grid-cols-[200px_1fr] gap-6 pt-20">
           
