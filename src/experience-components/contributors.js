@@ -1,12 +1,4 @@
-import githubPfp from "../assets/images/githubpfp.jpeg";
-
 export const contributorsData = [
-  {
-    username: "Jonathan Ouyang",
-    description: "GitHub Profile",
-    link: "https://github.com/jonouyang",
-    avatarUrl: githubPfp
-  },
   {
     username: "Yuchen Cui",
     description: "UCLA Research Advisor",
