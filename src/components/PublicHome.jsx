@@ -13,6 +13,7 @@ import {
 import { projectDetails } from "../hidden/projects/projectDetailData";
 import { researchData } from "../research-components/researchData";
 import { experienceData } from "../experience-components/experiences";
+import researchHeadshot from "../assets/images/researchheadshot.jpg";
 
 const PublicHome = () => {
   const navigate = useNavigate();
@@ -109,11 +110,11 @@ const PublicHome = () => {
               <div className="mx-auto md:order-last order-first relative">
                 <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
                 <div
-                  className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
+                  className="relative w-64 h-64 md:w-80 md:h-80 rounded-xl overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
                   onDoubleClick={handleDoubleClick}
                 >
                   <img
-                    src={useResearchPhoto ? "/researchheadshot.JPG" : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+                    src={useResearchPhoto ? researchHeadshot : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
                     alt="Jonathan Ouyang"
                     className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
                   />
@@ -172,7 +173,7 @@ const PublicHome = () => {
                       onClick={() => navigate(`/projects/${id}`)}
                       className="group flex flex-col md:flex-row gap-6 items-start py-8 cursor-pointer"
                     >
-                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                        <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">
                         {project.heroImage ? (
                           <img
                             src={project.heroImage}
@@ -251,7 +252,7 @@ const PublicHome = () => {
                       key={idx}
                       className="group flex flex-col md:flex-row gap-6 items-start py-8"
                     >
-                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                        <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">
                         {paper.image ? (
                           <img
                             src={paper.image}
@@ -333,7 +334,7 @@ const PublicHome = () => {
                     key={exp.id}
                     className="group flex flex-col md:flex-row gap-6 items-start py-8"
                   >
-                    <div className="w-full md:w-72 aspect-video overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition duration-500">
+                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">
                       {exp.image ? (
                         <img
                           src={exp.image}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Github, Linkedin, Twitter } from 'lucide-react';
-const researchHeadshot = "/researchheadshot.JPG";
+import researchHeadshot from "../assets/images/researchheadshot.jpg";
 
 const CompactHero = () => {
   return (

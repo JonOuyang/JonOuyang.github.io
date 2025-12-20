@@ -1,5 +1,5 @@
-import apple from "/apple.svg";
-import bag from "/bag.svg";
+import apple from "../assets/apple.svg";
+import bag from "../assets/bag.svg";
 
 export const appleImg = apple;
 export const bagImg = bag;

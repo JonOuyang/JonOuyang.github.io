@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { researchData } from '../research-components/researchData'; // Adjust path if needed
+import researchHeadshot from "../assets/images/researchheadshot.jpg";
 
 // A helper function to parse authors and highlight your name
 const Author = ({ authors }) => {
@@ -92,7 +93,7 @@ const ResearchPage = () => {
             <div className="flex flex-col items-center lg:items-start">
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4 shadow-md border border-[#27272A]">
                 <img
-                  src="/researchheadshot.JPG"
+                  src={researchHeadshot}
                   alt="Jonathan Ouyang"
                   className="w-full h-full object-cover scale-[3.5] translate-x-[-5px] translate-y-[-20px]"
                 />
