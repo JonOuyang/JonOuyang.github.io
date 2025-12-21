@@ -364,6 +364,9 @@ const ProjectsPage = () => {
   const machineLearningProjects = byIds([1, 2, 4, 5, 7]).length ? byIds([1, 2, 4, 5, 7]) : allProjects.slice(2, 8);
   const researchProjects = researchItems.length ? researchItems : allProjects.slice(4, 8);
 
+  const fullstackGlow = 'rgba(59, 130, 246, 1)'; // blue
+  const mlGlow = 'rgba(251, 146, 60, 1)'; // orange
+
   const [activeSection, setActiveSection] = useState('fullstack');
   const isScrollingRef = useRef(false);
   const [globalMousePos, setGlobalMousePos] = useState({ x: 0, y: 0 });
@@ -445,13 +448,13 @@ const ProjectsPage = () => {
               <ProjectSection
                 sectionId="fullstack"
                 title="Fullstack Projects"
-                projects={fullstackProjects}
+                projects={fullstackProjects.map((p) => ({ ...p, glowColor: fullstackGlow }))}
                 globalMousePos={globalMousePos}
               />
               <ProjectSection
                 sectionId="machine-learning"
                 title="Machine Learning Projects"
-                projects={machineLearningProjects}
+                projects={machineLearningProjects.map((p) => ({ ...p, glowColor: mlGlow }))}
                 globalMousePos={globalMousePos}
               />
               <ProjectSection
