@@ -23,46 +23,56 @@ const getYouTubeVideoId = (url) => {
   return null;
 };
 
+const VIDEO_OFFSET_CONFIG = {
+  // Adjust these to pin the video at specific times (seconds into playback)
+  keyframes: [
+    { timeSeconds: 0, percent: 80 },
+    { timeSeconds: 6.5, percent: 58 },
+    { timeSeconds: 10.5, percent: 80 },
+    { timeSeconds: 28, percent: 60 },
+    { timeSeconds: 30.3, percent: 80 }
+  ],
+  defaultPercent: 55, // fallback if no keyframe has fired yet
+  timerIntervalMs: 500 // how often to recalc position
+};
+
 const HeroSection = ({ hero }) => {
   const navigate = useNavigate();
-  const [showVideo, setShowVideo] = useState(false);
-  const [isIdle, setIsIdle] = useState(false);
-  const timeoutRef = useRef(null);
-
   const youtubeId = getYouTubeVideoId(hero.video);
+  const [showVideo, setShowVideo] = useState(!!youtubeId);
+  const [videoOffsetPercent, setVideoOffsetPercent] = useState(VIDEO_OFFSET_CONFIG.basePercent);
 
-  const resetIdleTimer = () => {
-    setIsIdle(false);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setIsIdle(true);
-    }, 1000);
-  };
-
+  // Load the video immediately on page load
   useEffect(() => {
-    if (isIdle && hero.video) {
-      setShowVideo(true);
-    }
-  }, [isIdle, hero.video]);
+    setShowVideo(!!youtubeId);
+  }, [youtubeId]);
 
+  // Set the video position based on elapsed playback time and explicit keyframes
   useEffect(() => {
-    resetIdleTimer();
-    const handleMovement = () => resetIdleTimer();
-    window.addEventListener('mousemove', handleMovement);
-    window.addEventListener('touchmove', handleMovement);
-    window.addEventListener('scroll', handleMovement);
+    if (!showVideo) return;
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    const { keyframes = [], defaultPercent = 50, timerIntervalMs = 1000 } = VIDEO_OFFSET_CONFIG;
+    const startTime = performance.now();
+    const sortedFrames = [...keyframes].sort((a, b) => a.timeSeconds - b.timeSeconds);
+
+    const updateOffset = () => {
+      const elapsedSeconds = (performance.now() - startTime) / 1000;
+      // Find the last keyframe at or before the current time
+      let currentPercent = defaultPercent;
+      for (const frame of sortedFrames) {
+        if (elapsedSeconds >= frame.timeSeconds) {
+          currentPercent = frame.percent;
+        } else {
+          break;
+        }
       }
-      window.removeEventListener('mousemove', handleMovement);
-      window.removeEventListener('touchmove', handleMovement);
-      window.removeEventListener('scroll', handleMovement);
+      setVideoOffsetPercent(currentPercent);
     };
-  }, []);
+
+    updateOffset(); // set initial position on mount
+    const intervalId = setInterval(updateOffset, timerIntervalMs);
+    return () => clearInterval(intervalId);
+  }, [showVideo]);
 
   return (
     <div className="relative h-screen w-full">
@@ -83,7 +93,7 @@ const HeroSection = ({ hero }) => {
               style={{
                 position: 'absolute',
                 top: '0',
-                left: '60%',
+                left: `${videoOffsetPercent}%`,
                 width: '177.77vh',
                 height: 'calc(100% + 100px)',
                 minWidth: '100%',
