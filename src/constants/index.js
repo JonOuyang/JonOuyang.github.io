@@ -6,5 +6,6 @@ export const publicNavItems = [
 ];
 
 export const experimentalNavItems = [
+  { name: "Projects (Exp)", path: "/experimental-projects" },
   { name: "WIP", path: "/wip" }
 ];

@@ -10,6 +10,8 @@ const WIP = lazy(() => import('./components/WIP'));
 
 const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage'));
+const ExperimentalProjectsPage = lazy(() => import('./experimental/projects/ExperimentalProjectsPage'));
+const ExperimentalProjectDetailPage = lazy(() => import('./experimental/projects/ExperimentalProjectDetailPage'));
 
 import { experienceData } from './experience-components/experiences';
 import { extracurricularData } from './experience-components/extracurriculars';
@@ -86,6 +88,22 @@ const App = () => {
             <Navbar />
             <Suspense fallback={<Loading />}>
               <ProjectDetailPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/experimental-projects" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <ExperimentalProjectsPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/experimental-projects/:projectId" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <ExperimentalProjectDetailPage />
             </Suspense>
          </main>
         } />
