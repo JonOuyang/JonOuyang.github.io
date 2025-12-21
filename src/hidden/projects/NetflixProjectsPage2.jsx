@@ -108,7 +108,7 @@ const HeroSection = ({ hero }) => {
         )}
 
         <div className="absolute inset-0 bg-gradient-to-r from-black from-30% via-black/80 via-50% to-transparent to-85% w-full z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-70% to-[#0a0a0a] h-full z-10" />
+        <div className="absolute inset-x-0 bottom-0 h-[18%] bg-gradient-to-t from-black to-transparent z-10" />
       </div>
 
       <div className="absolute top-1/2 -translate-y-1/2 left-6 sm:left-12 lg:left-20 max-w-2xl z-20">
@@ -148,7 +148,7 @@ const HeroSection = ({ hero }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer animate-bounce">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer animate-bounce">
         <span className="text-white/70 text-xs uppercase tracking-widest font-medium">Scroll</span>
         <ChevronDown size={20} className="text-white/70" />
       </div>
