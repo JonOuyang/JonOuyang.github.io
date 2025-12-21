@@ -9,7 +9,9 @@ const PublicHome = lazy(() => import('./components/PublicHome'));
 const WIP = lazy(() => import('./components/WIP'));
 
 const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage'));
+const NetflixProjectsPage2 = lazy(() => import('./hidden/projects/NetflixProjectsPage2'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage'));
+const ProjectDetailPage2 = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
 const ExperimentalProjectsPage = lazy(() => import('./experimental/projects/ExperimentalProjectsPage'));
 const ExperimentalProjectDetailPage = lazy(() => import('./experimental/projects/ExperimentalProjectDetailPage'));
 
@@ -83,11 +85,27 @@ const App = () => {
             </Suspense>
          </main>
         } />
+        <Route path="/projects2" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <NetflixProjectsPage2 />
+            </Suspense>
+         </main>
+        } />
         <Route path="/projects/:projectId" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
               <ProjectDetailPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/projects2/:projectId" element={
+          <main className="bg-black">
+            <Navbar />
+            <Suspense fallback={<Loading />}>
+              <ProjectDetailPage2 />
             </Suspense>
          </main>
         } />
