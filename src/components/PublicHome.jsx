@@ -23,6 +23,27 @@ const PublicHome = () => {
   const contactRef = useRef(null);
   const [contactMouse, setContactMouse] = useState({ x: 0, y: 0 });
   const [contactHover, setContactHover] = useState(false);
+  const featuredProjectIds = new Set([0, 3, 9]); // JAYU, Bruin Bite, Project Montgomery
+  const featuredProjects = Object.entries(projectDetails).filter(([id]) =>
+    featuredProjectIds.has(Number(id))
+  );
+  const featuredResearchConferences = new Set([
+    "Targeting International Conference on Learning Representations (ICLR), 2026", // Stanford project
+    "Targeting International Conference on Robotics and Automation (ICRA), 2026", // In-progress UCLA project
+    "Robotics: Science and Systems (RSS) Workshop FM4RoboPlan, 2025", // Gaze project (keep this version)
+    "IEEE Southwest Symposium on Image Analysis and Interpretation (SSIAI), 2024", // Swimmer pose optimization
+  ]);
+  const featuredResearch = researchData.filter((paper) =>
+    featuredResearchConferences.has(paper.conference)
+  );
+  const featuredExperienceCompanies = new Set([
+    "Google",
+    "Amazon Prime Video Studios",
+    "UCLA Daily Bruin",
+  ]);
+  const featuredExperiences = experienceData.experiences.filter((exp) =>
+    featuredExperienceCompanies.has(exp.company)
+  );
 
   const handleDoubleClick = () => {
     setUseResearchPhoto(!useResearchPhoto);
@@ -155,7 +176,7 @@ const PublicHome = () => {
             <section id="projects" className="scroll-mt-24">
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Selected Work</h2>
               <div className="space-y-8">
-                {Object.entries(projectDetails).map(([id, project]) => {
+                {featuredProjects.map(([id, project]) => {
                   const codeLink = project.links?.github && { type: "code", href: project.links.github };
                   const paperHref = project.links?.paper || project.links?.article;
                   const paperLink = paperHref && { type: "paper", href: paperHref };
@@ -241,7 +262,7 @@ const PublicHome = () => {
             >
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Research</h2>
               <div className="space-y-8">
-                {researchData.map((paper, idx) => {
+                {featuredResearch.map((paper, idx) => {
                   const codeLink = paper.code && { type: "code", href: paper.code };
                   const paperLink = paper.pdf && { type: "paper", href: paper.pdf };
                   const moreLink = paper.website && { type: "more", href: paper.website };
@@ -329,7 +350,7 @@ const PublicHome = () => {
             >
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Experience</h2>
               <div className="space-y-8">
-                {experienceData.experiences.map((exp) => (
+                {featuredExperiences.map((exp) => (
                   <div
                     key={exp.id}
                     className="group flex flex-col md:flex-row gap-6 items-start py-8"
@@ -363,7 +384,7 @@ const PublicHome = () => {
               <div className="flex justify-center pt-1.5">
                 <button
                   type="button"
-                  onClick={() => navigate("/experience")}
+                  onClick={() => navigate("/work-history")}
                   className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
                 >
                   View all <ArrowUpRight size={16} />

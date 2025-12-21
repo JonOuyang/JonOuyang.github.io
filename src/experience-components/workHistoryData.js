@@ -3,9 +3,12 @@
 import { contributorsData } from "./contributors.js";
 import { experienceData } from "./experiences.js";
 import { extracurricularData } from "./extracurriculars.js";
-const sweResumePdf = "/resumes/SWE/Jonathan_Ouyang_Resume.pdf";
-const mlResumePdf = "/resumes/ML/Jonathan_Ouyang_Resume.pdf";
-const cvResumePdf = "/resumes/CV/Jonathan_Ouyang_CV.pdf";
+
+// Use Vite base URL so PDFs resolve correctly in subpath deployments
+const buildPublicPath = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const sweResumePdf = buildPublicPath("resumes/SWE/Jonathan_Ouyang_Resume.pdf");
+const mlResumePdf = buildPublicPath("resumes/ML/Jonathan_Ouyang_Resume.pdf");
+const cvResumePdf = buildPublicPath("resumes/CV/Jonathan_Ouyang_CV.pdf");
 
 const contributorsRaw = `export const contributorsData = ${JSON.stringify(contributorsData, null, 2)};`;
 const experiencesRaw = `export const experienceData = ${JSON.stringify(experienceData, null, 2)};`;
@@ -64,11 +67,11 @@ export const workHistoryData = {
       date: "1 week ago"
     },
     {
-      name: "CV Resume",
+      name: "CV",
       actualName: "Jonathan_Ouyang_CV.pdf",
       type: "pdf",
       file: cvResumePdf,
-      msg: "Computer vision resume",
+      msg: "Curriculum vitae",
       date: "1 week ago"
     }
   ],

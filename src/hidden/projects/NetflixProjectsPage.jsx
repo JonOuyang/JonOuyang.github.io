@@ -92,7 +92,7 @@ const HeroSection = ({ hero }) => {
               className="w-full h-full object-cover"
               style={{
                 position: 'absolute',
-                top: '0',
+                top: '-40px',
                 left: `${videoOffsetPercent}%`,
                 width: '177.77vh',
                 height: 'calc(100% + 100px)',
