@@ -75,7 +75,7 @@ const App = () => {
             </Suspense>
          </main>
         } />
-        <Route path="/projects/:projectId" element={
+        <Route path="/projects/:projectSlug" element={
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>

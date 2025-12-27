@@ -1,0 +1,140 @@
+{
+  "articles": [
+    {
+      "id": 0,
+      "slug": "jayu",
+      "title": "JAYU: Gemini Computer Use Agent",
+      "subtitle": "A vision-language agent capable of controlling desktop environments to perform complex, multi-step tasks with human-level reliability.",
+      "date": "Nov 18, 2024",
+      "readTime": "12 min read",
+      "heroImage": "https://ai.google.dev/images/winners/jayu.jpg",
+      "heroCaption": "Figure 1: JAYU Agent identifying UI elements and executing a complex booking task.",
+      "links": {
+        "github": "https://github.com/jonouyang/jayu",
+        "youtube": "https://youtube.com",
+        "devpost": "https://devpost.com",
+        "paper": "#",
+        "article": "https://ai.google.dev/competition/projects/jayu"
+      }
+    },
+    {
+      "id": 1,
+      "slug": "sabre",
+      "title": "SABRE: Shared Autonomy for Battlefield Response",
+      "subtitle": "An autonomous drone coordination system for battlefield awareness and tactical response.",
+      "date": "Oct 2024",
+      "readTime": "8 min read",
+      "heroImage": "/assets/images/sabre.jpg",
+      "heroCaption": "Figure 1: SABRE drone swarm coordination system.",
+      "links": {
+        "github": "#",
+        "youtube": "#"
+      }
+    },
+    {
+      "id": 2,
+      "slug": "leviathan",
+      "title": "LEVIATHAN: AI Co-Pilot for Smart Fishing",
+      "subtitle": "Bringing big insights no matter the crew size. Your AI co-pilot for commercial and recreational fishing.",
+      "date": "Sep 2024",
+      "readTime": "6 min read",
+      "heroImage": "/assets/images/leviathan.jpg",
+      "heroCaption": "Figure 1: LEVIATHAN marine analytics dashboard.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 3,
+      "slug": "bruin-bite",
+      "title": "Bruin Bite: UCLA Dining Companion",
+      "subtitle": "Find and review the best dining halls and food spots on UCLA campus with a clean, student-first UI.",
+      "date": "Aug 2024",
+      "readTime": "5 min read",
+      "heroImage": "https://wp.dailybruin.com/images/2024/09/web.regissue.quad_.diningplancritiques.file_.jpg",
+      "heroCaption": "Figure: Student-first views of UCLA dining halls and menus.",
+      "links": {
+        "website": "#"
+      }
+    },
+    {
+      "id": 4,
+      "slug": "sir-syncs-a-lot",
+      "title": "Sir Syncs A Lot: Phone-to-Desktop Control",
+      "subtitle": "Control your computer from your phone as an extension of a computer-use agent.",
+      "date": "Jul 2024",
+      "readTime": "4 min read",
+      "heroImage": "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "heroCaption": "Figure: Remote control surface driving desktop input.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 5,
+      "slug": "berry-tongue",
+      "title": "Berry Tongue: AI Language Companion",
+      "subtitle": "AI-powered language learning Chrome extension that surfaces vocabulary in context.",
+      "date": "Jun 2024",
+      "readTime": "4 min read",
+      "heroImage": "https://holdenfg.org/wp-content/uploads/2021/03/alex-ushakoff-6MynOBZgig0-unsplash-1920x1280.jpg.webp",
+      "heroCaption": "Figure: In-page overlays highlighting vocabulary.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 6,
+      "slug": "ucla-course-planner",
+      "title": "UCLA Course Planner",
+      "subtitle": "Plan your UCLA courses with ease using this intuitive web app.",
+      "date": "Jun 2024",
+      "readTime": "4 min read",
+      "heroImage": "https://www.mccormick.northwestern.edu/images/news/2022/02/undergraduate-launches-course-planning-web-application-header.jpg",
+      "heroCaption": "Figure: Course planning dashboard.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 7,
+      "slug": "project-oliver",
+      "title": "Project Oliver",
+      "subtitle": "RAG Chatbot to answer questions by citing UCLA Daily Bruin Newspaper articles.",
+      "date": "Jun 2024",
+      "readTime": "3 min read",
+      "heroImage": "https://hips.hearstapps.com/hmg-prod/images/small-fluffy-dog-breeds-maltipoo-663009b6293cc.jpg?crop=0.668xw:1.00xh;0.143xw,0",
+      "heroCaption": "Figure: Oliver bot with document citations.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 8,
+      "slug": "persistence",
+      "title": "Persistence",
+      "subtitle": "AI powered to do list, task manager, and reminder web/mobile app.",
+      "date": "May 2024",
+      "readTime": "4 min read",
+      "heroImage": "https://images.squarespace-cdn.com/content/v1/5e6a7ab5992a417f3a08b6a4/c1e0bf5b-3c3b-43cf-8a55-4703e95495a3/iStock-1473980728.jpg",
+      "heroCaption": "Figure: Productivity assistant UI.",
+      "links": {
+        "github": "#"
+      }
+    },
+    {
+      "id": 9,
+      "slug": "project-montgomery",
+      "title": "Project Montgomery",
+      "subtitle": "Math and physics animation generator for students and educators.",
+      "date": "Apr 2024",
+      "readTime": "5 min read",
+      "heroImage": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
+      "heroCaption": "Figure: Generated animation preview.",
+      "links": {
+        "github": "#",
+        "article": "https://github.com/JonOuyang/CalHacks-Project"
+      }
+    }
+  ]
+}

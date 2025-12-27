@@ -10,6 +10,7 @@ import {
   Youtube,
   Phone,
 } from "lucide-react";
+import { projectSlugFromTitle } from "../utils/projectSlug";
 
 const PublicHome = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const PublicHome = () => {
   const contactRef = useRef(null);
   const [contactMouse, setContactMouse] = useState({ x: 0, y: 0 });
   const [contactHover, setContactHover] = useState(false);
-  const [projectDetailsData, setProjectDetailsData] = useState({});
+  const [projectIndex, setProjectIndex] = useState([]);
   const [researchPapers, setResearchPapers] = useState([]);
   const [experiencesData, setExperiencesData] = useState({ experiences: [], branches: {} });
   const headshotUrl = "/assets/images/researchheadshot.jpg";
@@ -29,14 +30,14 @@ const PublicHome = () => {
     const loadAll = async () => {
       try {
         const [projResp, researchResp, expResp] = await Promise.all([
-          fetch("/data/projectDetails.json"),
+          fetch("/articles/index.json"),
           fetch("/data/researchData.json"),
           fetch("/data/experiences.json")
         ]);
 
         if (projResp.ok) {
           const projJson = await projResp.json();
-          setProjectDetailsData(projJson.projectDetails || {});
+          setProjectIndex(projJson.articles || []);
         }
         if (researchResp.ok) {
           const researchJson = await researchResp.json();
@@ -57,8 +58,8 @@ const PublicHome = () => {
     loadAll();
   }, []);
   const featuredProjectIds = new Set([0, 3, 9]); // JAYU, Bruin Bite, Project Montgomery
-  const featuredProjects = Object.entries(projectDetailsData).filter(([id]) =>
-    featuredProjectIds.has(Number(id))
+  const featuredProjects = projectIndex.filter((project) =>
+    featuredProjectIds.has(project.id)
   );
   const featuredResearchConferences = new Set([
     "Targeting International Conference on Learning Representations (ICLR), 2026", // Stanford project
@@ -209,7 +210,7 @@ const PublicHome = () => {
             <section id="projects" className="scroll-mt-24">
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Selected Work</h2>
               <div className="space-y-8">
-                {featuredProjects.map(([id, project]) => {
+                {featuredProjects.map((project) => {
                   const codeLink = project.links?.github && { type: "code", href: project.links.github };
                   const paperHref = project.links?.paper || project.links?.article;
                   const paperLink = paperHref && { type: "paper", href: paperHref };
@@ -223,8 +224,8 @@ const PublicHome = () => {
 
                   return (
                     <div
-                      key={id}
-                      onClick={() => navigate(`/projects/${id}`)}
+                      key={project.slug || project.id}
+                      onClick={() => navigate(`/projects/${project.slug || projectSlugFromTitle(project.title)}`)}
                       className="group flex flex-col md:flex-row gap-6 items-start py-8 cursor-pointer"
                     >
                         <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">

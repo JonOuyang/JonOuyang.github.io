@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ArrowUpRight
 } from 'lucide-react';
+import { projectSlugFromTitle } from '../../utils/projectSlug';
 
 const getYouTubeVideoId = (url) => {
   if (!url) return null;
@@ -129,7 +130,7 @@ const HeroSection = ({ hero }) => {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/projects/0')}
+            onClick={() => navigate(`/projects/${projectSlugFromTitle('JAYU')}`)}
             className="flex items-center gap-2.5 px-7 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl hover:scale-[1.02]"
           >
             <ArrowUpRight size={18} />
@@ -178,7 +179,7 @@ const SpotlightCard = ({ project, globalMousePos }) => {
   }, [globalMousePos]);
 
   const handleClick = () => {
-    navigate(`/projects/${project.id}`);
+    navigate(`/projects/${projectSlugFromTitle(project.title)}`);
   };
 
   return (

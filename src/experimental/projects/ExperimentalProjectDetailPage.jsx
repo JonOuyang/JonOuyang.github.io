@@ -9,6 +9,7 @@ import {
   ArrowLeft,
   PlayCircle
 } from 'lucide-react';
+import { loadArticleById } from '../../utils/articleLoader';
 
 const ExperimentalProjectDetailPage = () => {
   const { projectId } = useParams();
@@ -20,14 +21,10 @@ const ExperimentalProjectDetailPage = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const [expDetailResp, mainDetailResp] = await Promise.all([
-          fetch("/data/experimentalProjectDetails.json"),
-          fetch("/data/projectDetails.json")
-        ]);
+        const expDetailResp = await fetch("/data/experimentalProjectDetails.json");
         const expJson = expDetailResp.ok ? await expDetailResp.json() : { experimentalProjectDetails: {} };
-        const mainJson = mainDetailResp.ok ? await mainDetailResp.json() : { projectDetails: {} };
         const refId = expJson.experimentalProjectDetails?.[projectId]?.ref ?? projectId;
-        const detail = mainJson.projectDetails?.[refId];
+        const detail = await loadArticleById(refId);
         setProject(detail || null);
       } catch (err) {
         console.error("Failed to load experimental project detail", err);

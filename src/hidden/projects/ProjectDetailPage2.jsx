@@ -9,9 +9,10 @@ import {
   ArrowLeft,
   PlayCircle
 } from 'lucide-react';
+import { loadArticleById, loadArticleBySlug } from '../../utils/articleLoader';
 
 const ProjectDetailPage = () => {
-  const { projectId } = useParams();
+  const { projectSlug } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [activeSection, setActiveSection] = useState("");
@@ -20,18 +21,26 @@ const ProjectDetailPage = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const resp = await fetch("/data/projectDetails.json");
-        if (!resp.ok) throw new Error("project detail fetch failed");
-        const json = await resp.json();
-        const detail = json.projectDetails?.[projectId];
-        setProject(detail || null);
+        if (!projectSlug) {
+          setProject(null);
+          return;
+        }
+
+        if (/^\\d+$/.test(projectSlug)) {
+          const article = await loadArticleById(projectSlug);
+          setProject(article);
+          return;
+        }
+
+        const article = await loadArticleBySlug(projectSlug);
+        setProject(article);
       } catch (err) {
         console.error("Failed to load project details", err);
         setProject(null);
       }
     };
     load();
-  }, [projectId]);
+  }, [projectSlug]);
 
   // Scroll Spy Logic
   useEffect(() => {

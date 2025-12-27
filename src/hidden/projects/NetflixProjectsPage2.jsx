@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ArrowUpRight
 } from 'lucide-react';
+import { projectSlugFromTitle } from '../../utils/projectSlug';
 
 const DEFAULT_HERO = {
   id: 0,
@@ -19,6 +20,7 @@ const DEFAULT_HERO = {
   video: 'https://www.youtube.com/watch?v=G4RNny8s8Vw',
   ranking: 'Winner of the 2024 Google Gemini API Developer Competition'
 };
+const HERO_PROJECT_TITLE = 'JAYU';
 
 const FULLSTACK_DEFAULT = [
   {
@@ -234,7 +236,7 @@ const HeroSection = ({ hero }) => {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigate('/projects2/0')}
+            onClick={() => navigate(`/projects/${projectSlugFromTitle(HERO_PROJECT_TITLE)}`)}
             className="flex items-center gap-2.5 px-7 py-3 bg-white text-black rounded-full hover:bg-white/90 transition-all duration-200 font-semibold text-base shadow-lg hover:shadow-xl hover:scale-[1.02]"
           >
             <ArrowUpRight size={18} />
@@ -283,7 +285,7 @@ const SpotlightCard = ({ project, globalMousePos }) => {
   }, [globalMousePos]);
 
   const handleClick = () => {
-    navigate(`/projects2/${project.id}`);
+    navigate(`/projects/${projectSlugFromTitle(project.title)}`);
   };
 
   return (
