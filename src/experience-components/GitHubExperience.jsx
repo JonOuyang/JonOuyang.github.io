@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllFolders, getRootFiles } from "./workHistoryData";
 
 // --- CONFIGURATION ---
 const LANE_WIDTH = 50; 
@@ -202,13 +201,17 @@ const getPath = (fromX, fromY, toX, toY) => {
             L ${toX} ${toY}`;
 };
 
-const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
+const GitHubExperience = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("work");
   const [activeBranch, setActiveBranch] = useState("all"); 
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const [expandedNodeId, setExpandedNodeId] = useState(null);
   const dropdownRef = useRef(null);
+  const [workData, setWorkData] = useState({ experiences: [], branches: {} });
+  const [extracurricularData, setExtracurricularData] = useState({ experiences: [], branches: {} });
+  const [contributors, setContributors] = useState([]);
+  const [workHistory, setWorkHistory] = useState(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -218,6 +221,40 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Load data from public/data
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [workResp, extraResp, contribResp, whResp] = await Promise.all([
+          fetch("/data/experiences.json"),
+          fetch("/data/extracurriculars.json"),
+          fetch("/data/contributors.json"),
+          fetch("/data/workHistory.json")
+        ]);
+
+        if (workResp.ok) {
+          const json = await workResp.json();
+          setWorkData({ experiences: json.experiences || [], branches: json.branches || {} });
+        }
+        if (extraResp.ok) {
+          const json = await extraResp.json();
+          setExtracurricularData({ experiences: json.experiences || [], branches: json.branches || {} });
+        }
+        if (contribResp.ok) {
+          const json = await contribResp.json();
+          setContributors(json.contributors || []);
+        }
+        if (whResp.ok) {
+          const json = await whResp.json();
+          setWorkHistory(json);
+        }
+      } catch (err) {
+        console.error("Failed to load experience data", err);
+      }
+    };
+    load();
   }, []);
 
   const currentData = activeTab === "work" ? workData : extracurricularData;
@@ -263,6 +300,25 @@ const GitHubExperience = ({ workData, extracurricularData, contributors }) => {
   const selectBranch = (key) => {
     setActiveBranch(key);
     setBranchDropdownOpen(false);
+  };
+
+  const getAllFolders = () => {
+    if (!workHistory?.folders) return [];
+    return Object.values(workHistory.folders).map(folder => ({
+      ...folder,
+      readme: workHistory.javascriptReadme
+    }));
+  };
+
+  const getRootFiles = () => {
+    if (!workHistory?.rootFiles) return [];
+    // inject README content
+    return workHistory.rootFiles.map(file => {
+      if (file.name === "README.md") {
+        return { ...file, content: workHistory.mainReadme, type: "markdown" };
+      }
+      return file;
+    });
   };
 
   const allFolders = getAllFolders();

@@ -1,8 +1,6 @@
 // src/pages/ResearchPage.jsx
 
-import React from 'react';
-import { researchData } from '../research-components/researchData'; // Adjust path if needed
-import researchHeadshot from "../assets/images/researchheadshot.jpg";
+import React, { useEffect, useMemo, useState } from 'react';
 
 // A helper function to parse authors and highlight your name
 const Author = ({ authors }) => {
@@ -73,15 +71,35 @@ const PublicationItem = ({ paper }) => (
 
 // The main Research Page component
 const ResearchPage = () => {
-  const papersByYear = researchData.reduce((acc, paper) => {
-    const year = paper.year;
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(paper);
-    return acc;
-  }, {});
-  
+  const [papers, setPapers] = useState([]);
+  const headshotUrl = "/assets/images/researchheadshot.jpg";
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const resp = await fetch("/data/researchData.json");
+        if (!resp.ok) throw new Error("research fetch failed");
+        const json = await resp.json();
+        setPapers(json.research || []);
+      } catch (err) {
+        console.error("Failed to load research data", err);
+        setPapers([]);
+      }
+    };
+    load();
+  }, []);
+
+  const papersByYear = useMemo(() => {
+    return papers.reduce((acc, paper) => {
+      const year = paper.year;
+      if (!acc[year]) {
+        acc[year] = [];
+      }
+      acc[year].push(paper);
+      return acc;
+    }, {});
+  }, [papers]);
+
   const sortedYears = Object.keys(papersByYear).sort((a, b) => b - a);
 
   return (
@@ -93,7 +111,7 @@ const ResearchPage = () => {
             <div className="flex flex-col items-center lg:items-start">
               <div className="w-32 h-32 rounded-full overflow-hidden mb-4 shadow-md border border-[#27272A]">
                 <img
-                  src={researchHeadshot}
+                  src={headshotUrl}
                   alt="Jonathan Ouyang"
                   className="w-full h-full object-cover scale-[3.5] translate-x-[-5px] translate-y-[-20px]"
                 />

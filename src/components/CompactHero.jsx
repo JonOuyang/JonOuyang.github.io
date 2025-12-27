@@ -1,8 +1,8 @@
 import React from 'react';
 import { Github, Linkedin, Twitter } from 'lucide-react';
-import researchHeadshot from "../assets/images/researchheadshot.jpg";
 
 const CompactHero = () => {
+  const headshotUrl = "/assets/images/researchheadshot.jpg";
   return (
     <section className="w-full max-w-3xl mx-auto pt-32 pb-16 px-6">
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8">
@@ -10,7 +10,7 @@ const CompactHero = () => {
         <div className="flex-shrink-0">
           <div className="w-24 h-24 rounded-full overflow-hidden border border-zinc-800 shadow-2xl">
             <img 
-              src={researchHeadshot} 
+              src={headshotUrl} 
               alt="Jonathan Ouyang" 
               className="w-full h-full object-cover"
             />

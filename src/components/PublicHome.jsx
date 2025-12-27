@@ -10,10 +10,6 @@ import {
   Youtube,
   Phone,
 } from "lucide-react";
-import { projectDetails } from "../hidden/projects/projectDetailData";
-import { researchData } from "../research-components/researchData";
-import { experienceData } from "../experience-components/experiences";
-import researchHeadshot from "../assets/images/researchheadshot.jpg";
 
 const PublicHome = () => {
   const navigate = useNavigate();
@@ -23,8 +19,45 @@ const PublicHome = () => {
   const contactRef = useRef(null);
   const [contactMouse, setContactMouse] = useState({ x: 0, y: 0 });
   const [contactHover, setContactHover] = useState(false);
+  const [projectDetailsData, setProjectDetailsData] = useState({});
+  const [researchPapers, setResearchPapers] = useState([]);
+  const [experiencesData, setExperiencesData] = useState({ experiences: [], branches: {} });
+  const headshotUrl = "/assets/images/researchheadshot.jpg";
+
+  // Load data from public/data
+  useEffect(() => {
+    const loadAll = async () => {
+      try {
+        const [projResp, researchResp, expResp] = await Promise.all([
+          fetch("/data/projectDetails.json"),
+          fetch("/data/researchData.json"),
+          fetch("/data/experiences.json")
+        ]);
+
+        if (projResp.ok) {
+          const projJson = await projResp.json();
+          setProjectDetailsData(projJson.projectDetails || {});
+        }
+        if (researchResp.ok) {
+          const researchJson = await researchResp.json();
+          setResearchPapers(researchJson.research || []);
+        }
+        if (expResp.ok) {
+          const expJson = await expResp.json();
+          setExperiencesData({
+            experiences: expJson.experiences || [],
+            branches: expJson.branches || {}
+          });
+        }
+      } catch (err) {
+        console.error("Failed loading public data", err);
+      }
+    };
+
+    loadAll();
+  }, []);
   const featuredProjectIds = new Set([0, 3, 9]); // JAYU, Bruin Bite, Project Montgomery
-  const featuredProjects = Object.entries(projectDetails).filter(([id]) =>
+  const featuredProjects = Object.entries(projectDetailsData).filter(([id]) =>
     featuredProjectIds.has(Number(id))
   );
   const featuredResearchConferences = new Set([
@@ -33,7 +66,7 @@ const PublicHome = () => {
     "Robotics: Science and Systems (RSS) Workshop FM4RoboPlan, 2025", // Gaze project (keep this version)
     "IEEE Southwest Symposium on Image Analysis and Interpretation (SSIAI), 2024", // Swimmer pose optimization
   ]);
-  const featuredResearch = researchData.filter((paper) =>
+  const featuredResearch = researchPapers.filter((paper) =>
     featuredResearchConferences.has(paper.conference)
   );
   const featuredExperienceCompanies = new Set([
@@ -41,7 +74,7 @@ const PublicHome = () => {
     "Amazon Prime Video Studios",
     "UCLA Daily Bruin",
   ]);
-  const featuredExperiences = experienceData.experiences.filter((exp) =>
+  const featuredExperiences = experiencesData.experiences.filter((exp) =>
     featuredExperienceCompanies.has(exp.company)
   );
 
@@ -135,7 +168,7 @@ const PublicHome = () => {
                   onDoubleClick={handleDoubleClick}
                 >
                   <img
-                    src={useResearchPhoto ? researchHeadshot : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+                    src={useResearchPhoto ? headshotUrl : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
                     alt="Jonathan Ouyang"
                     className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
                   />

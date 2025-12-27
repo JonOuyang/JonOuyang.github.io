@@ -1,11 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appleImg, bagImg } from "../utils";
-import { publicNavItems, experimentalNavItems } from "../constants";
 
 const Navbar = () => {
   const [mode, setMode] = useState("public"); // "public" | "experimental"
-  const navItems = mode === "experimental" ? experimentalNavItems : publicNavItems;
+  const [publicNav, setPublicNav] = useState([]);
+  const [experimentalNav, setExperimentalNav] = useState([]);
+
+  useEffect(() => {
+    const loadNav = async () => {
+      try {
+        const resp = await fetch("/data/nav.json");
+        if (!resp.ok) throw new Error("nav fetch failed");
+        const json = await resp.json();
+        setPublicNav(json.publicNavItems || []);
+        setExperimentalNav(json.experimentalNavItems || []);
+      } catch (err) {
+        console.error("Failed to load nav.json", err);
+        // Minimal fallback to keep navigation working
+        setPublicNav([
+          { name: "Home", path: "/" },
+          { name: "Work History", path: "/work-history" },
+          { name: "Projects", path: "/projects" },
+          { name: "Research", path: "/research" },
+        ]);
+        setExperimentalNav([
+          { name: "Projects (Exp)", path: "/experimental-projects" },
+          { name: "WIP", path: "/wip" },
+        ]);
+      }
+    };
+    loadNav();
+  }, []);
+
+  const navItems = mode === "experimental" ? experimentalNav : publicNav;
 
   const toggleMode = () => {
     setMode((prev) => (prev === "public" ? "experimental" : "public"));

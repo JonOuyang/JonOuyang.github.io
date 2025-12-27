@@ -1,0 +1,234 @@
+{
+  "projectDetails": {
+    "0": {
+      "title": "JAYU: Gemini Computer Use Agent",
+      "subtitle": "A vision-language agent capable of controlling desktop environments to perform complex, multi-step tasks with human-level reliability.",
+      "date": "Nov 18, 2024",
+      "readTime": "12 min read",
+      "authors": [
+        { "name": "Jonathan Ouyang", "role": "Lead Researcher", "avatar": "/api/placeholder/40/40" },
+        { "name": "Yuchen Cui", "role": "Advisor, UCLA", "avatar": "/api/placeholder/40/40" }
+      ],
+      "links": {
+        "github": "https://github.com/jonouyang/jayu",
+        "youtube": "https://youtube.com",
+        "devpost": "https://devpost.com",
+        "paper": "#",
+        "article": "https://ai.google.dev/competition/projects/jayu"
+      },
+      "heroImage": "https://ai.google.dev/images/winners/jayu.jpg",
+      "heroCaption": "Figure 1: JAYU Agent identifying UI elements and executing a complex booking task.",
+      "sections": [
+        { "id": "intro", "title": "Introduction" },
+        { "id": "architecture", "title": "System Architecture" },
+        { "id": "vision", "title": "Vision-Language Integration" },
+        { "id": "performance", "title": "Performance Benchmarks" },
+        { "id": "future", "title": "Future Work" }
+      ],
+      "content": {
+        "intro": {
+          "paragraphs": [
+            "Computer use is a fundamental capability for autonomous agents. While LLMs have demonstrated remarkable reasoning abilities, translating that reasoning into precise mouse movements, clicks, and keystrokes remains a significant challenge.",
+            "JAYU introduces a novel architecture that combines vision-language models with a specialized action space, allowing it to navigate complex GUIs with 94% accuracy on standard benchmarks."
+          ]
+        },
+        "architecture": {
+          "paragraphs": [
+            "The core of JAYU relies on a dual-stream processing unit. The visual stream analyzes the screen state at 30fps, while the reasoning stream plans long-horizon tasks."
+          ]
+        },
+        "vision": {
+          "paragraphs": [
+            "By leveraging the Gemini 1.5 Pro API, we are able to process high-resolution screenshots natively. We specifically fine-tuned the model on a dataset of 10,000 GUI interactions to improve coordinate prediction accuracy."
+          ]
+        },
+        "performance": {
+          "paragraphs": [
+            "We tested JAYU against state-of-the-art models in the MiniWob++ environment."
+          ]
+        },
+        "future": {
+          "paragraphs": [
+            "Future work will focus on expanding JAYU's capabilities to mobile environments and improving multi-modal reasoning."
+          ]
+        }
+      }
+    },
+    "1": {
+      "title": "SABRE: Shared Autonomy for Battlefield Response",
+      "subtitle": "An autonomous drone coordination system for battlefield awareness and tactical response.",
+      "date": "Oct 2024",
+      "readTime": "8 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Lead Developer", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#", "youtube": "#" },
+      "heroImage": "/assets/images/sabre.jpg",
+      "heroCaption": "Figure 1: SABRE drone swarm coordination system.",
+      "sections": [
+        { "id": "intro", "title": "Introduction" },
+        { "id": "system", "title": "System Overview" }
+      ],
+      "content": {
+        "intro": {
+          "paragraphs": [
+            "SABRE (Shared Autonomy for Battlefield Response and Engagement) is an autonomous drone coordination system designed for tactical awareness.",
+            "The system leverages ROS2 and computer vision to enable real-time coordination between multiple UAVs."
+          ]
+        },
+        "system": { "paragraphs": ["Content coming soon..."] }
+      }
+    },
+    "2": {
+      "title": "LEVIATHAN: AI Co-Pilot for Smart Fishing",
+      "subtitle": "Bringing big insights no matter the crew size. Your AI co-pilot for commercial and recreational fishing.",
+      "date": "Sep 2024",
+      "readTime": "6 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Developer", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "/assets/images/leviathan.jpg",
+      "heroCaption": "Figure 1: LEVIATHAN marine analytics dashboard.",
+      "sections": [{ "id": "intro", "title": "Introduction" }],
+      "content": {
+        "intro": {
+          "paragraphs": [
+            "LEVIATHAN is an AI-powered fishing assistant that helps crews of any size make data-driven decisions on the water.",
+            "Content coming soon..."
+          ]
+        }
+      }
+    },
+    "3": {
+      "title": "Bruin Bite: UCLA Dining Companion",
+      "subtitle": "Find and review the best dining halls and food spots on UCLA campus with a clean, student-first UI.",
+      "date": "Aug 2024",
+      "readTime": "5 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "website": "#" },
+      "heroImage": "https://wp.dailybruin.com/images/2024/09/web.regissue.quad_.diningplancritiques.file_.jpg",
+      "heroCaption": "Figure: Student-first views of UCLA dining halls and menus.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "features", "title": "Features" },
+        { "id": "stack", "title": "Stack" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["Bruin Bite is a lightweight discovery tool for UCLA dining."] },
+        "features": { "paragraphs": ["Menu browsing, ratings, and saved favorites with minimal taps."] },
+        "stack": { "paragraphs": ["React front-end with simple REST fetching; deploy-ready static assets."] }
+      }
+    },
+    "4": {
+      "title": "Sir Syncs A Lot: Phone-to-Desktop Control",
+      "subtitle": "Control your computer from your phone as an extension of a computer-use agent.",
+      "date": "Jul 2024",
+      "readTime": "4 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "heroCaption": "Figure: Remote control surface driving desktop input.",
+      "sections": [
+        { "id": "intro", "title": "Introduction" },
+        { "id": "control", "title": "Control Surface" },
+        { "id": "future", "title": "Future Work" }
+      ],
+      "content": {
+        "intro": { "paragraphs": ["Phone gestures to desktop actions for quick remote control."] },
+        "control": { "paragraphs": ["WebSocket layer routes gestures to a local agent."] },
+        "future": { "paragraphs": ["Next steps include secure pairing and haptic feedback for confirmations."] }
+      }
+    },
+    "5": {
+      "title": "Berry Tongue: AI Language Companion",
+      "subtitle": "AI-powered language learning Chrome extension that surfaces vocabulary in context.",
+      "date": "Jun 2024",
+      "readTime": "4 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "https://holdenfg.org/wp-content/uploads/2021/03/alex-ushakoff-6MynOBZgig0-unsplash-1920x1280.jpg.webp",
+      "heroCaption": "Figure: In-page overlays highlighting vocabulary.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "nlp", "title": "NLP Flow" },
+        { "id": "results", "title": "Results" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["Berry Tongue injects contextual hints directly into webpages while you browse."] },
+        "nlp": { "paragraphs": ["Leverages Gemini API and lightweight page parsing."] },
+        "results": { "paragraphs": ["Improves vocab retention with in-context prompts."] }
+      }
+    },
+    "6": {
+      "title": "UCLA Course Planner",
+      "subtitle": "Plan your UCLA courses with ease using this intuitive web app.",
+      "date": "Jun 2024",
+      "readTime": "4 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "https://www.mccormick.northwestern.edu/images/news/2022/02/undergraduate-launches-course-planning-web-application-header.jpg",
+      "heroCaption": "Figure: Course planning dashboard.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "features", "title": "Features" },
+        { "id": "stack", "title": "Stack" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["A responsive planner for UCLA students."] },
+        "features": { "paragraphs": ["Course search, quarter planning, and export."] },
+        "stack": { "paragraphs": ["Built with Go backend, Redis cache, JWT auth."] }
+      }
+    },
+    "7": {
+      "title": "Project Oliver",
+      "subtitle": "RAG Chatbot to answer questions by citing UCLA Daily Bruin Newspaper articles.",
+      "date": "Jun 2024",
+      "readTime": "3 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "https://hips.hearstapps.com/hmg-prod/images/small-fluffy-dog-breeds-maltipoo-663009b6293cc.jpg?crop=0.668xw:1.00xh;0.143xw,0",
+      "heroCaption": "Figure: Oliver bot with document citations.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "stack", "title": "Stack" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["Retrieval-augmented chatbot grounded on Daily Bruin content."] },
+        "stack": { "paragraphs": ["Gemini + Pinecone + Python backend."] }
+      }
+    },
+    "8": {
+      "title": "Persistence",
+      "subtitle": "AI powered to do list, task manager, and reminder web/mobile app.",
+      "date": "May 2024",
+      "readTime": "4 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#" },
+      "heroImage": "https://images.squarespace-cdn.com/content/v1/5e6a7ab5992a417f3a08b6a4/c1e0bf5b-3c3b-43cf-8a55-4703e95495a3/iStock-1473980728.jpg",
+      "heroCaption": "Figure: Productivity assistant UI.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "stack", "title": "Stack" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["Task manager with AI assistance and reminders."] },
+        "stack": { "paragraphs": ["Go, Redis, gRPC services with mobile/web clients."] }
+      }
+    },
+    "9": {
+      "title": "Project Montgomery",
+      "subtitle": "Math and physics animation generator for students and educators.",
+      "date": "Apr 2024",
+      "readTime": "5 min read",
+      "authors": [{ "name": "Jonathan Ouyang", "role": "Builder", "avatar": "/api/placeholder/40/40" }],
+      "links": { "github": "#", "article": "https://github.com/JonOuyang/CalHacks-Project" },
+      "heroImage": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
+      "heroCaption": "Figure: Generated animation preview.",
+      "sections": [
+        { "id": "overview", "title": "Overview" },
+        { "id": "stack", "title": "Stack" }
+      ],
+      "content": {
+        "overview": { "paragraphs": ["Animation generator for STEM education."] },
+        "stack": { "paragraphs": ["Gemini + Manim Animation Engine."] }
+      }
+    }
+  }
+}

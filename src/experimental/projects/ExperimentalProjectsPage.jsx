@@ -2,12 +2,23 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { experimentalProjectsData } from './experimentalProjectsData';
 import {
   Play,
   ChevronDown,
   ArrowUpRight
 } from 'lucide-react';
+
+const DEFAULT_DATA = {
+  hero: {
+    id: 0,
+    title: "Full-Stack Architecture",
+    description: "JAYU is a computer use agent built using the Google Gemini 1.5 models. It directly interacts with your computer, clicking buttons, typing text, and analyzing context to perform full tasks.",
+    image: "https://i.ytimg.com/vi/G4RNny8s8Vw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBhEE_8-GHJqjDvT4PZniym9ovniw",
+    video: "https://www.youtube.com/watch?v=G4RNny8s8Vw",
+    ranking: "Winner of the 2024 Google Gemini API Developer Competition"
+  },
+  rows: []
+};
 
 const getYouTubeVideoId = (url) => {
   if (!url) return null;
@@ -243,8 +254,25 @@ const TrendingRow = ({ title, items, railPadding, rowIndex = 0 }) => {
 // --- Main Layout ---
 
 const ProjectsPage = () => {
-  const { hero, rows } = experimentalProjectsData;
-  const projects = rows[0]?.items || [];
+  const [data, setData] = useState(DEFAULT_DATA);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const resp = await fetch("/data/experimentalProjectsData.json");
+        if (!resp.ok) throw new Error("exp projects fetch failed");
+        const json = await resp.json();
+        setData(json.experimentalProjectsData || DEFAULT_DATA);
+      } catch (err) {
+        console.error("Failed to load experimental projects data", err);
+        setData(DEFAULT_DATA);
+      }
+    };
+    load();
+  }, []);
+
+  const { hero, rows } = data;
+  const projects = rows?.[0]?.items || [];
   const randomRowA = useMemo(() => [...projects].sort(() => Math.random() - 0.5), [projects]);
   const randomRowB = useMemo(() => [...projects].sort(() => Math.random() - 0.5), [projects]);
   const railPadding = '5%';

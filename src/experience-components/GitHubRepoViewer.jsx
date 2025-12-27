@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FileViewer from "./FileViewer";
-import { workHistoryData, getFolderByPath, getFileFromFolder, getAllFolders, getRootFiles, getRootFileByName } from "./workHistoryData";
 
 // --- ICONS ---
 const Icons = {
@@ -21,14 +20,118 @@ const GitHubRepoViewer = () => {
   const { folderPath, fileName } = useParams();
 
   const [expandedFolders, setExpandedFolders] = useState({});
+  const [workHistory, setWorkHistory] = useState(null);
+  const [experiences, setExperiences] = useState([]);
+  const [experiencesBranches, setExperiencesBranches] = useState({});
+  const [extracurriculars, setExtracurriculars] = useState([]);
+  const [extracurricularBranches, setExtracurricularBranches] = useState({});
+  const [contributors, setContributors] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [whResp, expResp, extraResp, contribResp] = await Promise.all([
+          fetch("/data/workHistory.json"),
+          fetch("/data/experiences.json"),
+          fetch("/data/extracurriculars.json"),
+          fetch("/data/contributors.json")
+        ]);
+
+        if (whResp.ok) {
+          setWorkHistory(await whResp.json());
+        }
+        if (expResp.ok) {
+          const json = await expResp.json();
+          setExperiences(json.experiences || []);
+          setExperiencesBranches(json.branches || {});
+        }
+        if (extraResp.ok) {
+          const json = await extraResp.json();
+          setExtracurriculars(json.experiences || []);
+          setExtracurricularBranches(json.branches || {});
+        }
+        if (contribResp.ok) {
+          const json = await contribResp.json();
+          setContributors(json.contributors || []);
+        }
+      } catch (err) {
+        console.error("Failed to load work history data", err);
+      }
+    };
+    load();
+  }, []);
+
+  const buildFolderFiles = () => {
+    if (!workHistory?.folders) return {};
+
+    const contributorsRaw = `export const contributorsData = ${JSON.stringify(contributors, null, 2)};`;
+    const experiencesRaw = `export const experienceData = ${JSON.stringify({ experiences, branches: experiencesBranches }, null, 2)};`;
+    const extracurricularsRaw = `export const extracurricularData = ${JSON.stringify({ experiences: extracurriculars, branches: extracurricularBranches }, null, 2)};`;
+
+    const folderEntries = {};
+    Object.entries(workHistory.folders).forEach(([key, folder]) => {
+      if (folder.path === "javascript") {
+        folderEntries[key] = {
+          ...folder,
+          readme: workHistory.javascriptReadme,
+          files: [
+            { ...folder.files[0], content: contributorsRaw },
+            { ...folder.files[1], content: experiencesRaw },
+            { ...folder.files[2], content: extracurricularsRaw }
+          ]
+        };
+      } else {
+        folderEntries[key] = folder;
+      }
+    });
+    return folderEntries;
+  };
+
+  const getRootFiles = () => {
+    if (!workHistory?.rootFiles) return [];
+    return workHistory.rootFiles.map(file => {
+      if (file.name === "README.md") {
+        return { ...file, content: workHistory.mainReadme, type: "markdown" };
+      }
+      return file;
+    });
+  };
+
+  const getFolderByPath = (path) => {
+    const folders = buildFolderFiles();
+    return folders[path] || null;
+  };
+
+  const getFileFromFolder = (folderKey, targetName) => {
+    const folder = getFolderByPath(folderKey);
+    if (!folder) return null;
+    return folder.files.find(f => f.name === targetName) || null;
+  };
+
+  const getRootFileByName = (targetName) => {
+    return getRootFiles().find(f => f.name === targetName) || null;
+  };
+
+  const getAllFolders = () => {
+    return Object.values(buildFolderFiles());
+  };
+
+  const allFolders = getAllFolders();
+  const rootFiles = getRootFiles();
+
+  if (!workHistory) {
+    return (
+      <div style={{ padding: 40, color: '#e6edf3', textAlign: 'center' }}>
+        Loading repository...
+      </div>
+    );
+  }
 
   const isRootView = folderPath === "root";
   const currentFolder = isRootView ? null : getFolderByPath(folderPath);
   const currentFile = fileName
     ? (isRootView ? getRootFileByName(fileName) : getFileFromFolder(folderPath, fileName))
     : null;
-  const allFolders = getAllFolders();
-  const rootFiles = getRootFiles();
 
   useEffect(() => {
     if (folderPath) {

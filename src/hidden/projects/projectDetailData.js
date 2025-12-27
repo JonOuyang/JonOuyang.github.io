@@ -2,9 +2,6 @@
 // All project detail content - text, images, sections, links, etc.
 // Separated from component code for easy editing
 
-import sabreImg from "../../assets/images/sabre.jpg";
-import leviathanImg from "../../assets/images/leviathan.jpg";
-
 export const projectDetails = {
   // Project ID 0 - JAYU (Main hero project)
   0: {
@@ -96,7 +93,7 @@ export const projectDetails = {
       github: "#",
       youtube: "#",
     },
-    heroImage: sabreImg,
+    heroImage: "/assets/images/sabre.jpg",
     heroCaption: "Figure 1: SABRE drone swarm coordination system.",
     sections: [
       { id: "intro", title: "Introduction" },
@@ -129,7 +126,7 @@ export const projectDetails = {
     links: {
       github: "#",
     },
-    heroImage: leviathanImg,
+    heroImage: "/assets/images/leviathan.jpg",
     heroCaption: "Figure 1: LEVIATHAN marine analytics dashboard.",
     sections: [
       { id: "intro", title: "Introduction" },

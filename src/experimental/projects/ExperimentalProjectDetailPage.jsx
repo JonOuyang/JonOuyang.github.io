@@ -9,14 +9,33 @@ import {
   ArrowLeft,
   PlayCircle
 } from 'lucide-react';
-import { getExperimentalProjectDetail } from './experimentalProjectDetailData';
 
 const ExperimentalProjectDetailPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const project = getExperimentalProjectDetail(parseInt(projectId));
+  const [project, setProject] = useState(null);
   const [activeSection, setActiveSection] = useState("");
   const isScrollingRef = useRef(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [expDetailResp, mainDetailResp] = await Promise.all([
+          fetch("/data/experimentalProjectDetails.json"),
+          fetch("/data/projectDetails.json")
+        ]);
+        const expJson = expDetailResp.ok ? await expDetailResp.json() : { experimentalProjectDetails: {} };
+        const mainJson = mainDetailResp.ok ? await mainDetailResp.json() : { projectDetails: {} };
+        const refId = expJson.experimentalProjectDetails?.[projectId]?.ref ?? projectId;
+        const detail = mainJson.projectDetails?.[refId];
+        setProject(detail || null);
+      } catch (err) {
+        console.error("Failed to load experimental project detail", err);
+        setProject(null);
+      }
+    };
+    load();
+  }, [projectId]);
 
   // Scroll Spy Logic
   useEffect(() => {
@@ -59,7 +78,7 @@ const ExperimentalProjectDetailPage = () => {
     }
   };
 
-  if (!project) return <div className="bg-[#0a0a0a] min-h-screen" />;
+  if (!project) return <div className="bg-[#0a0a0a] min-h-screen text-white p-10">Loading project...</div>;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e3e3e3] font-sans selection:bg-blue-500/30">

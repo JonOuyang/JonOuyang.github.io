@@ -13,10 +13,6 @@ const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage
 const ExperimentalProjectsPage = lazy(() => import('./experimental/projects/ExperimentalProjectsPage'));
 const ExperimentalProjectDetailPage = lazy(() => import('./experimental/projects/ExperimentalProjectDetailPage'));
 
-import { experienceData } from './experience-components/experiences';
-import { extracurricularData } from './experience-components/extracurriculars';
-import { contributorsData } from './experience-components/contributors';
-
 const Loading = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px', color: 'white' }}>
     Loading...
@@ -43,11 +39,7 @@ const App = () => {
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <GitHubExperience
-                workData={experienceData}
-                extracurricularData={extracurricularData}
-                contributors={contributorsData}
-              />
+              <GitHubExperience />
             </Suspense>
          </main>
         } />

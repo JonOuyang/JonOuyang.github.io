@@ -1,0 +1,67 @@
+{
+  "mainReadme": "# Work History\n\nThis repository contains my professional timeline visualized as a git graph.\n\n## Structure\n\n- **Javascript/** - Raw JavaScript data files powering the visualization\n- **Resume & Cover Letter PDFs** - Professional documents\n\n## About\n\nToggle branches to explore different career tracks including software engineering, research, and leadership roles.\n",
+  "javascriptReadme": "# Javascript\n\nThis folder contains the raw JavaScript data files that power the Work History visualization.\n\n## Files\n\n- **contributors.js** - Research advisors and collaborators\n- **experiences.js** - Work experience data with branch information\n- **extracurriculars.js** - Extracurricular activities and leadership roles\n",
+  "rootFiles": [
+    {
+      "name": "README.md",
+      "type": "markdown",
+      "msg": "Update README.md",
+      "date": "6 months ago"
+    },
+    {
+      "name": "SWE Resume",
+      "actualName": "Jonathan_Ouyang_Resume.pdf",
+      "type": "pdf",
+      "file": "/resumes/SWE/Jonathan_Ouyang_Resume.pdf",
+      "msg": "Software engineering resume",
+      "date": "1 week ago"
+    },
+    {
+      "name": "ML Resume",
+      "actualName": "Jonathan_Ouyang_Resume.pdf",
+      "type": "pdf",
+      "file": "/resumes/ML/Jonathan_Ouyang_Resume.pdf",
+      "msg": "Machine learning resume",
+      "date": "1 week ago"
+    },
+    {
+      "name": "CV",
+      "actualName": "Jonathan_Ouyang_CV.pdf",
+      "type": "pdf",
+      "file": "/resumes/CV/Jonathan_Ouyang_CV.pdf",
+      "msg": "Curriculum vitae",
+      "date": "1 week ago"
+    }
+  ],
+  "folders": {
+    "javascript": {
+      "name": "Javascript",
+      "path": "javascript",
+      "msg": "added readme descriptions for files",
+      "date": "6 months ago",
+      "files": [
+        {
+          "name": "contributors.js",
+          "type": "code",
+          "language": "javascript",
+          "msg": "Update contributor list",
+          "date": "2 months ago"
+        },
+        {
+          "name": "experiences.js",
+          "type": "code",
+          "language": "javascript",
+          "msg": "Refactor work experience data structure",
+          "date": "3 weeks ago"
+        },
+        {
+          "name": "extracurriculars.js",
+          "type": "code",
+          "language": "javascript",
+          "msg": "Add new hackathon projects",
+          "date": "4 days ago"
+        }
+      ]
+    }
+  }
+}

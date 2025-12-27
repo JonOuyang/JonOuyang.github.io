@@ -9,14 +9,29 @@ import {
   ArrowLeft,
   PlayCircle
 } from 'lucide-react';
-import { getProjectDetail } from './projectDetailData';
 
 const ProjectDetailPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const project = getProjectDetail(parseInt(projectId));
+  const [project, setProject] = useState(null);
   const [activeSection, setActiveSection] = useState("");
   const isScrollingRef = useRef(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const resp = await fetch("/data/projectDetails.json");
+        if (!resp.ok) throw new Error("project detail fetch failed");
+        const json = await resp.json();
+        const detail = json.projectDetails?.[projectId];
+        setProject(detail || null);
+      } catch (err) {
+        console.error("Failed to load project details", err);
+        setProject(null);
+      }
+    };
+    load();
+  }, [projectId]);
 
   // Scroll Spy Logic
   useEffect(() => {
@@ -59,7 +74,7 @@ const ProjectDetailPage = () => {
     }
   };
 
-  if (!project) return <div className="bg-[#0a0a0a] min-h-screen" />;
+  if (!project) return <div className="bg-[#0a0a0a] min-h-screen text-white p-10">Loading project...</div>;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e3e3e3] font-sans selection:bg-blue-500/30">
@@ -196,7 +211,7 @@ const ProjectDetailPage = () => {
 
         {/* Footer Nav */}
         <div className="border-t border-white/10 mt-20 pt-10">
-          <button onClick={() => navigate('/projects2')} className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2">
+          <button onClick={() => navigate('/projects')} className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-2">
             <ArrowLeft size={16} /> Back to all projects
           </button>
         </div>
