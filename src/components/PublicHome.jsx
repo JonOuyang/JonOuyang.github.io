@@ -492,62 +492,74 @@ const PublicHome = () => {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <a
                     href="mailto:jonathanouyang@ucla.edu"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Mail size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">Email</span>
-                      <span className="text-xs text-zinc-400">jonathanouyang@ucla.edu</span>
+                      <span className="text-xs text-zinc-400">jonsouyang@ucla.edu</span>
                     </div>
                   </a>
                   <a
-                    href="https://www.linkedin.com"
+                    href="https://www.linkedin.com/in/jon-ouyang/"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Linkedin size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">LinkedIn</span>
-                      <span className="text-xs text-zinc-400">Profile link</span>
+                      <span className="text-xs text-zinc-400">jon-ouyang</span>
                     </div>
                   </a>
                   <a
-                    href="https://twitter.com"
+                    href="https://x.com/jonsouyang"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Twitter size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">Twitter / X</span>
-                      <span className="text-xs text-zinc-400">@handle</span>
+                      <span className="text-xs text-zinc-400">@jonsouyang</span>
                     </div>
                   </a>
                   <a
-                    href="https://www.youtube.com"
+                    href="https://www.youtube.com/@jonsouyang"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Youtube size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">YouTube</span>
-                      <span className="text-xs text-zinc-400">Channel</span>
+                      <span className="text-xs text-zinc-400">@jonsouyang</span>
                     </div>
                   </a>
                   <a
-                    href="https://github.com/jonouyang"
+                    href="https://github.com/JonOuyang"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Github size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">GitHub</span>
-                      <span className="text-xs text-zinc-400">jonouyang</span>
+                      <span className="text-xs text-zinc-400">JonOuyang</span>
                     </div>
                   </a>
                   <a
                     href="tel:+1-000-000-0000"
+                    target="_blank"
+                    rel="noreferrer"
                     className="flex items-center gap-3 rounded-xl border border-white/5 bg-zinc-900/60 px-4 py-3 text-blue-400 transition hover:border-indigo-400/70 hover:bg-indigo-500/10 hover:drop-shadow-[0_12px_30px_rgba(59,130,246,0.25)]"
                   >
                     <Phone size={18} />
                     <div className="flex flex-col text-left">
                       <span className="text-sm text-white">Phone</span>
-                      <span className="text-xs text-zinc-400">+1 (000) 000-0000</span>
+                      <span className="text-xs text-zinc-400">+1 (669) 400-6891</span>
                     </div>
                   </a>
                 </div>
