@@ -364,6 +364,7 @@ const GitHubExperience = () => {
         /* File Box */
         .gh-file-box { border: 1px solid #30363d; border-radius: 6px; background: transparent; margin-bottom: 24px; }
         .gh-commit-header { background: #050505; padding: 12px 16px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #A1A1AA; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+        .gh-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid #30363d; }
         .gh-file-row { display: flex; align-items: center; padding: 8px 16px; border-top: 1px solid #30363d; font-size: 14px; color: #FFFFFF; cursor: pointer; }
         .gh-file-row:hover { background-color: rgba(129, 140, 248, 0.05); text-decoration: none; }
         .gh-file-row:hover .file-icon { fill: #A78BFA; transition: fill 0.2s; }
@@ -468,7 +469,7 @@ const GitHubExperience = () => {
           {/* FILE LIST (Mini) */}
           <div className="gh-file-box">
              <div className="gh-commit-header">
-                <div style={{width:20, height:20, borderRadius:'50%', background:'#30363d'}}></div>
+                <img className="gh-avatar" src="/assets/images/githubpfp.jpeg" alt="JonOuyang profile" />
                 <span style={{fontWeight:600, color:'#FFFFFF'}}>JonOuyang</span>
                 <span style={{marginLeft: 8, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:'60%', color:'#A1A1AA'}}>
                     refactor: optimize graph topology for merge commits

@@ -3,7 +3,7 @@ export const contributorsData = [
     username: "Yuchen Cui",
     description: "UCLA Research Advisor",
     link: "https://yuchencui.cc/",
-    avatarUrl: "/assets/images/githubpfp.jpeg" // Placeholder
+    avatarUrl: "https://yuchencui.cc/images/profile_yuchen.png"
   },
   {
     username: "Dorsa Sadigh",

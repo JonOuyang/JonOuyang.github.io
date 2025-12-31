@@ -320,7 +320,7 @@ const GitHubRepoViewer = () => {
           border-top-left-radius: 6px; border-top-right-radius: 6px;
           display: flex; align-items: center; gap: 12px; font-size: 13px; color: #7d8590;
         }
-        .gh-avatar { width: 24px; height: 24px; border-radius: 50%; background-color: #30363d; }
+        .gh-avatar { width: 24px; height: 24px; border-radius: 50%; background-color: #30363d; object-fit: cover; }
         .gh-commit-msg { color: #7d8590; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-right: auto; }
 
         .gh-file-row {
