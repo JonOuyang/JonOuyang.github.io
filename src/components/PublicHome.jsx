@@ -14,7 +14,7 @@ import { projectSlugFromTitle } from "../utils/projectSlug";
 
 const PublicHome = () => {
   const navigate = useNavigate();
-  const [useResearchPhoto, setUseResearchPhoto] = useState(false);
+  const [useAlternatePhoto, setUseAlternatePhoto] = useState(false);
   const [activeSection, setActiveSection] = useState("projects");
   const isScrollingRef = useRef(false);
   const contactRef = useRef(null);
@@ -23,7 +23,9 @@ const PublicHome = () => {
   const [projectIndex, setProjectIndex] = useState([]);
   const [researchPapers, setResearchPapers] = useState([]);
   const [experiencesData, setExperiencesData] = useState({ experiences: [], branches: {} });
-  const headshotUrl = "/assets/images/researchheadshot.jpg";
+  // const headshotUrl = "/assets/images/mainheadshot.png";
+  const headshotUrl = "/assets/images/mainheadshot_color_corrected.jpg";
+  const alternateImageUrl = "/assets/images/home-hero-alt.jpg";
 
   // Load data from public/data
   useEffect(() => {
@@ -80,7 +82,7 @@ const PublicHome = () => {
   );
 
   const handleDoubleClick = () => {
-    setUseResearchPhoto(!useResearchPhoto);
+    setUseAlternatePhoto(!useAlternatePhoto);
   };
 
   // Scroll Spy Logic
@@ -169,9 +171,18 @@ const PublicHome = () => {
                   onDoubleClick={handleDoubleClick}
                 >
                   <img
-                    src={useResearchPhoto ? headshotUrl : "https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/frieren-the-elf-stands-with-a-row-of-people-around-her.jpg?q=49&fit=crop&w=825&dpr=2"}
+                    src={useAlternatePhoto ? alternateImageUrl : headshotUrl}
                     alt="Jonathan Ouyang"
-                    className={`w-full h-full object-cover ${useResearchPhoto ? 'scale-[3.5] translate-x-[-5px] translate-y-[-20px]' : ''}`}
+                    style={{
+                      filter: useAlternatePhoto
+                        ? "none"
+                        : "brightness(1.15) contrast(1.05) hue-rotate(5deg) saturate(0.9)"
+                    }}
+                    className={`w-full h-full object-cover ${
+                      useAlternatePhoto
+                        ? ""
+                        : "scale-[1.1] translate-x-[-5px] translate-y-[-6px]"
+                    }`}
                   />
                 </div>
               </div>

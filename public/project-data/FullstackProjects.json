@@ -10,27 +10,27 @@
   "fullstackProjects": [
     {
       "id": 1,
+      "title": "CLOVIS",
+      "desc": "A framework that allows LLMs to annotate directly on your screen, redefining human computer interaction",
+      "image": "public/assets/images/CLOVIS.jpg",
+      "glowColor": "rgba(34, 197, 94, 1)",
+      "tags": ["Python", "React", "Gemini"]
+    },
+    {
+      "id": 1,
+      "title": "MOIRAI",
+      "desc": "Team based Vibe Coding. Compatible with Gemini CLI, OpenAI Codex, and Claude Code CLI",
+      "image": "public/assets/images/MOIRAI.png",
+      "glowColor": "rgba(34, 197, 94, 1)",
+      "tags": ["Python", "React", "Gemini"]
+    },
+    {
+      "id": 1,
       "title": "SABRE",
-      "desc": "SABRE: Shared Autonomy for Battlefield Responds and Engagement",
+      "desc": "Shared Autonomy for Battlefield Responds and Engagement (Drone Swarm Control and Optimization)",
       "image": "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
       "glowColor": "rgba(34, 197, 94, 1)",
-      "tags": ["Python", "ROS2", "Computer Vision"]
-    },
-    {
-      "id": 2,
-      "title": "LEVIATHAN",
-      "desc": "Bringing Big Insights No Matter The Crew Size. Your AI Co-Pilot for smart fishing.",
-      "image": "https://img.nauticexpo.com/images_ne/photo-g/28032-18598681.webp",
-      "glowColor": "rgba(6, 182, 212, 1)",
-      "tags": ["Python", "ROS2", "Computer Vision"]
-    },
-    {
-      "id": 3,
-      "title": "Bruin Bite",
-      "desc": "Find and review the best dining hallds and food spots on UCLA campus.",
-      "image": "https://wp.dailybruin.com/images/2024/09/web.regissue.quad_.diningplancritiques.file_.jpg",
-      "glowColor": "rgba(255, 184, 28, 1)",
-      "tags": ["Python", "ROS2", "Computer Vision"]
+      "tags": ["Python", "ROS2", "Game Theory"]
     },
     {
       "id": 4,
@@ -38,15 +38,23 @@
       "desc": "Control your computer using your phone. An extension of a computer use agent.",
       "image": "https://plus.unsplash.com/premium_photo-1681288023821-7ae9a9d79474?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "glowColor": "rgba(168, 85, 247, 1)",
-      "tags": ["React Native", "WebSocket", "Node.js"]
+      "tags": ["Python", "FastAPI"]
     },
     {
-      "id": 5,
-      "title": "Berry Tongue",
-      "desc": "An AI-powered language learning Chrome extension to help you learn vocabulary in context.",
-      "image": "https://holdenfg.org/wp-content/uploads/2021/03/alex-ushakoff-6MynOBZgig0-unsplash-1920x1280.jpg.webp",
-      "glowColor": "rgba(236, 72, 153, 1)",
-      "tags": ["Python", "Manim", "Gemini API"]
+      "id": 2,
+      "title": "LEVIATHAN",
+      "desc": "Bringing Big Insights No Matter The Crew Size. Your AI Co-Pilot for smart fishing.",
+      "image": "https://img.nauticexpo.com/images_ne/photo-g/28032-18598681.webp",
+      "glowColor": "rgba(6, 182, 212, 1)",
+      "tags": ["React", "FastAPI", "Computer Vision"]
+    },
+    {
+      "id": 3,
+      "title": "Bruin Bite",
+      "desc": "Find and review the best dining hallds and food spots on UCLA campus. Daily updates and fully deployed.",
+      "image": "https://wp.dailybruin.com/images/2024/09/web.regissue.quad_.diningplancritiques.file_.jpg",
+      "glowColor": "rgba(255, 184, 28, 1)",
+      "tags": ["Python", "ROS2", "Computer Vision"]
     },
     {
       "id": 6,
@@ -76,6 +84,14 @@
       "id": 9,
       "title": "Project Montgomery",
       "desc": "Math and physics animation generator for students and educators.",
+      "image": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
+      "glowColor": "rgba(34, 211, 238, 1)",
+      "tags": ["Gemini", "Manim Animation Engine"]
+    },
+    {
+      "id": 10,
+      "title": "Brewin Compiler",
+      "desc": "Homemade Compiler built from scratch for the Brewin programming language (CS 131)",
       "image": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
       "glowColor": "rgba(34, 211, 238, 1)",
       "tags": ["Gemini", "Manim Animation Engine"]
