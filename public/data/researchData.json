@@ -26,7 +26,7 @@
       "title": "Intent at a Glance: Gaze-Guided Robotic Manipulation via Foundation Models",
       "authors": "Tracey Yee Hsin Tay, Xu Yan*, **Jonathan Ouyang***, Daniel Wu, William Jiang, Jonathan Kao, and Yuchen Cui",
       "conference": "Robotics: Science and Systems (RSS) Workshop FM4RoboPlan, 2025",
-      "pdf": "#",
+      "pdf": null,
       "code": "https://github.com/UCLA-Robot-Intelligence-Lab/Gaze-ALOHA",
       "website": "https://gamma0.vercel.app/"
     },
@@ -37,8 +37,8 @@
       "authors": "Austin Adams, **Joathan Ouyang**, Chang Choo",
       "conference": "Master’s Thesis, San Jose State University (SJSU), 2024",
       "pdf": null,
-      "code": null,
-      "website": null
+      "code": "https://github.com/JonOuyang/YOLOv7-Swim-Pose-Recognition",
+      "website": "https://sjsu-swimmervision.github.io/"
     },
     {
       "year": 2024,
@@ -46,7 +46,7 @@
       "title": "Optimization of Swim Pose Estimation and Recognition with Data Augmentation",
       "authors": "**Jonathan Ouyang**, Derrick Trinh, Chang Choo",
       "conference": "IEEE Southwest Symposium on Image Analysis and Interpretation (SSIAI), 2024",
-      "pdf": null,
+      "pdf": "https://ieeexplore.ieee.org/document/10508644",
       "code": null,
       "website": null
     },
@@ -56,7 +56,7 @@
       "title": "Design and Analysis of an FPGA-based CNN for Exercise Recognition",
       "authors": "Derrick Trinh, **Jonathan Ouyang**, Chang Choo",
       "conference": "IEEE Tron Symposium (TRONSHOW), 2023",
-      "pdf": null,
+      "pdf": "https://ieeexplore.ieee.org/document/10384666",
       "code": null,
       "website": null
     },
@@ -66,7 +66,7 @@
       "title": "Design and Analysis of an FPGA-based CNN for Exercise Recognition",
       "authors": "Derrick Trinh, **Jonathan Ouyang**, Chang Choo",
       "conference": "Master’s Thesis, San Jose State University (SJSU), 2023",
-      "pdf": null,
+      "pdf": "https://ieeexplore.ieee.org/document/10384666",
       "code": null,
       "website": null
     }

@@ -166,6 +166,7 @@ const PublicHome = () => {
               {/* Right: Image */}
               <div className="mx-auto md:order-last order-first relative">
                 <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
+                {/* Right: Image Container */}
                 <div
                   className="relative w-64 h-64 md:w-80 md:h-80 rounded-xl overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
                   onDoubleClick={handleDoubleClick}
@@ -184,6 +185,13 @@ const PublicHome = () => {
                         : "scale-[1.1] translate-x-[-5px] translate-y-[-6px]"
                     }`}
                   />
+
+                  {/* --- THE VIGNETTE OVERLAY (NEW) ---
+                      This adds an inner shadow that darkens the edges/corners
+                      to hide the 'office' background and focus on the face. */}
+                  {!useAlternatePhoto && (
+                    <div className="absolute inset-0 pointer-events-none rounded-xl shadow-[inset_0_0_80px_rgba(0,0,0,0.4)] mix-blend-multiply" />
+                  )}
                 </div>
               </div>
 

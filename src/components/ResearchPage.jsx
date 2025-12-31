@@ -15,8 +15,12 @@ const Author = ({ authors }) => {
 };
 
 // A single publication item - UPDATED FOR UNIFORM IMAGES
-const PublicationItem = ({ paper }) => (
-  <div className="flex flex-col md:flex-row gap-6 mb-10">
+const PublicationItem = ({ paper, index }) => {
+  const pdfHref = paper.pdf && paper.pdf !== "#" ? paper.pdf : null;
+  const isTopTwo = index < 2;
+
+  return (
+    <div className="flex flex-col md:flex-row gap-6 mb-10">
     {/* Left side: Image */}
     {/* CHANGE 1: Added a fixed height 'h-28' to the container div */}
     <div className="flex-shrink-0 md:w-52 h-28">
@@ -34,25 +38,35 @@ const PublicationItem = ({ paper }) => (
       <Author authors={paper.authors} />
       <p className="text-[#71717A] italic text-sm mt-1">{paper.conference}</p>
       <div className="flex items-center gap-3 mt-3">
-        {paper.pdf && (
+        {pdfHref ? (
           <a
-            href={paper.pdf}
+            href={pdfHref}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#E4E4E7] rounded-full hover:border-[#818CF8] hover:text-[#818CF8] transition-colors"
           >
             PDF
           </a>
+        ) : (
+          <span className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#71717A] rounded-full cursor-not-allowed">
+            PDF
+          </span>
         )}
         {paper.code && (
-          <a
-            href={paper.code}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#E4E4E7] rounded-full hover:border-[#818CF8] hover:text-[#818CF8] transition-colors"
-          >
-            Code
-          </a>
+          isTopTwo ? (
+            <span className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#71717A] rounded-full cursor-not-allowed">
+              Code
+            </span>
+          ) : (
+            <a
+              href={paper.code}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#E4E4E7] rounded-full hover:border-[#818CF8] hover:text-[#818CF8] transition-colors"
+            >
+              Code
+            </a>
+          )
         )}
         {paper.website && (
           <a
@@ -66,13 +80,14 @@ const PublicationItem = ({ paper }) => (
         )}
       </div>
     </div>
-  </div>
-);
+    </div>
+  );
+};
 
 // The main Research Page component
 const ResearchPage = () => {
   const [papers, setPapers] = useState([]);
-  const headshotUrl = "/assets/images/researchheadshot.jpg";
+  const headshotUrl = "/assets/images/mainheadshot.png";
 
   useEffect(() => {
     const load = async () => {
@@ -113,7 +128,7 @@ const ResearchPage = () => {
                 <img
                   src={headshotUrl}
                   alt="Jonathan Ouyang"
-                  className="w-full h-full object-cover scale-[3.5] translate-x-[-5px] translate-y-[-20px]"
+                  className="w-full h-full object-cover scale-[1.5] translate-x-[-5px] translate-y-[0px]"
                 />
               </div>
               <h1 className="text-2xl font-bold text-white">Jonathan Ouyang</h1>
@@ -143,8 +158,8 @@ const ResearchPage = () => {
                   <h2 className="absolute -top-4 right-0 text-7xl font-bold text-[#27272A] -z-10 select-none">
                     {year}
                   </h2>
-                  {papersByYear[year].map(paper => (
-                    <PublicationItem key={paper.title} paper={paper} />
+                  {papersByYear[year].map((paper, index) => (
+                    <PublicationItem key={paper.title} paper={paper} index={index} />
                   ))}
                 </section>
               ))}
