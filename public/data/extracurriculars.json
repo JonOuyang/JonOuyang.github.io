@@ -55,22 +55,6 @@
       "company": "Daily Bruin",
       "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
       "branches": ["tech", "main"]
-    },
-    {
-      "id": "extra4d",
-      "date": "Sep 2024 - Present",
-      "title": "Software Engineer",
-      "company": "Daily Bruin",
-      "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
-      "branches": ["tech", "main"]
-    },
-    {
-      "id": "extra4e",
-      "date": "Sep 2024 - Present",
-      "title": "Software Engineer",
-      "company": "Daily Bruin",
-      "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
-      "branches": ["tech", "main"]
     }
   ],
   "branches": {

@@ -462,7 +462,11 @@ const GitHubRepoViewer = () => {
 
           <div className="gh-file-box">
             <div className="gh-commit-header">
-              <div className="gh-avatar"></div>
+              <img
+                className="gh-avatar"
+                src="/assets/images/githubpfp.jpeg"
+                alt="JonOuyang profile"
+              />
               <span style={{fontWeight:600, color: '#e6edf3'}}>JonOuyang</span>
               <span className="gh-commit-msg">{currentFile ? currentFile.msg : currentFolder?.msg}</span>
               <span style={{whiteSpace:'nowrap'}}>a6fd9b5 · {currentFile ? currentFile.date : currentFolder?.date}</span>

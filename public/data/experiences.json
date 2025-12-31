@@ -2,16 +2,17 @@
   "experiences": [
     {
       "id": "exp1",
-      "date": "2024 - Present",
-      "title": "Incoming Software Engineer Intern",
-      "company": "Google",
-      "description": "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
-      "branches": ["main", "swe"],
-      "image": "/assets/images/google.png"
+      "date": "Dec 2025 - Present",
+      "title": "Founding Engineer",
+      "company": "Stealth Startup",
+      "description": "AI for Game Theory",
+      "branches": ["main", "ai-ml", "swe"],
+      "image": "/assets/images/stealth.png"
     },
+
     {
-      "id": "exp1b",
-      "date": "2024 - Present",
+      "id": "exp2",
+      "date": "Jan 2025 - Present",
       "title": "Visiting Researcher",
       "company": "Stanford ILIAD Lab",
       "description": "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
@@ -20,7 +21,7 @@
     },
     {
       "id": "exp3",
-      "date": "2023 - Present",
+      "date": "Sep 2024 - Present",
       "title": "Undergraduate Researcher",
       "company": "UCLA Robot Intelligence Lab",
       "description": "Co-first-author on GAMMA (RSS 2025). Adapted Action Chunking Transformer to ALOHA robot achieving 90% success rate. Built gaze-assisted robotic control improving speed by 250%.",
@@ -29,7 +30,7 @@
     },
     {
       "id": "exp4",
-      "date": "Summer 2024",
+      "date": "June 2025 - Sep 2025",
       "title": "Software Engineer Intern",
       "company": "Amazon Prime Video Studios",
       "description": "Built Java catalog compiler processing 7M+ titles/day. Automated metadata ingestion eliminating 90% of errors. Integrated with Apple, Google, Samsung for cross-platform deployment.",
@@ -38,7 +39,7 @@
     },
     {
       "id": "exp5",
-      "date": "2023 - 2024",
+      "date": "Oct 2024 - Jun 2025",
       "title": "Software Engineer",
       "branchTitles": {
         "ai-ml": "AI Engineer",
@@ -52,8 +53,13 @@
     },
     {
       "id": "exp6",
-      "date": "Summer 2023",
+      "date": "Jun 2024 - Sep 2024",
       "title": "Computer Vision Intern",
+      "branchTitles": {
+        "ai-ml": "Computer Vision Intern",
+        "swe": "Software Engineer Intern",
+        "main": "Software Engineer Intern"
+      },
       "company": "Sighthound, Inc.",
       "description": "Built VLM annotation tool using PaliGemma + OWL-ViT improving labeling throughput by 50%. Created image augmentation pipeline increasing dataset size 6× and boosting model accuracy by 5%.",
       "branches": ["ai-ml", "swe"],
@@ -61,7 +67,7 @@
     },
     {
       "id": "exp7",
-      "date": "2022 - 2023",
+      "date": "Jan 2024 - Feb 2025",
       "title": "Graduate Research Advisor",
       "company": "SJSU AI/DL FPGA/DSP Lab",
       "description": "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
@@ -70,7 +76,7 @@
     },
     {
       "id": "exp8",
-      "date": "2022 - 2023",
+      "date": "Jun 2023 - Feb 2025",
       "title": "Visiting Researcher",
       "company": "SJSU AI/DL FPGA/DSP Lab",
       "description": "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",
@@ -79,7 +85,7 @@
     },
     {
       "id": "exp9",
-      "date": "2022 - 2023",
+      "date": "Feb 2023 - Jun 2023",
       "title": "Laboratory Intern",
       "company": "SJSU AI/DL FPGA/DSP Lab",
       "description": "Led swimmer action recognition research using YOLOv7 + OpenPose + CNN. Published at IEEE SSIAI 2024. Co-authored GPU vs FPGA benchmark thesis. Advised M.S. student on GAN-based action recognition.",

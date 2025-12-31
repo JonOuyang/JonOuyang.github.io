@@ -390,6 +390,16 @@ const GitHubExperience = () => {
             position: relative;
             border-bottom: 1px solid #30363d;
         }
+        .exp-row::before {
+            content: '';
+            position: absolute;
+            left: var(--connector-start, 0px);
+            top: 50%;
+            height: 1px;
+            width: calc(0px - var(--connector-start, 0px));
+            background: rgba(161, 161, 170, 0.18);
+            transform: translateY(-50%);
+        }
         .exp-row:hover { background: rgba(129, 140, 248, 0.05); }
         .exp-row.active { background: rgba(167, 139, 250, 0.1); border-left: 2px solid #A78BFA; padding-left: 18px; }
 
@@ -577,7 +587,10 @@ const GitHubExperience = () => {
                             <div 
                                 className={`exp-row ${expandedNodeId === node.id ? 'active' : ''}`}
                                 onClick={() => setExpandedNodeId(expandedNodeId === node.id ? null : node.id)}
-                                style={{ opacity: getOpacity(node.branches) }}
+                                style={{
+                                  opacity: getOpacity(node.branches),
+                                  '--connector-start': `${node.x - width}px`,
+                                }}
                             >
                                 <div className="exp-title">
                                     {getDisplayTitle(node)}
@@ -603,16 +616,20 @@ const GitHubExperience = () => {
 
                             {expandedNodeId === node.id && (
                                 <div className="exp-details">
-                                    <div className="markdown-bullet" style={{marginBottom:12, fontStyle:'italic', color:'#A1A1AA'}}>
-                                        Merge {node.branches.join(' & ')} history at {node.company}
-                                    </div>
                                     <div className="markdown-body">
-                                        {node.bullets ? node.bullets.map((bullet, i) => (
-                                            <div key={i} className="markdown-bullet">
+                                        {node.bullets && node.bullets.length > 0 ? (
+                                            node.bullets.map((bullet, i) => (
+                                                <div key={i} className="markdown-bullet">
+                                                    <span className="bullet-point">+</span>
+                                                    <span>{bullet}</span>
+                                                </div>
+                                            ))
+                                        ) : node.description ? (
+                                            <div className="markdown-bullet">
                                                 <span className="bullet-point">+</span>
-                                                <span>{bullet}</span>
+                                                <span>{node.description}</span>
                                             </div>
-                                        )) : (
+                                        ) : (
                                             <div style={{fontStyle:'italic', color:'#A1A1AA'}}>No detailed description provided.</div>
                                         )}
                                     </div>
