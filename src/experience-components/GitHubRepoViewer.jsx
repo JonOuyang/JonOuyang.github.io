@@ -69,9 +69,9 @@ const GitHubRepoViewer = () => {
     const extracurricularsRaw = `export const extracurricularData = ${JSON.stringify({ experiences: extracurriculars, branches: extracurricularBranches }, null, 2)};`;
 
     const folderEntries = {};
-    Object.entries(workHistory.folders).forEach(([key, folder]) => {
+    Object.values(workHistory.folders).forEach((folder) => {
       if (folder.path === "javascript") {
-        folderEntries[key] = {
+        folderEntries[folder.path] = {
           ...folder,
           readme: workHistory.javascriptReadme,
           files: [
@@ -81,7 +81,7 @@ const GitHubRepoViewer = () => {
           ]
         };
       } else {
-        folderEntries[key] = folder;
+        folderEntries[folder.path] = folder;
       }
     });
     return folderEntries;

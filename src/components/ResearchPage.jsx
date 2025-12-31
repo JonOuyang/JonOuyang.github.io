@@ -139,17 +139,17 @@ const ResearchPage = () => {
                 I care about making intelligence intuitive: gaze-guided control, vision-language agents, real-world deployment.
               </p>
               <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
-                <a href="#" className="text-white hover:text-[#818CF8] transition-colors">Google Scholar</a>
-                <a href="https://github.com/JonOuyang" className="text-white hover:text-[#818CF8] transition-colors">GitHub</a>
-                <a href="#" className="text-white hover:text-[#818CF8] transition-colors">Twitter</a>
-                <a href="#" className="text-white hover:text-[#818CF8] transition-colors">Email</a>
+                <a href="https://scholar.google.com/citations?user=YZXJj3MAAAAJ&hl=en&oi=sra" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Google Scholar</a>
+                <a href="https://github.com/JonOuyang" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">GitHub</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Twitter</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Email</a>
               </div>
             </div>
           </aside>
           <main className="lg:w-[70%] lg:pl-12">
             <h1 className="text-4xl font-bold text-white mb-10 pt-10 lg:pt-0">Publications</h1>
             <p className="text-[#A1A1AA] mb-12">
-              For a complete list, please see my <a href="#" className="text-[#818CF8] hover:underline">Google Scholar</a> profile.
+              For a complete list, please see my <a href="https://scholar.google.com/citations?user=YZXJj3MAAAAJ&hl=en&oi=sra" target="_blank" rel="noopener noreferrer" className="text-[#818CF8] hover:underline">Google Scholar</a> profile.
               Selected publications are listed below.
             </p>
             <div className="space-y-12">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { appleImg, bagImg } from "../utils";
+import { Download } from "lucide-react";
 
 const Navbar = () => {
   const [mode, setMode] = useState("public"); // "public" | "experimental"
@@ -40,20 +40,22 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-2 sm:px-10 px-5 flex justify-between items-center bg-black/80 backdrop-blur-sm border-b border-white/5">
-      <nav className="flex w-full screen-max-width">
-        <button
-          onDoubleClick={toggleMode}
-          className="flex items-center gap-2 focus:outline-none active:opacity-80"
-          title="Double-click to toggle public/experimental"
-        >
-          <img src="https://cdn-icons-png.flaticon.com/512/2395/2395608.png" alt="Logo" width={24} height={24} />
-          <span className="text-xs uppercase tracking-wide text-gray-400">
-            {mode === "public" ? "Public" : "Experimental"}
-          </span>
-        </button>
+    <header className="w-full py-2 pt-3 sm:px-10 px-5 flex justify-between items-center bg-black/80 backdrop-blur-sm border-b border-white/5">
+      <nav className="relative flex w-full items-center">
+        <div className="flex items-center justify-start">
+          <button
+            onDoubleClick={toggleMode}
+            className="flex items-center gap-2 focus:outline-none active:opacity-80"
+            title="Double-click to toggle public/experimental"
+          >
+            <img src="https://cdn-icons-png.flaticon.com/512/2395/2395608.png" alt="Logo" width={24} height={24} />
+            <span className="text-xs uppercase tracking-wide text-gray-400">
+              {mode === "public" ? "Public" : "Experimental"}
+            </span>
+          </button>
+        </div>
 
-        <div className="flex flex-1 justify-center max-sm:hidden">
+        <div className="absolute left-1/2 -translate-x-1/2 flex justify-center max-sm:hidden">
           {navItems.map((nav) => (
             <Link key={nav.name} to={nav.path}>
               <div className="px-4 py-2 mx-1 text-sm cursor-pointer text-gray hover:text-white hover:bg-gray-700/50 rounded-md transition-all">
@@ -63,8 +65,16 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div className="flex items-baseline gap-7 max-sm:justify-end max-sm:flex-1">
-          <img src={bagImg} alt="bag" width={18} height={18} />
+        <div className="ml-auto flex items-center justify-end pr-6 sm:pr-12 lg:pr-16">
+          <a
+            href="/resumes/CV/Jonathan_Ouyang_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-sm text-zinc-400 hover:text-white"
+          >
+            <Download className="w-4 h-4" />
+            <span>Resume</span>
+          </a>
         </div>
       </nav>
     </header>

@@ -136,7 +136,7 @@ const buildGraph = (experiences) => {
       ...exp,
       id: idx,
       x: GRAPH_OFFSET + (config.index * LANE_WIDTH),
-      y: 45 + (idx * ROW_HEIGHT), // Start with some padding, shifted down for better alignment
+      y: (ROW_HEIGHT / 2) + (idx * ROW_HEIGHT), // Align node with row center
       primaryBranch,
       color: config.color,
       hash: getHash(exp.title + exp.company),
