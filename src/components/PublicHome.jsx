@@ -64,14 +64,18 @@ const PublicHome = () => {
     featuredProjectIds.has(project.id)
   );
   const featuredResearchConferences = new Set([
-    "Targeting International Conference on Learning Representations (ICLR), 2026", // Stanford project
+    "Targetting ICML 2026", // Stanford project
     "Targeting International Conference on Robotics and Automation (ICRA), 2026", // In-progress UCLA project
     "Robotics: Science and Systems (RSS) Workshop FM4RoboPlan, 2025", // Gaze project (keep this version)
     "IEEE Southwest Symposium on Image Analysis and Interpretation (SSIAI), 2024", // Swimmer pose optimization
   ]);
-  const featuredResearch = researchPapers.filter((paper) =>
-    featuredResearchConferences.has(paper.conference)
-  );
+  const featuredResearch = researchPapers
+    .filter((paper) => featuredResearchConferences.has(paper.conference))
+    .sort((a, b) => {
+      if (a.conference === "Targetting ICML 2026") return -1;
+      if (b.conference === "Targetting ICML 2026") return 1;
+      return 0;
+    });
   const featuredExperienceCompanies = new Set([
     "Stealth Startup",
     "Google",
