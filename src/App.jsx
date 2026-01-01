@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
+import MobileDock from './components/MobileDock';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
@@ -29,6 +30,7 @@ const App = () => {
           element={
             <>
               <Navbar />
+              <MobileDock />
               <Suspense fallback={<Loading />}>
                 <PublicHome />
               </Suspense>
@@ -38,6 +40,7 @@ const App = () => {
         <Route path="/work-history" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <GitHubExperience />
             </Suspense>
@@ -46,6 +49,7 @@ const App = () => {
         <Route path="/work-history/:folderPath" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <GitHubRepoViewer />
             </Suspense>
@@ -54,6 +58,7 @@ const App = () => {
         <Route path="/work-history/:folderPath/:fileName" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <GitHubRepoViewer />
             </Suspense>
@@ -62,6 +67,7 @@ const App = () => {
         <Route path="/research" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <ResearchPage></ResearchPage>
             </Suspense>
@@ -70,6 +76,7 @@ const App = () => {
         <Route path="/projects" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <ProjectsPage />
             </Suspense>
@@ -78,6 +85,7 @@ const App = () => {
         <Route path="/projects/:projectSlug" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <ProjectDetailPage />
             </Suspense>
@@ -86,6 +94,7 @@ const App = () => {
         <Route path="/experimental-projects" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <ExperimentalProjectsPage />
             </Suspense>
@@ -94,6 +103,7 @@ const App = () => {
         <Route path="/experimental-projects/:projectId" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <ExperimentalProjectDetailPage />
             </Suspense>
@@ -102,6 +112,7 @@ const App = () => {
         <Route path="/wip" element={
           <main className="bg-black">
             <Navbar />
+            <MobileDock />
             <Suspense fallback={<Loading />}>
               <WIP />
             </Suspense>

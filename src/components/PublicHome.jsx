@@ -142,20 +142,20 @@ const PublicHome = () => {
         <div className="relative z-10 max-w-5xl mx-auto px-6">
         
         {/* --- HERO SECTION (RESTORED) --- */}
-        <div className="pt-32 pb-32">
+        <div className="pt-24 pb-24">
           <div className="grid gap-12 md:grid-cols-[1.2fr_0.8fr] items-center">
             
             {/* Left: Text */}
             <div className="space-y-8">
               <div className="space-y-2">
-                <h1 className="text-6xl md:text-7xl lg:text-6xl font-bold leading-[0.9] tracking-tighter whitespace-nowrap">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-6xl font-bold leading-[0.95] tracking-tighter whitespace-normal md:whitespace-nowrap">
                   <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-zinc-400 drop-shadow-[0_0_12px_rgba(255,255,255,0.2)]">
                     Jonathan Ouyang
                   </span>
                 </h1>
               </div>
 
-                <p className="relative text-zinc-400 text-lg leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
+                <p className="relative text-zinc-400 text-sm sm:text-base leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
                   I am an undergraduate at UCLA studying Computer Science, specializing in building practical, human-centered <span className="text-indigo-400 font-medium">AI Agents</span>.{" "}
                   Robotics and Computer Vision research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>.{" "}
                   Previously interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
@@ -173,7 +173,7 @@ const PublicHome = () => {
                 <div className="absolute inset-0 bg-indigo-500/20 blur-[80px] rounded-full"></div>
                 {/* Right: Image Container */}
                 <div
-                  className="relative w-64 h-64 md:w-80 md:h-80 rounded-xl overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
+                  className="relative w-40 h-40 md:w-80 md:h-80 rounded-xl overflow-hidden border border-zinc shadow-2xl transition-transform duration-700 ease-out hover:scale-105 cursor-pointer"
                   onDoubleClick={handleDoubleClick}
                 >
                   <img
@@ -203,7 +203,7 @@ const PublicHome = () => {
             </div>
           </div>
         {/* --- MAIN BODY (SIDEBAR + CONTENT) --- */}
-        <div className="grid lg:grid-cols-[200px_1fr] gap-6 pt-20">
+        <div className="grid lg:grid-cols-[200px_1fr] gap-6 pt-16">
           
           {/* Sidebar Navigation */}
           <aside className="hidden lg:block h-fit sticky top-24 self-start">
@@ -228,7 +228,7 @@ const PublicHome = () => {
           </aside>
 
           {/* Scrollable Content (Glass Rows) */}
-          <div className="space-y-20">
+          <div className="space-y-16">
 
             {/* PROJECTS */}
             <section id="projects" className="scroll-mt-24">

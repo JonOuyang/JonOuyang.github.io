@@ -55,7 +55,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 flex justify-center max-sm:hidden">
+        <div className="absolute left-1/2 -translate-x-1/2 hidden justify-center md:flex">
           {navItems.map((nav) => (
             <Link key={nav.name} to={nav.path}>
               <div className="px-4 py-2 mx-1 text-sm cursor-pointer text-gray hover:text-white hover:bg-gray-700/50 rounded-md transition-all">
