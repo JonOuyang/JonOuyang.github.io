@@ -87,14 +87,6 @@
       "image": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
       "glowColor": "rgba(34, 211, 238, 1)",
       "tags": ["Gemini", "Manim Animation Engine"]
-    },
-    {
-      "id": 10,
-      "title": "Brewin Compiler",
-      "desc": "Homemade Compiler built from scratch for the Brewin programming language (CS 131)",
-      "image": "https://github.com/JonOuyang/CalHacks-Project/raw/main/display_images/image.png",
-      "glowColor": "rgba(34, 211, 238, 1)",
-      "tags": ["Gemini", "Manim Animation Engine"]
     }
   ]
 }

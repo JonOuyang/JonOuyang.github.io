@@ -1,14 +1,49 @@
 {
   "researchProjects": [
-    { "id": 11, "title": "Python Automation", "desc": "Scripts for daily workflow automation.", "image": "https://images.unsplash.com/photo-1629904853716-633c64b4c36e?w=800&q=80" },
-    { "id": 12, "title": "Rust Compiler", "desc": "Toy compiler built in Rust.", "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&q=80" },
-    { "id": 13, "title": "Unity Game", "desc": "2D Platformer mechanics prototype.", "image": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&q=80" },
-    { "id": 14, "title": "WebGL Shaders", "desc": "Custom GLSL shaders for visual effects.", "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" },
-    { "id": 15, "title": "NLP Sentiment", "desc": "Sentiment analysis using transformer models.", "image": "https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80" },
-    { "id": 16, "title": "Blockchain Demo", "desc": "Simple blockchain implementation from scratch.", "image": "https://images.unsplash.com/photo-1644143379190-08a5f055de1d?w=800&q=80" },
-    { "id": 17, "title": "Ray Tracer", "desc": "CPU-based ray tracing renderer in C++.", "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80" },
-    { "id": 18, "title": "Voice Assistant", "desc": "Local voice recognition and command system.", "image": "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=800&q=80" },
-    { "id": 19, "title": "AR Prototype", "desc": "Augmented reality experiment with ARKit.", "image": "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=800&q=80" },
-    { "id": 20, "title": "IoT Dashboard", "desc": "Sensor data visualization for smart devices.", "image": "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80" }
+    {
+      "id": 11,
+      "title": "Gaze Conditioned Robotic Bimanual Manipulation Policy",
+      "desc": "Developing shared autonomy with Zone of Proximal Development (ZPD) in CARLA and a two-phase NMPC expert for parallel parking, blending expert and user control to reach 96% success in simulation.",
+      "image": "https://i.ytimg.com/vi/9d6hiqLtml8/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGGUgYChVMA8=&rs=AOn4CLBvB2Ms3OU7rQGeA2_-OUY7G1bkhg",
+      "institution": "Stanford University",
+      "lab": "ILIAD Group",
+      "advisor": "Dorsa Sadigh (DeepMind)"
+    },
+    {
+      "id": 12,
+      "title": "Shared Autonomy for Teaching Parallel Parking in Driving Sim",
+      "desc": "Adapting the Action Chunking Transformer (ACT) to a custom ALOHA setup and fusing gaze with VLM infrastructure for bimanual manipulation, reaching 90% success while reducing teleoperation effort.",
+      "image": "https://media.licdn.com/dms/image/v2/C4D33AQEDVBUBtBDz9g/productpage-image_1128_635/productpage-image_1128_635/0/1663775950406/carla_simulator_image?e=1767596400&v=beta&t=DnbkHurcqXU-KjDT_3zV3fR21vDc3LPeaQvVQ90XQVY",
+      "institution": "UCLA",
+      "lab": "Robot Intelligence Lab",
+      "advisor": "Yuchen Cui"
+    },
+    {
+      "id": 13,
+      "title": "GAMMA: Gaze Based VLM Control for Single Arm Manipulation",
+      "desc": "Gaze-assisted manipulation using foundation models (GAMMA), integrating wearable gaze streams with VLMs to infer intent and accelerate modular autonomy in robot manipulation.",
+      "image": "https://cdn.prod.website-files.com/5f2b1efb0f881760ffdc5c96/618e8f82651aa5f1f58c9bfd_Ads%C4%B1z%20tasar%C4%B1m%20-%202021-11-12T190600.023.png",
+      "institution": "UCLA",
+      "lab": "Robot Intelligence Lab",
+      "advisor": "Yuchen Cui"
+    },
+    {
+      "id": 14,
+      "title": "Enhancing Pose Estimation on Swimmers",
+      "desc": "Built swimmer action recognition with OpenPose and YOLOv7 plus data augmentation, improving accuracy and real-time performance by 30% and presenting results at IEEE SSIAI 2024.",
+      "image": "https://www.popphoto.com/uploads/2019/01/17/WBLB2DJBGPSKJH5LEDSJ2JVHHE.jpg?auto=webp&width=785&height=523.00625",
+      "institution": "SJSU",
+      "lab": "AI/DL FPGA/DSP Lab",
+      "advisor": "Chang Choo"
+    },
+    {
+      "id": 15,
+      "title": "Exercise Recognition with Pose Estimation on Edge Devices",
+      "desc": "Designed and analyzed FPGA-based CNN pipelines for exercise recognition, benchmarking NVIDIA GPUs, Jetson Nano, and AMD Kria across 20+ models to compare performance and accuracy.",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4c5607NEUOjao7dZey6VFKyWzs-Sq1lOU_w&s",
+      "institution": "SJSU",
+      "lab": "AI/DL FPGA/DSP Lab",
+      "advisor": "Chang Choo"
+    }
   ]
 }

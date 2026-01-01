@@ -6,7 +6,9 @@ import {
   Play,
   Code,
   ChevronDown,
-  ArrowUpRight
+  ArrowUpRight,
+  Building2,
+  GraduationCap
 } from 'lucide-react';
 import { projectSlugFromTitle } from '../../utils/projectSlug';
 
@@ -378,6 +380,31 @@ const SpotlightCard = ({ project, globalMousePos, horizontal = false }) => {
           <h3 className="text-white font-bold text-lg sm:text-xl mb-1.5 tracking-tight">
             {project.title}
           </h3>
+          {(project.institution || project.lab || project.advisor) && (
+            <div className="flex flex-col gap-1.5 mb-4">
+              {(project.institution || project.lab) && (
+                <div className="flex items-center gap-2 text-sm text-zinc-300 font-medium">
+                  <Building2 size={14} className="text-zinc-500" />
+                  {project.institution && <span>{project.institution}</span>}
+                  {project.institution && project.lab && (
+                    <span className="text-zinc-600">•</span>
+                  )}
+                  {project.lab && <span>{project.lab}</span>}
+                </div>
+              )}
+              {project.advisor && (
+                <div className="flex items-center gap-2 text-xs text-zinc-400">
+                  <GraduationCap size={14} className="text-indigo-400" />
+                  <span>
+                    Advised by{" "}
+                    <span className="text-zinc-200 font-medium">
+                      Prof. {project.advisor}
+                    </span>
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Description - Light Grey */}
           <p className="text-white/70 text-sm leading-relaxed line-clamp-2 mb-3">
