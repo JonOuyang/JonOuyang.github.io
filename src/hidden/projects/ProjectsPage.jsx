@@ -265,7 +265,7 @@ const HeroSection = ({ hero }) => {
 
 // --- High-Contrast Glass Card with Mouse Tracking Edge Glow ---
 
-const SpotlightCard = ({ project, globalMousePos }) => {
+const SpotlightCard = ({ project, globalMousePos, horizontal = false }) => {
   const cardRef = useRef(null);
   const navigate = useNavigate();
   const [localMousePos, setLocalMousePos] = useState({ x: 0, y: 0 });
@@ -325,7 +325,7 @@ const SpotlightCard = ({ project, globalMousePos }) => {
 
       {/* Inner card container - Split Dashboard */}
       <div
-        className="relative rounded-3xl overflow-hidden border border-white/10 group-hover:border-white/30 bg-[#050505] transition-colors duration-300 flex flex-col"
+        className={`relative rounded-3xl overflow-hidden border border-white/10 group-hover:border-white/30 bg-[#050505] transition-colors duration-300 flex ${horizontal ? 'flex-col md:flex-row' : 'flex-col'}`}
       >
         {/* Border Glow Layer 1 - Thick bright edge */}
         <div
@@ -351,8 +351,10 @@ const SpotlightCard = ({ project, globalMousePos }) => {
           }}
         />
 
-        {/* TOP SECTION - Image Window (Recessed Screen) */}
-        <div className="relative h-[200px] m-3 mb-0 rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/25 transition-colors duration-300">
+        {/* TOP/LEFT SECTION - Image Window (Recessed Screen) */}
+        <div
+          className={`relative h-[200px] ${horizontal ? 'm-3 md:m-4 md:mr-0 md:w-[320px] flex-shrink-0' : 'm-3 mb-0'} rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/25 transition-colors duration-300`}
+        >
           {project.image && (
             <img
               src={project.image}
@@ -368,8 +370,10 @@ const SpotlightCard = ({ project, globalMousePos }) => {
           <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.4)' }} />
         </div>
 
-        {/* BOTTOM SECTION - Text Console (40%) */}
-        <div className="relative z-10 p-5 pt-4 flex flex-col flex-1 bg-[#050505]">
+        {/* BOTTOM/RIGHT SECTION - Text Console */}
+        <div
+          className={`relative z-10 p-5 pt-4 flex flex-col flex-1 bg-[#050505] ${horizontal ? 'md:pl-6' : ''}`}
+        >
           {/* Title - Bright White */}
           <h3 className="text-white font-bold text-lg sm:text-xl mb-1.5 tracking-tight">
             {project.title}
@@ -437,7 +441,7 @@ const SpotlightCard = ({ project, globalMousePos }) => {
 
 // --- Spotlight Bento Grid ---
 
-const ProjectSection = ({ sectionId, title, projects, globalMousePos }) => (
+const ProjectSection = ({ sectionId, title, projects, globalMousePos, singleColumn = false }) => (
   <section id={sectionId} className="scroll-mt-28 space-y-4">
     <div>
       <p className="text-[11px] uppercase tracking-[0.3em] text-zinc-400 mb-1">Collection</p>
@@ -446,12 +450,15 @@ const ProjectSection = ({ sectionId, title, projects, globalMousePos }) => (
       </h2>
     </div>
     <div className="h-px w-full bg-white/10" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 overflow-visible">
+    <div
+      className={`grid grid-cols-1 ${singleColumn ? '' : 'md:grid-cols-2'} gap-6 lg:gap-8 overflow-visible`}
+    >
       {projects.map((project) => (
         <SpotlightCard
           key={project.id}
           project={project}
           globalMousePos={globalMousePos}
+          horizontal={singleColumn}
         />
       ))}
     </div>
@@ -611,6 +618,7 @@ const ProjectsPage = () => {
                 title="Research Projects"
                 projects={researchProjects}
                 globalMousePos={globalMousePos}
+                singleColumn
               />
             </div>
           </div>

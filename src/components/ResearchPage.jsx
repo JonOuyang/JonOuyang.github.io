@@ -15,9 +15,8 @@ const Author = ({ authors }) => {
 };
 
 // A single publication item - UPDATED FOR UNIFORM IMAGES
-const PublicationItem = ({ paper, index }) => {
+const PublicationItem = ({ paper }) => {
   const pdfHref = paper.pdf && paper.pdf !== "#" ? paper.pdf : null;
-  const isTopTwo = index < 2;
 
   return (
     <div className="flex flex-col md:flex-row gap-6 mb-10">
@@ -38,7 +37,7 @@ const PublicationItem = ({ paper, index }) => {
       <Author authors={paper.authors} />
       <p className="text-[#71717A] italic text-sm mt-1">{paper.conference}</p>
       <div className="flex items-center gap-3 mt-3">
-        {pdfHref ? (
+        {pdfHref && (
           <a
             href={pdfHref}
             target="_blank"
@@ -47,26 +46,16 @@ const PublicationItem = ({ paper, index }) => {
           >
             PDF
           </a>
-        ) : (
-          <span className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#71717A] rounded-full cursor-not-allowed">
-            PDF
-          </span>
         )}
         {paper.code && (
-          isTopTwo ? (
-            <span className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#71717A] rounded-full cursor-not-allowed">
-              Code
-            </span>
-          ) : (
-            <a
-              href={paper.code}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#E4E4E7] rounded-full hover:border-[#818CF8] hover:text-[#818CF8] transition-colors"
-            >
-              Code
-            </a>
-          )
+          <a
+            href={paper.code}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-3 py-1 text-xs sm:text-sm bg-transparent border border-[#3F3F46] text-[#E4E4E7] rounded-full hover:border-[#818CF8] hover:text-[#818CF8] transition-colors"
+          >
+            Code
+          </a>
         )}
         {paper.website && (
           <a
@@ -141,8 +130,8 @@ const ResearchPage = () => {
               <div className="flex flex-wrap justify-center lg:justify-start gap-4 text-sm">
                 <a href="https://scholar.google.com/citations?user=YZXJj3MAAAAJ&hl=en&oi=sra" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Google Scholar</a>
                 <a href="https://github.com/JonOuyang" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">GitHub</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Twitter</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Email</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Twitter</a>
+                <a href="mailto:jonathanouyang@ucla.edu" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#818CF8] transition-colors">Email</a>
               </div>
             </div>
           </aside>
@@ -158,8 +147,8 @@ const ResearchPage = () => {
                   <h2 className="absolute -top-4 right-0 text-7xl font-bold text-[#27272A] -z-10 select-none">
                     {year}
                   </h2>
-                  {papersByYear[year].map((paper, index) => (
-                    <PublicationItem key={paper.title} paper={paper} index={index} />
+                  {papersByYear[year].map((paper) => (
+                    <PublicationItem key={paper.title} paper={paper} />
                   ))}
                 </section>
               ))}

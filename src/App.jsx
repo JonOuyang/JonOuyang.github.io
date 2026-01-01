@@ -8,7 +8,7 @@ const GitHubRepoViewer = lazy(() => import('./experience-components/GitHubRepoVi
 const PublicHome = lazy(() => import('./components/PublicHome'));
 const WIP = lazy(() => import('./components/WIP'));
 
-const NetflixProjectsPage = lazy(() => import('./hidden/projects/NetflixProjectsPage2'));
+const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
 const ExperimentalProjectsPage = lazy(() => import('./experimental/projects/ExperimentalProjectsPage'));
 const ExperimentalProjectDetailPage = lazy(() => import('./experimental/projects/ExperimentalProjectDetailPage'));
@@ -71,7 +71,7 @@ const App = () => {
           <main className="bg-black">
             <Navbar />
             <Suspense fallback={<Loading />}>
-              <NetflixProjectsPage />
+              <ProjectsPage />
             </Suspense>
          </main>
         } />

@@ -73,6 +73,7 @@ const PublicHome = () => {
     featuredResearchConferences.has(paper.conference)
   );
   const featuredExperienceCompanies = new Set([
+    "Stealth Startup",
     "Google",
     "Amazon Prime Video Studios",
     "UCLA Daily Bruin",
@@ -308,6 +309,55 @@ const PublicHome = () => {
               </div>
             </section>
 
+            {/* EXPERIENCE */}
+            <section
+              id="experience"
+              className="scroll-mt-24 relative pt-16 before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-indigo-400/30 before:to-transparent before:opacity-80"
+            >
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Experience</h2>
+              <div className="space-y-8">
+                {featuredExperiences.map((exp) => (
+                  <div
+                    key={exp.id}
+                    className="group flex flex-col md:flex-row gap-6 items-start py-8"
+                  >
+                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">
+                      {exp.image ? (
+                        <img
+                          src={exp.image}
+                          alt={exp.company}
+                          className="h-full w-full object-cover transition duration-500 ease-out brightness-90 group-hover:brightness-110 group-hover:scale-[1.02]"
+                        />
+                      ) : (
+                        <div className="h-full w-full bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center text-lg font-semibold text-white/80">
+                          {exp.company}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-1.5">
+                      <div className="text-xs font-mono text-zinc-500">{exp.date}</div>
+                      <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.12)]">
+                        {exp.title} <span className="text-zinc-400 font-normal">@</span> <span className="text-indigo-400">{exp.company}</span>
+                      </h3>
+                      <p className="text-zinc-400 leading-relaxed">
+                        {exp.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center pt-1.5">
+                <button
+                  type="button"
+                  onClick={() => navigate("/work-history")}
+                  className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                >
+                  View all <ArrowUpRight size={16} />
+                </button>
+              </div>
+            </section>
+
             {/* RESEARCH */}
             <section
               id="research"
@@ -366,7 +416,7 @@ const PublicHome = () => {
                                   ? <Github size={18} />
                                   : link.type === "paper"
                                   ? <BookOpen size={18} />
-                                  : <ArrowUpRight size={18} />;
+                                  : <ArrowUpRight size={16} />;
                               return (
                                 <a
                                   key={link.href}
@@ -389,55 +439,6 @@ const PublicHome = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/research")}
-                  className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
-                >
-                  View all <ArrowUpRight size={16} />
-                </button>
-              </div>
-            </section>
-
-            {/* EXPERIENCE */}
-            <section
-              id="experience"
-              className="scroll-mt-24 relative pt-16 before:content-[''] before:absolute before:-top-10 before:left-0 before:right-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-indigo-400/30 before:to-transparent before:opacity-80"
-            >
-              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6">Experience</h2>
-              <div className="space-y-8">
-                {featuredExperiences.map((exp) => (
-                  <div
-                    key={exp.id}
-                    className="group flex flex-col md:flex-row gap-6 items-start py-8"
-                  >
-                      <div className="w-full md:w-72 aspect-video overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 transition duration-500">
-                      {exp.image ? (
-                        <img
-                          src={exp.image}
-                          alt={exp.company}
-                          className="h-full w-full object-cover transition duration-500 ease-out brightness-90 group-hover:brightness-110 group-hover:scale-[1.02]"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-zinc-900 to-zinc-800 flex items-center justify-center text-lg font-semibold text-white/80">
-                          {exp.company}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1 space-y-1.5">
-                      <div className="text-xs font-mono text-zinc-500">{exp.date}</div>
-                      <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.12)]">
-                        {exp.title} <span className="text-zinc-400 font-normal">@</span> <span className="text-indigo-400">{exp.company}</span>
-                      </h3>
-                      <p className="text-zinc-400 leading-relaxed">
-                        {exp.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center pt-1.5">
-                <button
-                  type="button"
-                  onClick={() => navigate("/work-history")}
                   className="inline-flex items-center gap-1 text-sm text-blue-400 hover:underline hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]"
                 >
                   View all <ArrowUpRight size={16} />

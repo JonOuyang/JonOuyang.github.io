@@ -28,7 +28,7 @@
       "id": 1,
       "title": "SABRE",
       "desc": "Shared Autonomy for Battlefield Responds and Engagement (Drone Swarm Control and Optimization)",
-      "image": "https://www.flyeye.io/wp-content/uploads/2023/07/Drones-1.jpg",
+      "image": "/assets/images/sabre.jpg",
       "glowColor": "rgba(34, 197, 94, 1)",
       "tags": ["Python", "ROS2", "Game Theory"]
     },
