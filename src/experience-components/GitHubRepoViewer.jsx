@@ -129,8 +129,9 @@ const GitHubRepoViewer = () => {
 
   const isRootView = folderPath === "root";
   const currentFolder = isRootView ? null : getFolderByPath(folderPath);
-  const currentFile = fileName
-    ? (isRootView ? getRootFileByName(fileName) : getFileFromFolder(folderPath, fileName))
+  const decodedFileName = fileName ? decodeURIComponent(fileName) : null;
+  const currentFile = decodedFileName
+    ? (isRootView ? getRootFileByName(decodedFileName) : getFileFromFolder(folderPath, decodedFileName))
     : null;
 
   useEffect(() => {
@@ -423,7 +424,7 @@ const GitHubRepoViewer = () => {
               <div
                 key={i}
                 className={`gh-tree-item ${isRootView && currentFile?.name === file.name ? 'active' : ''}`}
-                onClick={() => navigate(`/work-history/root/${file.name}`)}
+                onClick={() => navigate(`/work-history/root/${encodeURIComponent(file.name)}`)}
               >
                 <Icons.File />
                 <span className="gh-tree-item-name">{file.name}</span>

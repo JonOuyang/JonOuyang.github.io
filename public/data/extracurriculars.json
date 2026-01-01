@@ -10,47 +10,39 @@
     },
     {
       "id": "extra2",
-      "date": "Oct 2024 - Present",
-      "title": "Board Operations Officer",
+      "date": "Jun 2025 - Present",
+      "title": "Operations Officer",
       "company": "ACM at UCLA",
       "description": "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
       "branches": ["main", "leadership"]
     },
     {
       "id": "extra2b",
-      "date": "Oct 2024 - Present",
-      "title": "Board Operations Intern",
+      "date": "Oct 2024 - Jun 2025",
+      "title": "Operations Intern",
       "company": "ACM at UCLA",
       "description": "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
       "branches": ["main", "leadership"]
     },
     {
       "id": "extra3",
-      "date": "Oct 2024 - Present",
+      "date": "Jan 2025 - Present",
       "title": "Technical Recruiter",
+      "company": "VEST",
+      "description": "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
+      "branches": ["main", "leadership"]
+    },
+    {
+      "id": "extra3",
+      "date": "Oct 2024 - Present",
+      "title": "Developer",
       "company": "VEST",
       "description": "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
       "branches": ["main", "tech"]
     },
     {
       "id": "extra4",
-      "date": "Sep 2024 - Present",
-      "title": "Software Engineer",
-      "company": "Daily Bruin",
-      "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
-      "branches": ["tech", "main"]
-    },
-    {
-      "id": "extra4b",
-      "date": "Sep 2024 - Present",
-      "title": "Software Engineer",
-      "company": "Daily Bruin",
-      "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
-      "branches": ["tech", "main"]
-    },
-    {
-      "id": "extra4c",
-      "date": "Sep 2024 - Present",
+      "date": "Sep 2024 - Jun 2025",
       "title": "Software Engineer",
       "company": "Daily Bruin",
       "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",

@@ -99,6 +99,11 @@ const Icons = {
       <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path>
     </svg>
   ),
+  Search: () => (
+    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor">
+      <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 1 1-1.06 1.06l-3.04-3.04ZM11.5 7a4.5 4.5 0 1 0-9.001 0A4.5 4.5 0 0 0 11.5 7Z"></path>
+    </svg>
+  ),
 };
 
 // --- HELPERS ---
@@ -206,6 +211,9 @@ const GitHubExperience = () => {
   const [activeTab, setActiveTab] = useState("work");
   const [activeBranch, setActiveBranch] = useState("all"); 
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
+  const [isCodeDropdownOpen, setCodeDropdownOpen] = useState(false);
+  const [activeCloneMethod, setActiveCloneMethod] = useState("https");
+  const [hoveredContext, setHoveredContext] = useState(null);
   const [expandedNodeId, setExpandedNodeId] = useState(null);
   const dropdownRef = useRef(null);
   const [workData, setWorkData] = useState({ experiences: [], branches: {} });
@@ -217,10 +225,21 @@ const GitHubExperience = () => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setBranchDropdownOpen(false);
+        setCodeDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleClearSelection = (event) => {
+      if (event.target.closest('.exp-row, .exp-details')) return;
+      setExpandedNodeId(null);
+      setHoveredContext(null);
+    };
+    document.addEventListener('mousedown', handleClearSelection);
+    return () => document.removeEventListener('mousedown', handleClearSelection);
   }, []);
 
   // Load data from public/data
@@ -302,6 +321,22 @@ const GitHubExperience = () => {
     setBranchDropdownOpen(false);
   };
 
+  const matchesContext = (value, context) => {
+    if (!context) return false;
+    return String(value).toLowerCase() === String(context).toLowerCase();
+  };
+
+  const copyToClipboard = (value) => {
+    if (!value) return;
+    navigator.clipboard.writeText(value).catch(() => {});
+  };
+
+  const cloneUrls = {
+    https: "https://github.com/JonOuyang/JonOuyang.github.io.git",
+    ssh: "git@github.com:JonOuyang/JonOuyang.github.io.git",
+    cli: "gh repo clone JonOuyang/JonOuyang.github.io",
+  };
+
   const getAllFolders = () => {
     if (!workHistory?.folders) return [];
     return Object.values(workHistory.folders).map(folder => ({
@@ -326,7 +361,13 @@ const GitHubExperience = () => {
 
   const files = [
     ...allFolders.map(folder => ({ type: 'folder', name: folder.name, msg: folder.msg, time: folder.date, link: `/work-history/${folder.path}` })),
-    ...rootFiles.map(file => ({ type: 'file', name: file.name, msg: file.msg, time: file.date, link: `/work-history/root/${file.name}` }))
+    ...rootFiles.map(file => ({
+      type: 'file',
+      name: file.name,
+      msg: file.msg,
+      time: file.date,
+      link: `/work-history/root/${encodeURIComponent(file.name)}`
+    }))
   ];
 
   return (
@@ -350,16 +391,34 @@ const GitHubExperience = () => {
         .gh-tab:hover { color: #FFFFFF; background: var(--agent-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         /* Layout */
-        .gh-container { display: flex; max-width: 1280px; margin: 0 auto; padding: 24px 32px; gap: 24px; align-items: flex-start; }
-        .gh-main { flex: 1; min-width: 0; }
-        .gh-sidebar { width: 296px; flex-shrink: 0; }
-        @media (max-width: 900px) { .gh-container { flex-direction: column; padding: 16px; } .gh-sidebar { width: 100%; } }
+        .gh-container { display: grid; grid-template-columns: minmax(0, 1fr) 300px; max-width: 1280px; margin: 0 auto; padding: 24px 32px; gap: 24px; align-items: flex-start; }
+        .gh-main { min-width: 0; }
+        .gh-sidebar { width: 100%; position: static; }
+        @media (max-width: 900px) { .gh-container { grid-template-columns: 1fr; padding: 16px; } .gh-sidebar { position: static; } }
 
         /* Controls */
         .gh-controls { display: flex; justify-content: space-between; margin-bottom: 16px; }
         .gh-branch-btn { background: transparent; border: 1px solid #30363d; color: #A1A1AA; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
         .gh-branch-btn:hover { background: rgba(129, 140, 248, 0.1); border-color: #818CF8; color: #FFFFFF; }
         .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #050505; border: 1px solid #30363d; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
+        .gh-code-dropdown { position: absolute; top: 100%; right: 0; width: 420px; background: #0b0f14; border: 1px solid #30363d; border-radius: 16px; z-index: 60; margin-top: 10px; box-shadow: 0 18px 40px rgba(0,0,0,0.7); overflow: hidden; }
+        .gh-code-tabs { display: none; }
+        .gh-code-panel { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .gh-code-panel-head { display: flex; align-items: center; justify-content: space-between; color: #ffffff; }
+        .gh-code-panel-title { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; }
+        .gh-code-help { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #30363d; display: grid; place-items: center; color: #a1a1aa; text-decoration: none; font-size: 12px; }
+        .gh-code-methods { display: flex; gap: 18px; font-size: 13px; font-weight: 600; color: #a1a1aa; }
+        .gh-code-method { background: transparent; border: none; color: inherit; cursor: pointer; padding-bottom: 6px; border-bottom: 2px solid transparent; }
+        .gh-code-method.active { color: #ffffff; border-bottom-color: #f87171; }
+        .gh-code-input { display: flex; align-items: center; gap: 10px; background: #0b0f14; border: 1px solid #30363d; border-radius: 8px; padding: 10px 12px; color: #e5e7eb; }
+        .gh-code-input input { flex: 1; background: transparent; border: none; color: inherit; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; }
+        .gh-code-input input:focus { outline: none; }
+        .gh-code-copy { background: #111827; border: 1px solid #30363d; border-radius: 6px; color: #e5e7eb; font-size: 12px; padding: 6px 8px; cursor: pointer; }
+        .gh-code-hint { color: #6b7280; font-size: 12px; margin: 0; }
+        .gh-code-links { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+        .gh-code-links a { color: #e5e7eb; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        .gh-code-links a:hover { color: #ffffff; }
+        .gh-code-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #1f6feb; border-radius: 8px; padding: 10px 12px; color: #ffffff; text-decoration: none; font-weight: 600; }
 
         /* File Box */
         .gh-file-box { border: 1px solid #30363d; border-radius: 6px; background: transparent; margin-bottom: 24px; }
@@ -414,9 +473,12 @@ const GitHubExperience = () => {
         }
 
         /* Details Pane */
-        .exp-details { padding: 20px 24px; background: #050505; border-bottom: 1px solid #30363d; animation: fadeIn 0.2s ease-out; }
-        .markdown-bullet { display: flex; gap: 10px; margin-bottom: 6px; font-size: 14px; line-height: 1.5; color: #A1A1AA; }
-        .bullet-point { color: #818CF8; font-weight: bold; user-select: none; }
+        .exp-details { padding: 12px 24px 18px; animation: fadeIn 0.2s ease-out; }
+        .commit-details { margin-top: 6px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 13px; color: #d4d4d8; }
+        .markdown-bullet { display: flex; gap: 10px; margin-bottom: 6px; line-height: 1.6; }
+        .bullet-point { color: #22c55e; font-weight: 700; user-select: none; }
+        .sidebar-contrib { transition: opacity 0.2s ease; }
+        .sidebar-contrib.dimmed { opacity: 0.35; filter: grayscale(1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
@@ -434,12 +496,12 @@ const GitHubExperience = () => {
         <div className="gh-main">
           
           {/* TOP CONTROLS */}
-          <div className="gh-controls">
-            <div style={{position:'relative'}} ref={dropdownRef}>
+          <div className="gh-controls" ref={dropdownRef}>
+            <div style={{position:'relative'}}>
                 <button className="gh-branch-btn" onClick={() => setBranchDropdownOpen(!isBranchDropdownOpen)}>
                     <Icons.Branch />
                     <span style={{color: '#FFFFFF'}}>
-                        {activeBranch === "all" ? "All Branches" : (BRANCH_CONFIG[activeBranch]?.name || activeBranch)}
+                        {activeBranch === "all" ? "main" : (BRANCH_CONFIG[activeBranch]?.name || activeBranch)}
                     </span>
                     <span style={{fontSize:'10px', marginLeft: 4}}>▼</span>
                 </button>
@@ -458,11 +520,90 @@ const GitHubExperience = () => {
                 )}
             </div>
             <div style={{display:'flex', gap:8, marginLeft:'auto'}}>
-                <button className="gh-branch-btn">Go to file</button>
+                <div className="gh-branch-btn" style={{gap: 6}}>
+                    <Icons.Search />
+                    <span>Go to file</span>
+                    <span style={{marginLeft: 'auto', fontFamily:'ui-monospace, SFMono-Regular, monospace', fontSize: 11, color: '#A1A1AA'}}>t</span>
+                </div>
                 <button className="gh-branch-btn">Add file <span style={{fontSize:'10px', marginLeft:4}}>▼</span></button>
-                <button className="gh-branch-btn" style={{background: 'linear-gradient(to right, #818CF8, #A78BFA)', borderColor: 'transparent', color: '#FFFFFF'}}>
-                    <Icons.Code /> Code <span style={{fontSize:'10px', marginLeft:4}}>▼</span>
-                </button>
+                <div style={{position:'relative'}}>
+                    <button
+                      className="gh-branch-btn"
+                      style={{background: 'linear-gradient(to right, #818CF8, #A78BFA)', borderColor: 'transparent', color: '#FFFFFF'}}
+                      onClick={() => setCodeDropdownOpen(!isCodeDropdownOpen)}
+                    >
+                        <Icons.Code /> Code <span style={{fontSize:'10px', marginLeft:4}}>▼</span>
+                    </button>
+                    {isCodeDropdownOpen && (
+                      <div className="gh-code-dropdown">
+                        <div className="gh-code-panel">
+                            <div className="gh-code-panel-head">
+                              <div className="gh-code-panel-title">
+                                <Icons.Code />
+                                <span>Clone</span>
+                              </div>
+                              <a
+                                href="https://github.com/JonOuyang/JonOuyang.github.io"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="gh-code-help"
+                                aria-label="Open repository"
+                              >
+                                ?
+                              </a>
+                            </div>
+                            <div className="gh-code-methods">
+                              {[
+                                { key: "https", label: "HTTPS" },
+                                { key: "ssh", label: "SSH" },
+                                { key: "cli", label: "GitHub CLI" },
+                              ].map((item) => (
+                                <button
+                                  key={item.key}
+                                  className={`gh-code-method ${activeCloneMethod === item.key ? "active" : ""}`}
+                                  onClick={() => setActiveCloneMethod(item.key)}
+                                >
+                                  {item.label}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="gh-code-input">
+                              <input
+                                type="text"
+                                readOnly
+                                value={cloneUrls[activeCloneMethod]}
+                                aria-label="Clone URL"
+                              />
+                              <button
+                                type="button"
+                                className="gh-code-copy"
+                                onClick={() => copyToClipboard(cloneUrls[activeCloneMethod])}
+                                aria-label="Copy clone URL"
+                              >
+                                ⧉
+                              </button>
+                            </div>
+                            <p className="gh-code-hint">Clone using the web URL.</p>
+                            <div className="gh-code-links">
+                              <a
+                                href="https://desktop.github.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Open with GitHub Desktop
+                              </a>
+                              <a
+                                href="https://github.com/JonOuyang/JonOuyang.github.io/archive/refs/heads/main.zip"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Download ZIP
+                              </a>
+                            </div>
+                          </div>
+                      </div>
+                    )}
+                </div>
             </div>
           </div>
 
@@ -583,13 +724,23 @@ const GitHubExperience = () => {
 
                 {/* CONTENT LIST */}
                 <div className="graph-content-list">
-                    {nodes.map((node) => (
-                        <div key={node.id}>
+                    {nodes.map((node) => {
+                        const isRelated = hoveredContext && matchesContext(node.company, hoveredContext);
+                        const isDimmed = hoveredContext && !isRelated;
+                        const baseOpacity = getOpacity(node.branches);
+                        const rowOpacity = isDimmed ? baseOpacity * 0.35 : baseOpacity;
+
+                        return (
+                          <div key={node.id}>
                             <div 
                                 className={`exp-row ${expandedNodeId === node.id ? 'active' : ''}`}
-                                onClick={() => setExpandedNodeId(expandedNodeId === node.id ? null : node.id)}
+                                onClick={() => {
+                                  const nextId = expandedNodeId === node.id ? null : node.id;
+                                  setExpandedNodeId(nextId);
+                                  setHoveredContext(nextId === null ? null : node.company);
+                                }}
                                 style={{
-                                  opacity: getOpacity(node.branches),
+                                  opacity: rowOpacity,
                                   '--connector-start': `${node.x - width}px`,
                                 }}
                             >
@@ -617,7 +768,7 @@ const GitHubExperience = () => {
 
                             {expandedNodeId === node.id && (
                                 <div className="exp-details">
-                                    <div className="markdown-body">
+                                    <div className="commit-details">
                                         {node.bullets && node.bullets.length > 0 ? (
                                             node.bullets.map((bullet, i) => (
                                                 <div key={i} className="markdown-bullet">
@@ -636,8 +787,9 @@ const GitHubExperience = () => {
                                     </div>
                                 </div>
                             )}
-                        </div>
-                    ))}
+                          </div>
+                        );
+                    })}
                 </div>
              </div>
           </div>
@@ -678,15 +830,23 @@ const GitHubExperience = () => {
                    Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #30363d', marginLeft:8}}>{contributors.length}</span>
                </h3>
                <ul style={{listStyle:'none', padding:0, margin:0}}>
-                  {contributors.map((c, i) => (
-                      <li key={i} style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}>
-                          <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
-                          <div>
-                              <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
-                              <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
-                          </div>
-                      </li>
-                  ))}
+                  {contributors.map((c, i) => {
+                      const isRelated = hoveredContext && matchesContext(c.relatedTo, hoveredContext);
+                      const isDimmed = hoveredContext && !isRelated;
+                      return (
+                          <li
+                            key={i}
+                            className={`sidebar-contrib ${isDimmed ? 'dimmed' : ''}`}
+                            style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}
+                          >
+                              <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
+                              <div>
+                                  <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
+                                  <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
+                              </div>
+                          </li>
+                      );
+                  })}
                </ul>
            </div>
 
