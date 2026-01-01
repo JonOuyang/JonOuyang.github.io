@@ -747,16 +747,18 @@ const GitHubExperience = () => {
                                 <div className="exp-title">
                                     {getDisplayTitle(node)}
                                     {/* Badges for every branch this commit touches */}
-                                    {node.branches.map(b => (
-                                        <span key={b} className="tag-badge" 
+                                    {node.branches
+                                      .filter((b) => b !== "main")
+                                      .map((b) => (
+                                        <span key={b} className="tag-badge"
                                               style={{
-                                                color: BRANCH_CONFIG[b]?.color || '#fff', 
+                                                color: BRANCH_CONFIG[b]?.color || '#fff',
                                                 background: BRANCH_CONFIG[b]?.labelBg || 'transparent',
                                                 border: `1px solid ${BRANCH_CONFIG[b]?.labelBorder || '#fff'}`
                                               }}>
                                             {BRANCH_CONFIG[b]?.name || b}
                                         </span>
-                                    ))}
+                                      ))}
                                 </div>
                                 <div className="exp-meta">
                                     <span style={{color: '#818CF8', fontFamily: 'ui-monospace, SFMono-Regular, monospace'}}>{node.hash}</span>
