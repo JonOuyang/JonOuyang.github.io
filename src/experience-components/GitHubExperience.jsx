@@ -113,6 +113,9 @@ const getHash = (str) => {
     return Math.abs(hash).toString(16).substring(0, 7);
 };
 
+const encodePathSegment = (value) =>
+  encodeURIComponent(value).replaceAll(".", "%2E");
+
 // --- GRAPH ALGORITHM ---
 const buildGraph = (experiences) => {
   const nodes = experiences.map((exp, idx) => {
@@ -215,6 +218,9 @@ const GitHubExperience = () => {
   const [activeCloneMethod, setActiveCloneMethod] = useState("https");
   const [hoveredContext, setHoveredContext] = useState(null);
   const [expandedNodeId, setExpandedNodeId] = useState(null);
+  const [isGoToFileOpen, setGoToFileOpen] = useState(false);
+  const [goToQuery, setGoToQuery] = useState("");
+  const goToInputRef = useRef(null);
   const dropdownRef = useRef(null);
   const [workData, setWorkData] = useState({ experiences: [], branches: {} });
   const [extracurricularData, setExtracurricularData] = useState({ experiences: [], branches: {} });
@@ -226,6 +232,7 @@ const GitHubExperience = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setBranchDropdownOpen(false);
         setCodeDropdownOpen(false);
+        setGoToFileOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -241,6 +248,12 @@ const GitHubExperience = () => {
     document.addEventListener('mousedown', handleClearSelection);
     return () => document.removeEventListener('mousedown', handleClearSelection);
   }, []);
+
+  useEffect(() => {
+    if (isGoToFileOpen && goToInputRef.current) {
+      goToInputRef.current.focus();
+    }
+  }, [isGoToFileOpen]);
 
   // Load data from public/data
   useEffect(() => {
@@ -360,15 +373,22 @@ const GitHubExperience = () => {
   const rootFiles = getRootFiles();
 
   const files = [
-    ...allFolders.map(folder => ({ type: 'folder', name: folder.name, msg: folder.msg, time: folder.date, link: `/work-history/${folder.path}` })),
+    ...allFolders.map(folder => ({ type: 'folder', name: folder.name, msg: folder.msg, time: folder.date, link: `/work-history/${encodePathSegment(folder.path)}` })),
     ...rootFiles.map(file => ({
       type: 'file',
       name: file.name,
       msg: file.msg,
       time: file.date,
-      link: `/work-history/root/${encodeURIComponent(file.name)}`
+      link: `/work-history/root/${encodePathSegment(file.name)}`
     }))
   ];
+
+  const goToItems = files
+    .map((item) => ({
+      ...item,
+      label: item.type === 'folder' ? `${item.name}/` : item.name
+    }))
+    .filter((item) => item.label.toLowerCase().includes(goToQuery.trim().toLowerCase()));
 
   return (
     <div className="gh-wrapper">
@@ -401,6 +421,16 @@ const GitHubExperience = () => {
         .gh-branch-btn { background: transparent; border: 1px solid #30363d; color: #A1A1AA; border-radius: 6px; padding: 5px 12px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px; height: 32px; transition: all 0.2s; }
         .gh-branch-btn:hover { background: rgba(129, 140, 248, 0.1); border-color: #818CF8; color: #FFFFFF; }
         .gh-dropdown { position: absolute; top: 100%; left: 0; width: 280px; background: #050505; border: 1px solid #30363d; border-radius: 6px; z-index: 50; margin-top: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
+        .gh-go-to-panel { position: absolute; top: 100%; left: 0; width: 320px; background: #050505; border: 1px solid #30363d; border-radius: 10px; z-index: 55; margin-top: 6px; box-shadow: 0 12px 28px rgba(0,0,0,0.75); overflow: hidden; }
+        .gh-go-to-header { padding: 10px 12px; border-bottom: 1px solid #30363d; font-size: 12px; font-weight: 600; color: #ffffff; }
+        .gh-go-to-input { padding: 10px 12px; border-bottom: 1px solid #30363d; }
+        .gh-go-to-input input { width: 100%; background: #0b0f14; border: 1px solid #30363d; border-radius: 8px; padding: 8px 10px; color: #e5e7eb; font-size: 12px; font-family: ui-monospace, SFMono-Regular, monospace; }
+        .gh-go-to-input input:focus { outline: none; border-color: #818cf8; }
+        .gh-go-to-list { max-height: 280px; overflow: auto; }
+        .gh-go-to-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; cursor: pointer; font-size: 13px; color: #e5e7eb; }
+        .gh-go-to-item:hover { background: rgba(129, 140, 248, 0.08); }
+        .gh-go-to-meta { margin-left: auto; color: #6b7280; font-size: 11px; }
+        .gh-go-to-empty { padding: 10px 12px; color: #6b7280; font-size: 12px; }
         .gh-code-dropdown { position: absolute; top: 100%; right: 0; width: 420px; background: #0b0f14; border: 1px solid #30363d; border-radius: 16px; z-index: 60; margin-top: 10px; box-shadow: 0 18px 40px rgba(0,0,0,0.7); overflow: hidden; }
         .gh-code-tabs { display: none; }
         .gh-code-panel { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
@@ -520,10 +550,61 @@ const GitHubExperience = () => {
                 )}
             </div>
             <div style={{display:'flex', gap:8, marginLeft:'auto'}}>
-                <div className="gh-branch-btn" style={{gap: 6}}>
-                    <Icons.Search />
-                    <span>Go to file</span>
-                    <span style={{marginLeft: 'auto', fontFamily:'ui-monospace, SFMono-Regular, monospace', fontSize: 11, color: '#A1A1AA'}}>t</span>
+                <div style={{position: 'relative'}}>
+                    <button
+                      className="gh-branch-btn"
+                      style={{gap: 6}}
+                      onClick={() => {
+                        const nextState = !isGoToFileOpen;
+                        setGoToFileOpen(nextState);
+                        setBranchDropdownOpen(false);
+                        setCodeDropdownOpen(false);
+                        if (nextState) {
+                          setGoToQuery("");
+                        }
+                      }}
+                    >
+                        <Icons.Search />
+                        <span>Go to file</span>
+                        <span style={{marginLeft: 'auto', fontFamily:'ui-monospace, SFMono-Regular, monospace', fontSize: 11, color: '#A1A1AA'}}>t</span>
+                    </button>
+                    {isGoToFileOpen && (
+                      <div className="gh-go-to-panel">
+                        <div className="gh-go-to-header">Go to file</div>
+                        <div className="gh-go-to-input">
+                          <input
+                            ref={goToInputRef}
+                            type="text"
+                            value={goToQuery}
+                            onChange={(event) => setGoToQuery(event.target.value)}
+                            placeholder="Find a file..."
+                            aria-label="Find a file"
+                          />
+                        </div>
+                        <div className="gh-go-to-list">
+                          {goToItems.length === 0 && (
+                            <div className="gh-go-to-empty">No matching files.</div>
+                          )}
+                          {goToItems.map((item) => (
+                            <div
+                              key={`${item.type}-${item.name}`}
+                              className="gh-go-to-item"
+                              onClick={() => {
+                                setGoToFileOpen(false);
+                                setGoToQuery("");
+                                if (item.link) {
+                                  navigate(item.link);
+                                }
+                              }}
+                            >
+                              {item.type === 'folder' ? <Icons.Folder /> : <Icons.File />}
+                              <span>{item.label}</span>
+                              <span className="gh-go-to-meta">{item.time}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                 </div>
                 <button className="gh-branch-btn">Add file <span style={{fontSize:'10px', marginLeft:4}}>▼</span></button>
                 <div style={{position:'relative'}}>

@@ -117,6 +117,24 @@ const GitHubRepoViewer = () => {
   };
 
   const allFolders = getAllFolders();
+  useEffect(() => {
+    if (folderPath) {
+      setExpandedFolders(prev => ({ ...prev, [folderPath]: true }));
+    }
+  }, [folderPath]);
+
+  const encodePathSegment = (value) =>
+    encodeURIComponent(value).replaceAll(".", "%2E");
+
+  const handleFileClick = (file) => navigate(`/work-history/${encodePathSegment(folderPath)}/${encodePathSegment(file.name)}`);
+  const handleBackToFolder = () => navigate(`/work-history/${folderPath}`);
+  const handleBackToWorkHistory = () => navigate('/work-history');
+  const handleFolderClick = (folder) => navigate(`/work-history/${encodePathSegment(folder.path)}`);
+
+  const toggleFolderExpand = (path) => {
+    setExpandedFolders(prev => ({ ...prev, [path]: !prev[path] }));
+  };
+
   const rootFiles = getRootFiles();
 
   if (!workHistory) {
@@ -133,21 +151,6 @@ const GitHubRepoViewer = () => {
   const currentFile = decodedFileName
     ? (isRootView ? getRootFileByName(decodedFileName) : getFileFromFolder(folderPath, decodedFileName))
     : null;
-
-  useEffect(() => {
-    if (folderPath) {
-      setExpandedFolders(prev => ({ ...prev, [folderPath]: true }));
-    }
-  }, [folderPath]);
-
-  const handleFileClick = (file) => navigate(`/work-history/${folderPath}/${file.name}`);
-  const handleBackToFolder = () => navigate(`/work-history/${folderPath}`);
-  const handleBackToWorkHistory = () => navigate('/work-history');
-  const handleFolderClick = (folder) => navigate(`/work-history/${folder.path}`);
-
-  const toggleFolderExpand = (path) => {
-    setExpandedFolders(prev => ({ ...prev, [path]: !prev[path] }));
-  };
 
   if (!isRootView && !currentFolder) {
     return (
@@ -391,12 +394,15 @@ const GitHubRepoViewer = () => {
               <div key={folder.path}>
                 <div
                   className={`gh-tree-item ${folderPath === folder.path && !currentFile ? 'active' : ''}`}
-                  onClick={() => {
-                    toggleFolderExpand(folder.path);
-                    handleFolderClick(folder);
-                  }}
+                  onClick={() => handleFolderClick(folder)}
                 >
-                  <span className="gh-tree-chevron">
+                  <span
+                    className="gh-tree-chevron"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      toggleFolderExpand(folder.path);
+                    }}
+                  >
                     {expandedFolders[folder.path] ? <Icons.ChevronDown /> : <Icons.ChevronRight />}
                   </span>
                   <Icons.Folder />
@@ -409,7 +415,7 @@ const GitHubRepoViewer = () => {
                       <div
                         key={i}
                         className={`gh-tree-item ${currentFile?.name === file.name && folderPath === folder.path ? 'active' : ''}`}
-                        onClick={() => navigate(`/work-history/${folder.path}/${file.name}`)}
+                        onClick={() => navigate(`/work-history/${encodePathSegment(folder.path)}/${encodePathSegment(file.name)}`)}
                       >
                         <Icons.File />
                         <span className="gh-tree-item-name">{file.name}</span>
@@ -424,7 +430,7 @@ const GitHubRepoViewer = () => {
               <div
                 key={i}
                 className={`gh-tree-item ${isRootView && currentFile?.name === file.name ? 'active' : ''}`}
-                onClick={() => navigate(`/work-history/root/${encodeURIComponent(file.name)}`)}
+                onClick={() => navigate(`/work-history/root/${encodePathSegment(file.name)}`)}
               >
                 <Icons.File />
                 <span className="gh-tree-item-name">{file.name}</span>
