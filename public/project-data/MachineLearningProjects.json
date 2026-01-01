@@ -4,7 +4,7 @@
       "id": 1,
       "title": "Transformer Based Robot Policy",
       "desc": "Action Chunking Transformers (ALOHA Setup) for Bimanual Manipulation Policies.",
-      "image": "public/assets/images/ACT.jpg",
+      "image": "/assets/images/ACT.jpg",
       "glowColor": "rgba(34, 197, 94, 1)",
       "tags": ["Transformers", "ROS2", "C++"]
     },
@@ -12,7 +12,7 @@
       "id": 1,
       "title": "Diffusion Based Robot Policy",
       "desc": "Diffusion based models (ALOHA Setup) for Bimanual Manipulation Policies.",
-      "image": "public/assets/images/ACT.jpg",
+      "image": "/assets/images/ACT.jpg",
       "glowColor": "rgba(34, 197, 94, 1)",
       "tags": ["Diffusion", "ROS2", "C++"]
     },
@@ -20,7 +20,7 @@
       "id": 2,
       "title": "Qwen LLM Fine Tuning",
       "desc": "LoRA and PeFT fine tuning of Qwen models using eBay car dataset, fine tuned with remote lab server GPUs.",
-      "image": "public/assets/images/eBay.png",
+      "image": "/assets/images/eBay.png",
       "glowColor": "rgba(6, 182, 212, 1)",
       "tags": ["LLM", "Fine Tuning", "NLP"]
     },
