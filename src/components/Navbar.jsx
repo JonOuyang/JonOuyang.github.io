@@ -66,7 +66,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div className="ml-auto flex items-center justify-end pr-6 sm:pr-12 lg:pr-16">
+        <div className="ml-auto flex items-center justify-end pr-0 sm:pr-12 lg:pr-16">
           <a
             href="/resumes/CV/Jonathan_Ouyang_CV.pdf"
             target="_blank"
