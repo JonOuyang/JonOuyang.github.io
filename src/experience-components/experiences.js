@@ -47,7 +47,7 @@ export const experienceData = {
       },
       company: "UCLA Daily Bruin",
       description: "Optimized React website reducing bundle size 40% and supporting 60k+ concurrent users. Built 'Olivier' RAG chatbot using Pinecone + Redis + OpenAI. Designed Redis caching absorbing 80% of read traffic.",
-      branches: ["swe", "ai-ml"],
+      branches: ["main", "swe", "ai-ml"],
       image: "/assets/images/dailybruin.jpg"
     },
     {
