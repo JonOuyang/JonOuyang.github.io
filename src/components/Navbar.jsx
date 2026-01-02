@@ -27,6 +27,7 @@ const Navbar = () => {
         setExperimentalNav([
           { name: "Projects (Exp)", path: "/experimental-projects" },
           { name: "WIP", path: "/wip" },
+          { name: "card", path: "/card" },
         ]);
       }
     };

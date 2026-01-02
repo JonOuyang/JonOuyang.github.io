@@ -8,6 +8,7 @@ const GitHubExperience = lazy(() => import('./experience-components/GitHubExperi
 const GitHubRepoViewer = lazy(() => import('./experience-components/GitHubRepoViewer'));
 const PublicHome = lazy(() => import('./components/PublicHome'));
 const WIP = lazy(() => import('./components/WIP'));
+const CardPage = lazy(() => import('./experimental/card/CardPage'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
@@ -115,6 +116,15 @@ const App = () => {
             <MobileDock />
             <Suspense fallback={<Loading />}>
               <WIP />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/card" element={
+          <main className="bg-black">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <CardPage />
             </Suspense>
          </main>
         } />

@@ -2,10 +2,24 @@ import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // --- CONFIGURATION ---
-const LANE_WIDTH = 50; 
-const GRAPH_OFFSET = 35; // Moved slightly right to allow for the 'rail'
-const ROW_HEIGHT = 110;  // Generous height for connecting curves
-const NODE_RADIUS = 5;
+const DEFAULT_GRAPH_CONFIG = {
+  laneWidth: 50,
+  graphOffset: 35, // Moved slightly right to allow for the 'rail'
+  rowHeight: 110, // Generous height for connecting curves
+  nodeRadius: 5,
+  curveRadius: 20,
+};
+
+const getGraphConfig = (compact) =>
+  compact
+    ? {
+        laneWidth: 20,
+        graphOffset: 10,
+        rowHeight: 86,
+        nodeRadius: 2.5,
+        curveRadius: 10,
+      }
+    : DEFAULT_GRAPH_CONFIG;
 
 // --- BRANCH PALETTE (Void/Cybernetic Theme) ---
 const BRANCH_CONFIG = {
@@ -117,7 +131,8 @@ const encodePathSegment = (value) =>
   encodeURIComponent(value).replaceAll(".", "%2E");
 
 // --- GRAPH ALGORITHM ---
-const buildGraph = (experiences) => {
+const buildGraph = (experiences, graphConfig) => {
+  const { laneWidth, graphOffset, rowHeight } = graphConfig;
   const nodes = experiences.map((exp, idx) => {
     // Determine visual column: Prefer 'main', then 'ai-ml'/'leadership', then 'swe'/'tech'
     let primaryBranch;
@@ -143,8 +158,8 @@ const buildGraph = (experiences) => {
     return {
       ...exp,
       id: idx,
-      x: GRAPH_OFFSET + (config.index * LANE_WIDTH),
-      y: (ROW_HEIGHT / 2) + (idx * ROW_HEIGHT), // Align node with row center
+      x: graphOffset + (config.index * laneWidth),
+      y: (rowHeight / 2) + (idx * rowHeight), // Align node with row center
       primaryBranch,
       color: config.color,
       hash: getHash(exp.title + exp.company),
@@ -177,15 +192,15 @@ const buildGraph = (experiences) => {
       });
   });
 
-  const height = nodes.length * ROW_HEIGHT + 60;
-  const width = GRAPH_OFFSET + (3 * LANE_WIDTH) + 20;
+  const height = nodes.length * rowHeight + (rowHeight < 100 ? 20 : 60);
+  const width = graphOffset + (3 * laneWidth) + 20;
 
   return { nodes, edges, height, width };
 };
 
 // "Metro" Path: Straight lines with curved corners
-const getPath = (fromX, fromY, toX, toY) => {
-    const r = 20; // Radius of curve
+const getPath = (fromX, fromY, toX, toY, curveRadius = 20) => {
+    const r = curveRadius; // Radius of curve
     const verticalGap = toY - fromY;
 
     // Same Column (Straight Line)
@@ -211,6 +226,9 @@ const getPath = (fromX, fromY, toX, toY) => {
 
 const GitHubExperience = () => {
   const navigate = useNavigate();
+  const [isCompact, setIsCompact] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
   const [activeTab, setActiveTab] = useState("work");
   const [activeBranch, setActiveBranch] = useState("all"); 
   const [isBranchDropdownOpen, setBranchDropdownOpen] = useState(false);
@@ -218,6 +236,12 @@ const GitHubExperience = () => {
   const [activeCloneMethod, setActiveCloneMethod] = useState("https");
   const [hoveredContext, setHoveredContext] = useState(null);
   const [expandedNodeId, setExpandedNodeId] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsCompact(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const [isGoToFileOpen, setGoToFileOpen] = useState(false);
   const [goToQuery, setGoToQuery] = useState("");
   const goToInputRef = useRef(null);
@@ -292,9 +316,10 @@ const GitHubExperience = () => {
   const currentData = activeTab === "work" ? workData : extracurricularData;
   const experiences = currentData.experiences;
   
+  const graphConfig = useMemo(() => getGraphConfig(isCompact), [isCompact]);
   const { nodes, edges, width, height } = useMemo(
-    () => buildGraph(experiences),
-    [experiences]
+    () => buildGraph(experiences, graphConfig),
+    [experiences, graphConfig]
   );
 
   const getOpacity = (tags) => {
@@ -412,9 +437,50 @@ const GitHubExperience = () => {
 
         /* Layout */
         .gh-container { display: grid; grid-template-columns: minmax(0, 1fr) 300px; max-width: 1280px; margin: 0 auto; padding: 24px 32px; gap: 24px; align-items: flex-start; }
-        .gh-main { min-width: 0; }
-        .gh-sidebar { width: 100%; position: static; }
-        @media (max-width: 900px) { .gh-container { grid-template-columns: 1fr; padding: 16px; } .gh-sidebar { position: static; } }
+        .gh-main { min-width: 0; grid-column: 1; grid-row: 1 / span 2; }
+        .gh-sidebar-top { width: 100%; position: static; grid-column: 2; grid-row: 1; }
+        .gh-sidebar-bottom { width: 100%; position: static; grid-column: 2; grid-row: 2; }
+        @media (max-width: 1023px) {
+          .gh-container { display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 128px; }
+          .gh-main,
+          .gh-sidebar-top,
+          .gh-sidebar-bottom { grid-column: auto; grid-row: auto; }
+          .gh-sidebar-top { order: 1; }
+          .gh-main { order: 2; }
+          .gh-sidebar-bottom { order: 3; }
+        }
+        @media (max-width: 900px) { .gh-sidebar-top, .gh-sidebar-bottom { position: static; } }
+        @media (max-width: 767px) {
+          .graph-svg-container { display: block; }
+        }
+        @media (max-width: 640px) {
+          .gh-tabs { padding: 10px 12px; gap: 6px; }
+          .gh-tab { padding: 6px 10px; font-size: 12px; }
+          .gh-container { padding: 12px 12px 128px; gap: 16px; }
+          .gh-controls { flex-wrap: wrap; gap: 10px; }
+          .gh-branch-btn { font-size: 12px; height: 30px; }
+          .gh-dropdown { width: 90vw; max-width: 320px; }
+          .gh-go-to-panel { width: 90vw; max-width: 320px; }
+          .gh-code-dropdown { width: 92vw; max-width: 360px; right: 0; }
+          .gh-code-panel { padding: 16px; }
+          .gh-code-panel-title { font-size: 14px; }
+          .gh-code-methods { font-size: 12px; }
+          .gh-file-box { margin-bottom: 18px; }
+          .gh-commit-header { padding: 8px 12px; font-size: 12px; flex-wrap: wrap; gap: 6px; }
+          .gh-file-row { padding: 6px 12px; font-size: 12px; flex-wrap: wrap; gap: 6px; }
+          .gh-file-msg { display: none; }
+          .gh-file-time { font-size: 10px; margin-left: 0; }
+          .gh-readme-head { padding: 6px 10px; font-size: 11px; }
+          .gh-readme-body { padding: 12px; }
+          .exp-row { padding: 0 4px; text-align: left; }
+          .exp-row.active { padding-left: 6px; }
+          .exp-title { font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; }
+          .exp-meta { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; }
+          .tag-badge { font-size: 8px; padding: 2px 6px; }
+          .exp-details { padding: 6px 10px 8px; text-align: left; }
+          .commit-details { font-size: 9px; text-align: left; }
+          .markdown-bullet { margin-bottom: 4px; line-height: 1.35; text-align: left; }
+        }
 
         /* Controls */
         .gh-controls { display: flex; justify-content: space-between; margin-bottom: 16px; }
@@ -470,7 +536,7 @@ const GitHubExperience = () => {
 
         /* Commit Rows */
         .exp-row {
-            height: ${ROW_HEIGHT}px;
+            height: ${graphConfig.rowHeight}px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -510,6 +576,21 @@ const GitHubExperience = () => {
         .sidebar-contrib { transition: opacity 0.2s ease; }
         .sidebar-contrib.dimmed { opacity: 0.35; filter: grayscale(1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .gh-file-name { flex: 0 0 200px; overflow: hidden; }
+        .gh-file-msg { flex: 0 0 350px; color: #A1A1AA; font-size: 13px; margin-left: 20%; }
+        .gh-file-time { font-size: 12px; color: #A1A1AA; margin-left: auto; }
+
+        @media (max-width: 640px) {
+          .graph-wrapper { gap: 4px; }
+          .exp-row { padding: 0 2px; align-items: flex-start; text-align: left; border-left: none; }
+          .exp-row.active { padding-left: 4px; }
+          .exp-title { font-size: 12px; flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; }
+          .exp-meta { font-size: 8px; flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; }
+          .tag-badge { font-size: 8px; padding: 2px 6px; }
+          .exp-details { padding: 6px 8px 8px; text-align: left; }
+          .commit-details { font-size: 9px; text-align: left; }
+          .markdown-bullet { margin-bottom: 4px; line-height: 1.35; text-align: left; }
+        }
       `}</style>
 
       {/* TABS */}
@@ -523,6 +604,23 @@ const GitHubExperience = () => {
       </div>
 
       <div className="gh-container">
+        <div className="gh-sidebar-top">
+           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
+              <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
+              <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
+                  Visualizing my professional timeline as a git repository.
+              </p>
+              <div>
+                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
+                  <span style={{display:'inline-block', background:'transparent', color:'#A78BFA', padding:'2px 10px', borderRadius:999, border:'1px solid #A78BFA', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
+                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
+              </div>
+              <div style={{marginTop: 16}}>
+                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Book /> Readme</div>
+              </div>
+           </div>
+        </div>
+
         <div className="gh-main">
           
           {/* TOP CONTROLS */}
@@ -550,63 +648,6 @@ const GitHubExperience = () => {
                 )}
             </div>
             <div style={{display:'flex', gap:8, marginLeft:'auto'}}>
-                <div style={{position: 'relative'}}>
-                    <button
-                      className="gh-branch-btn"
-                      style={{gap: 6}}
-                      onClick={() => {
-                        const nextState = !isGoToFileOpen;
-                        setGoToFileOpen(nextState);
-                        setBranchDropdownOpen(false);
-                        setCodeDropdownOpen(false);
-                        if (nextState) {
-                          setGoToQuery("");
-                        }
-                      }}
-                    >
-                        <Icons.Search />
-                        <span>Go to file</span>
-                        <span style={{marginLeft: 'auto', fontFamily:'ui-monospace, SFMono-Regular, monospace', fontSize: 11, color: '#A1A1AA'}}>t</span>
-                    </button>
-                    {isGoToFileOpen && (
-                      <div className="gh-go-to-panel">
-                        <div className="gh-go-to-header">Go to file</div>
-                        <div className="gh-go-to-input">
-                          <input
-                            ref={goToInputRef}
-                            type="text"
-                            value={goToQuery}
-                            onChange={(event) => setGoToQuery(event.target.value)}
-                            placeholder="Find a file..."
-                            aria-label="Find a file"
-                          />
-                        </div>
-                        <div className="gh-go-to-list">
-                          {goToItems.length === 0 && (
-                            <div className="gh-go-to-empty">No matching files.</div>
-                          )}
-                          {goToItems.map((item) => (
-                            <div
-                              key={`${item.type}-${item.name}`}
-                              className="gh-go-to-item"
-                              onClick={() => {
-                                setGoToFileOpen(false);
-                                setGoToQuery("");
-                                if (item.link) {
-                                  navigate(item.link);
-                                }
-                              }}
-                            >
-                              {item.type === 'folder' ? <Icons.Folder /> : <Icons.File />}
-                              <span>{item.label}</span>
-                              <span className="gh-go-to-meta">{item.time}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                </div>
-                <button className="gh-branch-btn">Add file <span style={{fontSize:'10px', marginLeft:4}}>▼</span></button>
                 <div style={{position:'relative'}}>
                     <button
                       className="gh-branch-btn"
@@ -701,9 +742,9 @@ const GitHubExperience = () => {
              {files.map((f, i) => (
                 <div key={i} className="gh-file-row" onClick={() => f.link && navigate(f.link)}>
                     <div style={{width:24}}>{f.type === 'folder' ? <Icons.Folder /> : <Icons.File />}</div>
-                    <div style={{flex: '0 0 200px', overflow:'hidden'}}><span className="gh-link">{f.name}</span></div>
-                    <div style={{flex: '0 0 350px', color:'#A1A1AA', fontSize:13, marginLeft: '20%'}}>{f.msg}</div>
-                    <div style={{fontSize: 12, color: '#A1A1AA', marginLeft: 'auto'}}>{f.time}</div>
+                    <div className="gh-file-name"><span className="gh-link">{f.name}</span></div>
+                    <div className="gh-file-msg">{f.msg}</div>
+                    <div className="gh-file-time">{f.time}</div>
                 </div>
              ))}
           </div>
@@ -743,7 +784,7 @@ const GitHubExperience = () => {
                                 return indexB - indexA;
                             })
                             .map((edge, i) => {
-                                const d = getPath(edge.from.x, edge.from.y, edge.to.x, edge.to.y);
+                                const d = getPath(edge.from.x, edge.from.y, edge.to.x, edge.to.y, graphConfig.curveRadius);
                                 const edgeColor = edge.branch === 'main' ? BRANCH_CONFIG.main.color : edge.color;
                                 return (
                                     <path
@@ -794,7 +835,7 @@ const GitHubExperience = () => {
                                 >
                                     <circle cx={node.x} cy={node.y} r={15} fill="transparent" />
                                     {isActive && <circle cx={node.x} cy={node.y} r={9} fill={displayColor} fillOpacity={0.3} />}
-                                    <circle cx={node.x} cy={node.y} r={NODE_RADIUS} fill="#000000" stroke={displayColor} strokeWidth="2.5" />
+                                    <circle cx={node.x} cy={node.y} r={graphConfig.nodeRadius} fill="#000000" stroke={displayColor} strokeWidth="2.5" />
 
                                     {isMerge && <circle cx={node.x} cy={node.y} r={2} fill={displayColor} />}
                                 </g>
@@ -878,26 +919,7 @@ const GitHubExperience = () => {
           </div>
         </div>
 
-        {/* SIDEBAR */}
-        <div className="gh-sidebar">
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-              <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
-              <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
-                  Visualizing my professional timeline as a git repository.
-              </p>
-              <div>
-                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
-                  <span style={{display:'inline-block', background:'transparent', color:'#A78BFA', padding:'2px 10px', borderRadius:999, border:'1px solid #A78BFA', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
-                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
-              </div>
-              <div style={{marginTop: 16}}>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Book /> Readme</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Star /> 12 stars</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Eye /> 2 watching</div>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Fork /> 0 forks</div>
-              </div>
-           </div>
-
+        <div className="gh-sidebar-bottom">
            <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
                <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Releases</h3>
                <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No releases published</p>
@@ -953,6 +975,7 @@ const GitHubExperience = () => {
                </ul>
            </div>
         </div>
+
       </div>
     </div>
   );
