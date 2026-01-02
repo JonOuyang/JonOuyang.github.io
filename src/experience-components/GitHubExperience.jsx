@@ -437,19 +437,16 @@ const GitHubExperience = () => {
 
         /* Layout */
         .gh-container { display: grid; grid-template-columns: minmax(0, 1fr) 300px; max-width: 1280px; margin: 0 auto; padding: 24px 32px; gap: 24px; align-items: flex-start; }
-        .gh-main { min-width: 0; grid-column: 1; grid-row: 1 / span 2; }
-        .gh-sidebar-top { width: 100%; position: static; grid-column: 2; grid-row: 1; }
-        .gh-sidebar-bottom { width: 100%; position: static; grid-column: 2; grid-row: 2; }
+        .gh-main { min-width: 0; grid-column: 1; }
+        .gh-sidebar { width: 100%; position: static; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 24px; }
         @media (max-width: 1023px) {
           .gh-container { display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 128px; }
-          .gh-main,
-          .gh-sidebar-top,
-          .gh-sidebar-bottom { grid-column: auto; grid-row: auto; }
+          .gh-sidebar { display: contents; }
           .gh-sidebar-top { order: 1; }
           .gh-main { order: 2; }
           .gh-sidebar-bottom { order: 3; }
         }
-        @media (max-width: 900px) { .gh-sidebar-top, .gh-sidebar-bottom { position: static; } }
+        @media (max-width: 900px) { .gh-sidebar { position: static; } }
         @media (max-width: 767px) {
           .graph-svg-container { display: block; }
         }
@@ -604,21 +601,79 @@ const GitHubExperience = () => {
       </div>
 
       <div className="gh-container">
-        <div className="gh-sidebar-top">
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-              <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
-              <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
-                  Visualizing my professional timeline as a git repository.
-              </p>
-              <div>
-                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
-                  <span style={{display:'inline-block', background:'transparent', color:'#A78BFA', padding:'2px 10px', borderRadius:999, border:'1px solid #A78BFA', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
-                  <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
-              </div>
-              <div style={{marginTop: 16}}>
-                  <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Book /> Readme</div>
-              </div>
-           </div>
+        <div className="gh-sidebar">
+          <div className="gh-sidebar-top">
+             <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
+                <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>About</h3>
+                <p style={{fontSize:14, color:'#A1A1AA', lineHeight:'1.5', margin:'0 0 16px 0'}}>
+                    Visualizing my professional timeline as a git repository.
+                </p>
+                <div>
+                    <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>react</span>
+                    <span style={{display:'inline-block', background:'transparent', color:'#A78BFA', padding:'2px 10px', borderRadius:999, border:'1px solid #A78BFA', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>visualization</span>
+                    <span style={{display:'inline-block', background:'transparent', color:'#818CF8', padding:'2px 10px', borderRadius:999, border:'1px solid #818CF8', fontSize:12, margin:'0 4px 4px 0', fontWeight:500}}>portfolio</span>
+                </div>
+                <div style={{marginTop: 16}}>
+                    <div style={{display:'flex', alignItems:'center', gap:8, marginBottom:8, fontSize:13, color:'#A1A1AA'}}><Icons.Book /> Readme</div>
+                </div>
+             </div>
+          </div>
+          <div className="gh-sidebar-bottom">
+             <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
+                 <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Releases</h3>
+                 <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No releases published</p>
+             </div>
+
+             <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
+                 <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Packages</h3>
+                 <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No packages published</p>
+             </div>
+
+             <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
+                 <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0', display:'flex', alignItems:'center'}}>
+                     Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #30363d', marginLeft:8}}>{contributors.length}</span>
+                 </h3>
+                 <ul style={{listStyle:'none', padding:0, margin:0}}>
+                    {contributors.map((c, i) => {
+                        const isRelated = hoveredContext && matchesContext(c.relatedTo, hoveredContext);
+                        const isDimmed = hoveredContext && !isRelated;
+                        return (
+                            <li
+                              key={i}
+                              className={`sidebar-contrib ${isDimmed ? 'dimmed' : ''}`}
+                              style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}
+                            >
+                                <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
+                                <div>
+                                    <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
+                                    <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
+                                </div>
+                            </li>
+                        );
+                    })}
+                 </ul>
+             </div>
+
+             <div style={{border:'none'}}>
+                 <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Languages</h3>
+                 <div style={{display:'flex', height:8, borderRadius:6, overflow:'hidden', marginBottom:12}}>
+                      <div style={{width: '70%', backgroundColor: '#3572A5'}}></div>
+                      <div style={{width: '25%', backgroundColor: '#f1e05a'}}></div>
+                      <div style={{width: '5%', backgroundColor: '#89e051'}}></div>
+                 </div>
+                 <ul style={{listStyle:'none', padding:0, margin:0}}>
+                      <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
+                          <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#3572A5'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Python</span> <span style={{color:'#A1A1AA', fontWeight:400}}>70%</span>
+                      </li>
+                      <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
+                          <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#f1e05a'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>JavaScript</span> <span style={{color:'#A1A1AA', fontWeight:400}}>25%</span>
+                      </li>
+                      <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
+                          <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#89e051'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Shell</span> <span style={{color:'#A1A1AA', fontWeight:400}}>5%</span>
+                      </li>
+                 </ul>
+             </div>
+          </div>
         </div>
 
         <div className="gh-main">
@@ -917,63 +972,6 @@ const GitHubExperience = () => {
                 </div>
              </div>
           </div>
-        </div>
-
-        <div className="gh-sidebar-bottom">
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Releases</h3>
-               <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No releases published</p>
-           </div>
-
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Packages</h3>
-               <p style={{fontSize:12, color:'#A1A1AA', margin:0}}>No packages published</p>
-           </div>
-
-           <div style={{borderBottom:'1px solid #30363d', paddingBottom: 24, marginBottom: 24}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0', display:'flex', alignItems:'center'}}>
-                   Contributors <span style={{backgroundColor:'transparent', color:'#A1A1AA', borderRadius:10, padding:'2px 8px', fontSize:12, fontWeight:500, border:'1px solid #30363d', marginLeft:8}}>{contributors.length}</span>
-               </h3>
-               <ul style={{listStyle:'none', padding:0, margin:0}}>
-                  {contributors.map((c, i) => {
-                      const isRelated = hoveredContext && matchesContext(c.relatedTo, hoveredContext);
-                      const isDimmed = hoveredContext && !isRelated;
-                      return (
-                          <li
-                            key={i}
-                            className={`sidebar-contrib ${isDimmed ? 'dimmed' : ''}`}
-                            style={{display:'flex', alignItems:'center', gap:8, marginBottom:12}}
-                          >
-                              <img src={c.avatarUrl} alt={c.username} style={{width:32, height:32, borderRadius:'50%', border:'1px solid #30363d', objectFit:'cover'}} />
-                              <div>
-                                  <a href={c.link} style={{color:'#FFFFFF', fontWeight:600, textDecoration:'none', fontSize:14}}>{c.username}</a>
-                                  <div style={{fontSize:12, color:'#A1A1AA'}}>{c.description}</div>
-                              </div>
-                          </li>
-                      );
-                  })}
-               </ul>
-           </div>
-
-           <div style={{border:'none'}}>
-               <h3 style={{fontSize:16, fontWeight:600, color:'#FFFFFF', margin:'0 0 12px 0'}}>Languages</h3>
-               <div style={{display:'flex', height:8, borderRadius:6, overflow:'hidden', marginBottom:12}}>
-                    <div style={{width: '70%', backgroundColor: '#3572A5'}}></div>
-                    <div style={{width: '25%', backgroundColor: '#f1e05a'}}></div>
-                    <div style={{width: '5%', backgroundColor: '#89e051'}}></div>
-               </div>
-               <ul style={{listStyle:'none', padding:0, margin:0}}>
-                    <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#3572A5'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Python</span> <span style={{color:'#A1A1AA', fontWeight:400}}>70%</span>
-                    </li>
-                    <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#f1e05a'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>JavaScript</span> <span style={{color:'#A1A1AA', fontWeight:400}}>25%</span>
-                    </li>
-                    <li style={{display:'flex', alignItems:'center', gap:6, marginBottom:4, fontSize:12}}>
-                        <span style={{width:8, height:8, borderRadius:'50%', backgroundColor:'#89e051'}}></span> <span style={{color:'#FFFFFF', fontWeight:600}}>Shell</span> <span style={{color:'#A1A1AA', fontWeight:400}}>5%</span>
-                    </li>
-               </ul>
-           </div>
         </div>
 
       </div>
