@@ -10,6 +10,7 @@ import {
   PlayCircle
 } from 'lucide-react';
 import { loadArticleById, loadArticleBySlug } from '../../utils/articleLoader';
+import { renderInlineMarkdown } from '../../utils/inlineMarkdown';
 
 const ProjectDetailPage = () => {
   const { projectSlug } = useParams();
@@ -47,24 +48,38 @@ const ProjectDetailPage = () => {
     if (!project?.sections?.length) return;
     setActiveSection(project.sections[0].id);
 
-    const handleScroll = () => {
-      // Skip scroll spy while programmatic scrolling is happening
-      if (isScrollingRef.current) return;
+    let observer = null;
+    const rafId = requestAnimationFrame(() => {
+      const sectionEls = project.sections
+        .map((section) => document.getElementById(section.id))
+        .filter(Boolean);
 
-      const scrollPosition = window.scrollY + 200;
-      let currentSection = project.sections[0].id;
-      for (const section of project.sections) {
-        const element = document.getElementById(section.id);
-        if (element && element.offsetTop <= scrollPosition) {
-          currentSection = section.id;
+      if (!sectionEls.length) return;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (isScrollingRef.current) return;
+          const visible = entries.filter((entry) => entry.isIntersecting);
+          if (!visible.length) return;
+          visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          const topEntry = visible[0];
+          if (topEntry?.target?.id) {
+            setActiveSection(topEntry.target.id);
+          }
+        },
+        {
+          rootMargin: "-20% 0px -70% 0px",
+          threshold: [0, 0.1, 0.25, 0.5]
         }
-      }
-      setActiveSection(currentSection);
-    };
+      );
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Run once on mount
-    return () => window.removeEventListener('scroll', handleScroll);
+      sectionEls.forEach((el) => observer.observe(el));
+    });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+    };
   }, [project?.sections]);
 
   // Smooth scroll to section
@@ -147,6 +162,13 @@ const ProjectDetailPage = () => {
               <span>Watch Demo</span>
             </a>
           )}
+          {project.links?.github && (
+            <a href={project.links.github} target="_blank" rel="noreferrer"
+               className="group flex items-center gap-2 px-5 py-2.5 bg-white/5 text-white/70 border border-white/10 rounded-full text-sm font-medium hover:bg-white/10 hover:text-white transition-colors">
+              <Github size={16} className="group-hover:scale-110 transition-transform" />
+              <span>Code</span>
+            </a>
+          )}
         </div>
 
         {/* 6. HERO ASSET (Cropped to rectangular portrait) */}
@@ -180,9 +202,6 @@ const ProjectDetailPage = () => {
             <div className="mt-12 pt-8">
                <h4 className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-4 pl-5">Resources</h4>
                <ul className="space-y-4 pl-5 border-l border-transparent">
-                  {project.links?.devpost && (
-                    <li><a href={project.links.devpost} className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-2"><Award size={14}/> Devpost</a></li>
-                  )}
                    {project.links?.github && (
                     <li><a href={project.links.github} className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-2"><Github size={14}/> Repository</a></li>
                   )}
@@ -198,7 +217,13 @@ const ProjectDetailPage = () => {
                 
                 {/* Paragraphs */}
                 {project.content?.[section.id]?.paragraphs?.map((para, i) => (
-                  <p key={i} className="mb-6">{para}</p>
+                  <p key={i} className="mb-6">
+                    {renderInlineMarkdown(para, (text, index) => (
+                      <span key={`b-${i}-${index}`} className="text-blue-400 font-semibold">
+                        {text}
+                      </span>
+                    ))}
+                  </p>
                 ))}
 
                 {/* Figures */}
