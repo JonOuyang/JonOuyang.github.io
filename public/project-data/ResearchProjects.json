@@ -3,20 +3,20 @@
     {
       "id": 11,
       "title": "Gaze Conditioned Robotic Bimanual Manipulation Policy",
-      "desc": "Developing shared autonomy with Zone of Proximal Development (ZPD) in CARLA and a two-phase NMPC expert for parallel parking, blending expert and user control to reach 96% success in simulation.",
+      "desc": "Adapting the Action Chunking Transformer (ACT) to a custom ALOHA setup and fusing gaze with VLM infrastructure for bimanual manipulation, reaching 90% success while reducing teleoperation effort.",
       "image": "https://i.ytimg.com/vi/9d6hiqLtml8/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGGUgYChVMA8=&rs=AOn4CLBvB2Ms3OU7rQGeA2_-OUY7G1bkhg",
-      "institution": "Stanford University",
-      "lab": "ILIAD Group",
-      "advisor": "Dorsa Sadigh (DeepMind)"
+      "institution": "UCLA",
+      "lab": "Robot Intelligence Lab",
+      "advisor": "Yuchen Cui"
     },
     {
       "id": 12,
       "title": "Shared Autonomy for Teaching Parallel Parking in Driving Sim",
-      "desc": "Adapting the Action Chunking Transformer (ACT) to a custom ALOHA setup and fusing gaze with VLM infrastructure for bimanual manipulation, reaching 90% success while reducing teleoperation effort.",
+      "desc": "Developing shared autonomy with Zone of Proximal Development (ZPD) in CARLA and a two-phase NMPC expert for parallel parking, blending expert and user control to reach 96% success in simulation.",
       "image": "https://media.licdn.com/dms/image/v2/C4D33AQEDVBUBtBDz9g/productpage-image_1128_635/productpage-image_1128_635/0/1663775950406/carla_simulator_image?e=1767596400&v=beta&t=DnbkHurcqXU-KjDT_3zV3fR21vDc3LPeaQvVQ90XQVY",
-      "institution": "UCLA",
-      "lab": "Robot Intelligence Lab",
-      "advisor": "Yuchen Cui"
+      "institution": "Stanford University",
+      "lab": "ILIAD Group",
+      "advisor": "Dorsa Sadigh (DeepMind)"
     },
     {
       "id": 13,
