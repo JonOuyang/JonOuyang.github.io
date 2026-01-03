@@ -96,7 +96,7 @@ const PublicHome = () => {
       if (isScrollingRef.current) return;
 
       const scrollPosition = window.scrollY + 400; // Offset
-      const sections = ["projects", "research", "experience", "contact"];
+      const sections = ["projects", "experience", "research", "contact"];
       let current = sections[0];
 
       for (const section of sections) {
@@ -111,6 +111,7 @@ const PublicHome = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -211,7 +212,7 @@ const PublicHome = () => {
               Contents
             </h3>
             <div className="flex flex-col space-y-1 relative border-l border-white/10">
-               {["projects", "research", "experience", "contact"].map((section) => (
+               {["projects", "experience", "research", "contact"].map((section) => (
                  <button
                    key={section}
                    onClick={() => scrollToSection(section)}
