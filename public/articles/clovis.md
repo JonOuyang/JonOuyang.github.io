@@ -25,7 +25,7 @@
     "paper": "#",
     "article": "https://ai.google.dev/competition/projects/jayu"
   },
-  "heroImage": "https://ai.google.dev/images/winners/jayu.jpg",
+  "heroImage": "/assets/images/clovis.png",
   "heroCaption": "Figure 1: CLOVIS overlaying live annotations to guide a multi-step task."
 }
 ---
