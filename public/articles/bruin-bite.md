@@ -8,8 +8,33 @@
   "readTime": "6 min read",
   "authors": [
     {
+      "name": "Jonathan Ouyang",
+      "role": "Contributor",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
       "name": "Gavin Sonntag",
-      "role": "Lead Full Stack Engineer",
+      "role": "Contributor",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Andrew Meng",
+      "role": "Contributor",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Ashutosh Sundresh",
+      "role": "Contributor",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "William Jiang",
+      "role": "Contributor",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Ritvik",
+      "role": "Contributor",
       "avatar": "/api/placeholder/40/40"
     }
   ],
