@@ -223,8 +223,18 @@ const ExperimentalProjectDetailPage = () => {
                 {project.content?.[section.id]?.figures?.map((figure, i) => (
                   <div key={i} className="my-12">
                     <div className="border border-white/10 rounded-lg overflow-hidden bg-[#111]">
-                       {figure.type === 'placeholder' ? (
+                      {figure.type === 'placeholder' ? (
                         <div className="w-full h-64 flex items-center justify-center text-white/20">{figure.placeholder}</div>
+                      ) : figure.type === 'video' ? (
+                        <video
+                          src={figure.src}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          controls
+                          className="w-full m-0"
+                        />
                       ) : (
                         <img src={figure.src} alt="" className="w-full m-0" />
                       )}

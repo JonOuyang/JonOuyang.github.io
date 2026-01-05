@@ -50,7 +50,14 @@ export const parseArticleMarkdown = (markdown) => {
 
   const addFigure = (src, caption) => {
     ensureSection();
-    parsed.content[currentSection.id].figures.push({ src, caption });
+    const normalizedSrc = src || "";
+    const extension = normalizedSrc.split("?")[0].toLowerCase();
+    const isVideo = extension.endsWith(".mp4") || extension.endsWith(".webm") || extension.endsWith(".mov");
+    parsed.content[currentSection.id].figures.push({
+      src,
+      caption,
+      type: isVideo ? "video" : "image"
+    });
   };
 
   for (const line of lines) {
