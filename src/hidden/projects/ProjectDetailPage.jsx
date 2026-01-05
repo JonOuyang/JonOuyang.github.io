@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getProjectDetail } from './projectDetailData';
 import { renderInlineMarkdown } from '../../utils/inlineMarkdown';
+import AuthorAvatar from '../../components/AuthorAvatar';
 
 const ProjectDetailPage = () => {
   const { projectId } = useParams();
@@ -110,7 +111,7 @@ const ProjectDetailPage = () => {
         <div className="flex flex-wrap items-center gap-10 mb-8">
           {project.authors?.map((author, i) => (
             <div key={i} className="flex items-center gap-3">
-              <img src={author.avatar} alt={author.name} className="w-10 h-10 rounded-full border border-white/10" />
+              <AuthorAvatar name={author.name} />
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-blue-400">{author.name}</span>
                 <span className="text-xs text-white/50">{author.role}</span>
