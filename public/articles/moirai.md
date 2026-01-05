@@ -21,7 +21,7 @@
 
 ## Introduction
 
-MOIRAI is a concept-stage project I have not started building yet. The goal is to create a lightweight plugin that turns a room full of collaborators into a single live coding surface, where people can discuss, sketch, and iterate while an AI vibe coding agent translates the conversation into working code.
+MOIRAI is an in-progress project exploring a lightweight plugin that turns a room full of collaborators into a single live coding surface, where people can discuss, sketch, and iterate while an AI vibe coding agent translates the conversation into working code.
 
 ## The Core Idea
 
