@@ -190,6 +190,61 @@
       "heroImage": "/assets/images/sjsu.jpg",
       "heroCaption": "Figure 1: Pose-driven technique feedback for swimmer performance analysis.",
       "links": {}
+    },
+    {
+      "id": 15,
+      "slug": "gaze-conditioned-robotic-bimanual-manipulation-policy",
+      "title": "Gaze Conditioned Robotic Bimanual Manipulation Policy",
+      "subtitle": "Fusing Action Chunking Transformers with gaze and vision-language signals for coordinated bimanual control.",
+      "date": "Apr 2025",
+      "readTime": "9 min read",
+      "heroImage": "https://i.ytimg.com/vi/9d6hiqLtml8/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AH-CYAC0AWKAgwIABABGGUgYChVMA8=&rs=AOn4CLBvB2Ms3OU7rQGeA2_-OUY7G1bkhg",
+      "heroCaption": "Figure 1: Bimanual manipulation policy conditioned on gaze and visual context.",
+      "links": {}
+    },
+    {
+      "id": 16,
+      "slug": "shared-autonomy-for-teaching-parallel-parking-in-driving-sim",
+      "title": "Shared Autonomy for Teaching Parallel Parking in Driving Sim",
+      "subtitle": "ZPD-based shared autonomy with a two-phase NMPC expert in CARLA for robust parallel parking.",
+      "date": "Mar 2025",
+      "readTime": "9 min read",
+      "heroImage": "https://media.licdn.com/dms/image/v2/C4D33AQEDVBUBtBDz9g/productpage-image_1128_635/productpage-image_1128_635/0/1663775950406/carla_simulator_image?e=1767596400&v=beta&t=DnbkHurcqXU-KjDT_3zV3fR21vDc3LPeaQvVQ90XQVY",
+      "heroCaption": "Figure 1: Shared autonomy training and evaluation in CARLA.",
+      "links": {}
+    },
+    {
+      "id": 17,
+      "slug": "gamma-gaze-based-vlm-control-for-single-arm-manipulation",
+      "title": "GAMMA: Gaze Based VLM Control for Single Arm Manipulation",
+      "subtitle": "Gaze-assisted manipulation with foundation models for intent prediction and modular autonomy.",
+      "date": "Feb 2025",
+      "readTime": "8 min read",
+      "heroImage": "https://cdn.prod.website-files.com/5f2b1efb0f881760ffdc5c96/618e8f82651aa5f1f58c9bfd_Ads%C4%B1z%20tasar%C4%B1m%20-%202021-11-12T190600.023.png",
+      "heroCaption": "Figure 1: GAMMA concept for gaze-assisted manipulation with VLM grounding.",
+      "links": {}
+    },
+    {
+      "id": 18,
+      "slug": "enhancing-pose-estimation-on-swimmers",
+      "title": "Enhancing Pose Estimation on Swimmers",
+      "subtitle": "Optimizing underwater pose estimation and swimmer action recognition for real-time feedback.",
+      "date": "Jan 2024",
+      "readTime": "8 min read",
+      "heroImage": "https://www.popphoto.com/uploads/2019/01/17/WBLB2DJBGPSKJH5LEDSJ2JVHHE.jpg?auto=webp&width=785&height=523.00625",
+      "heroCaption": "Figure 1: Pose estimation for underwater swimmer analysis.",
+      "links": {}
+    },
+    {
+      "id": 19,
+      "slug": "exercise-recognition-with-pose-estimation-on-edge-devices",
+      "title": "Exercise Recognition with Pose Estimation on Edge Devices",
+      "subtitle": "Benchmarking CNN pipelines across GPUs and FPGAs for pose-based action recognition.",
+      "date": "Nov 2023",
+      "readTime": "8 min read",
+      "heroImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4c5607NEUOjao7dZey6VFKyWzs-Sq1lOU_w&s",
+      "heroCaption": "Figure 1: Pose-based exercise recognition on edge devices.",
+      "links": {}
     }
   ]
 }
