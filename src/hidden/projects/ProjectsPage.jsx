@@ -145,7 +145,7 @@ const VIDEO_OFFSET_CONFIG = {
   timerIntervalMs: 500 // how often to recalc position
 };
 
-const HeroSection = ({ hero }) => {
+const HeroSection = ({ hero, onScrollHintClick }) => {
   const navigate = useNavigate();
   const youtubeId = getYouTubeVideoId(hero.video);
   const [showVideo, setShowVideo] = useState(!!youtubeId);
@@ -257,10 +257,15 @@ const HeroSection = ({ hero }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer animate-bounce">
+      <button
+        type="button"
+        onClick={onScrollHintClick}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer animate-bounce"
+        aria-label="Scroll to contents"
+      >
         <span className="text-white/70 text-xs uppercase tracking-widest font-medium">Scroll</span>
         <ChevronDown size={20} className="text-white/70" />
-      </div>
+      </button>
     </div>
   );
 };
@@ -593,7 +598,7 @@ const ProjectsPage = () => {
   return (
     <div className="bg-[#0a0a0a] min-h-screen font-sans text-white">
       {/* Hero Section */}
-      <HeroSection hero={heroData} />
+      <HeroSection hero={heroData} onScrollHintClick={() => scrollToSection('fullstack')} />
 
       {/* Sticky Sidebar + Project Grid */}
       <section

@@ -135,6 +135,17 @@
         "github": "#",
         "article": "https://github.com/JonOuyang/CalHacks-Project"
       }
+    },
+    {
+      "id": 10,
+      "slug": "moirai",
+      "title": "MOIRAI: Live Collaborative Vibe Coding",
+      "subtitle": "A WIP collaboration layer that turns group brainstorming into live AI-implemented code.",
+      "date": "Mar 2025",
+      "readTime": "3 min read",
+      "heroImage": "/assets/images/MOIRAI.png",
+      "heroCaption": "Figure 1: MOIRAI envisions a shared, live coding space where ideas materialize in real time.",
+      "links": {}
     }
   ]
 }
