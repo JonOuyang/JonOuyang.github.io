@@ -146,6 +146,50 @@
       "heroImage": "/assets/images/MOIRAI.png",
       "heroCaption": "Figure 1: MOIRAI envisions a shared, live coding space where ideas materialize in real time.",
       "links": {}
+    },
+    {
+      "id": 11,
+      "slug": "transformer-based-robot-policy",
+      "title": "Transformer Based Robot Policy",
+      "subtitle": "Action Chunking Transformers for bimanual manipulation policies on a custom ALOHA setup.",
+      "date": "Mar 2025",
+      "readTime": "8 min read",
+      "heroImage": "/assets/images/ACT.jpg",
+      "heroCaption": "Figure 1: Action Chunking Transformer policies evaluated on bimanual manipulation tasks.",
+      "links": {}
+    },
+    {
+      "id": 12,
+      "slug": "diffusion-based-robot-policy",
+      "title": "Diffusion Based Robot Policy",
+      "subtitle": "Exploring diffusion policies for smooth, coordinated bimanual manipulation on ALOHA.",
+      "date": "Mar 2025",
+      "readTime": "8 min read",
+      "heroImage": "/assets/images/ACT.jpg",
+      "heroCaption": "Figure 1: Diffusion policy rollout on bimanual manipulation trajectories.",
+      "links": {}
+    },
+    {
+      "id": 13,
+      "slug": "qwen-llm-fine-tuning",
+      "title": "Qwen LLM Fine Tuning",
+      "subtitle": "LoRA and PEFT adaptation of Qwen models on an eBay car dataset for structured domain responses.",
+      "date": "Mar 2025",
+      "readTime": "7 min read",
+      "heroImage": "/assets/images/eBay.png",
+      "heroCaption": "Figure 1: Domain-specific fine-tuning for automotive listing understanding.",
+      "links": {}
+    },
+    {
+      "id": 14,
+      "slug": "pose-estimation-for-automated-swimmer-technique-feedback",
+      "title": "Pose Estimation for Automated Swimmer Technique Feedback",
+      "subtitle": "Real-time swimmer action recognition using pose estimation to deliver technique feedback.",
+      "date": "Feb 2024",
+      "readTime": "7 min read",
+      "heroImage": "/assets/images/sjsu.jpg",
+      "heroCaption": "Figure 1: Pose-driven technique feedback for swimmer performance analysis.",
+      "links": {}
     }
   ]
 }
