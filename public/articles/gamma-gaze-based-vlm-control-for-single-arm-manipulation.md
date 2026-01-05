@@ -9,12 +9,37 @@
   "authors": [
     {
       "name": "Jonathan Ouyang",
-      "role": "Researcher",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Tracey Yee Hsin Tay",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Xu Yan",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Daniel Wu",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "William Jiang",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Jonathan Kao",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     },
     {
       "name": "Yuchen Cui",
-      "role": "Advisor, UCLA Robot Intelligence Lab",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     }
   ],

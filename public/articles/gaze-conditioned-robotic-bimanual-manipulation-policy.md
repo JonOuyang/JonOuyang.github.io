@@ -9,12 +9,17 @@
   "authors": [
     {
       "name": "Jonathan Ouyang",
-      "role": "Researcher",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Yike Shi",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     },
     {
       "name": "Yuchen Cui",
-      "role": "Advisor, UCLA Robot Intelligence Lab",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     }
   ],

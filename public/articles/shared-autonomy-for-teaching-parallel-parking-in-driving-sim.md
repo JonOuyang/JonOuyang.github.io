@@ -9,12 +9,32 @@
   "authors": [
     {
       "name": "Jonathan Ouyang",
-      "role": "Visiting Researcher",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Megha Srivastava",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Eric Ziyang Zhou",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Yuchen Cui",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     },
     {
       "name": "Dorsa Sadigh",
-      "role": "Advisor, Stanford ILIAD Group",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Toyota Research Institute",
+      "role": "Collaborator",
       "avatar": "/api/placeholder/40/40"
     }
   ],

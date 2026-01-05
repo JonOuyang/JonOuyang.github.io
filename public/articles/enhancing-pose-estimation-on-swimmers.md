@@ -9,12 +9,17 @@
   "authors": [
     {
       "name": "Jonathan Ouyang",
-      "role": "Visiting Researcher",
+      "role": "Author",
+      "avatar": "/api/placeholder/40/40"
+    },
+    {
+      "name": "Austin Adams",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     },
     {
       "name": "Chang Choo",
-      "role": "Advisor, SJSU AI/DL FPGA/DSP Lab",
+      "role": "Author",
       "avatar": "/api/placeholder/40/40"
     }
   ],
