@@ -13,7 +13,7 @@
       "id": 12,
       "title": "Shared Autonomy for Teaching Parallel Parking in Driving Sim",
       "desc": "Developing shared autonomy with Zone of Proximal Development (ZPD) in CARLA and a two-phase NMPC expert for parallel parking, blending expert and user control to reach 96% success in simulation.",
-      "image": "https://media.licdn.com/dms/image/v2/C4D33AQEDVBUBtBDz9g/productpage-image_1128_635/productpage-image_1128_635/0/1663775950406/carla_simulator_image?e=1767596400&v=beta&t=DnbkHurcqXU-KjDT_3zV3fR21vDc3LPeaQvVQ90XQVY",
+      "image": "/assets/images/carlasim.jpeg",
       "institution": "Stanford University",
       "lab": "ILIAD Group",
       "advisor": "Dorsa Sadigh (DeepMind)"
