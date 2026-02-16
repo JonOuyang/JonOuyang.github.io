@@ -8,6 +8,7 @@
   "experimentalNavItems": [
     { "name": "Projects (Exp)", "path": "/experimental-projects" },
     { "name": "WIP", "path": "/wip" },
+    { "name": "Home (WIP)", "path": "/wip/home" },
     { "name": "card", "path": "/card" }
   ]
 }

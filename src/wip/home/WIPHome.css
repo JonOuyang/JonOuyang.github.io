@@ -1,0 +1,91 @@
+.viewer-window {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #0f1f44 0%, #060b19 55%, #02040b 100%);
+}
+
+.scene {
+  width: 100%;
+  height: 100%;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.cylinder {
+  position: relative;
+  width: 0;
+  height: 190vh;
+  transform-style: preserve-3d;
+  transform: rotateX(-10deg) rotateY(0deg);
+  animation: rotate-cylinder 9s linear infinite;
+}
+
+.panel {
+  position: absolute;
+  left: -360px;
+  top: -95vh;
+  width: 720px;
+  height: 190vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.panel-text-stack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.panel-word {
+  margin: 0;
+  color: rgba(218, 232, 255, 0.92);
+  font-size: clamp(20px, 2.3vw, 34px);
+  letter-spacing: 0.22em;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-transform: uppercase;
+  text-shadow: 0 0 16px rgba(123, 183, 255, 0.55);
+  white-space: nowrap;
+}
+
+.cylinder-cap {
+  position: absolute;
+  width: 1560px;
+  height: 1560px;
+  left: -780px;
+  border-radius: 50%;
+  border: 1px solid rgba(155, 203, 255, 0.2);
+  background: radial-gradient(circle, rgba(147, 205, 255, 0.05) 0%, rgba(147, 205, 255, 0.01) 45%, rgba(147, 205, 255, 0) 75%);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.cylinder-cap-top {
+  top: -95vh;
+  transform: rotateX(90deg);
+}
+
+.cylinder-cap-bottom {
+  top: calc(95vh - 1560px);
+  transform: rotateX(90deg);
+}
+
+@keyframes rotate-cylinder {
+  from {
+    transform: rotateX(-10deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-10deg) rotateY(360deg);
+  }
+}

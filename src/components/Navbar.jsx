@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Download } from "lucide-react";
 
 const Navbar = () => {
+  const location = useLocation();
   const [mode, setMode] = useState("public"); // "public" | "experimental"
   const [publicNav, setPublicNav] = useState([]);
   const [experimentalNav, setExperimentalNav] = useState([]);
+
+  useEffect(() => {
+    const isExperimentalRoute =
+      location.pathname.startsWith("/experimental-projects") ||
+      location.pathname.startsWith("/wip") ||
+      location.pathname.startsWith("/card");
+
+    setMode(isExperimentalRoute ? "experimental" : "public");
+  }, [location.pathname]);
 
   useEffect(() => {
     const loadNav = async () => {
@@ -27,6 +37,7 @@ const Navbar = () => {
         setExperimentalNav([
           { name: "Projects (Exp)", path: "/experimental-projects" },
           { name: "WIP", path: "/wip" },
+          { name: "Home (WIP)", path: "/wip/home" },
           { name: "card", path: "/card" },
         ]);
       }
