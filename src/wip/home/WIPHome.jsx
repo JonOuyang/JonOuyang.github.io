@@ -3,7 +3,7 @@ import './WIPHome.css';
 
 const SIDES = 20;
 const RADIUS = 760;
-const IMAGE_SRC = '/assets/images/githubpfp.jpeg';
+const IMAGE_SRC = '/assets/images/carouselpfp.png';
 const START_ROTATION_DEG = -27;
 const ROTATION_PIXELS = 140;
 
