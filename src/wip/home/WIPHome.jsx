@@ -15,7 +15,7 @@ function makeFace(index) {
   if (index === 0) {
     return {
       type: 'name',
-      title: 'GONZALEZ',
+      title: 'UCLA',
       subtitle: 'CHRISTOPHER',
     };
   }
@@ -39,6 +39,7 @@ export default function WIPHome() {
       const angle = (360 / SIDES) * index;
       return {
         id: `face-${index}`,
+        index,
         style: {
           transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
         },
@@ -50,6 +51,15 @@ export default function WIPHome() {
   return (
     <main className="viewer-window">
       <section className="camera-view">
+        <div className="annotation annotation-top-left">
+          VIEWPORT CENTERED
+          <br />
+          POLYGON SIDES: {SIDES}
+        </div>
+        <div className="annotation annotation-top-right">ROTATION: COUNTERCLOCKWISE</div>
+        <div className="guide guide-horizontal" aria-hidden="true" />
+        <div className="guide guide-vertical" aria-hidden="true" />
+
         <div
           className="carousel"
           aria-label="3D polygon merry-go-round of flat posters"
@@ -61,6 +71,8 @@ export default function WIPHome() {
           {faces.map((face) => (
             <article className="face" key={face.id} style={face.style}>
               <div className={`face-card face-card-${face.content.type}`}>
+                <span className="face-index">#{face.index}</span>
+
                 {face.content.type === 'player' && (
                   <img
                     src={face.content.image}
