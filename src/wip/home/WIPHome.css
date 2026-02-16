@@ -2,90 +2,115 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 40%, #0f1f44 0%, #060b19 55%, #02040b 100%);
+  background:
+    radial-gradient(100% 80% at 50% 45%, rgba(34, 65, 126, 0.5), rgba(8, 16, 35, 0.95) 60%),
+    linear-gradient(170deg, #060d1f 0%, #030712 100%);
 }
 
-.scene {
+.camera-view {
   width: 100%;
   height: 100%;
-  perspective: 1400px;
+  perspective: 1200px;
   perspective-origin: 50% 50%;
   display: grid;
   place-items: center;
   overflow: hidden;
 }
 
-.cylinder {
+.carousel {
   position: relative;
   width: 0;
-  height: 190vh;
+  height: 180vh;
   transform-style: preserve-3d;
-  transform: rotateX(-10deg) rotateY(0deg);
-  animation: rotate-cylinder 9s linear infinite;
+  transform: translateX(-160px) rotateY(var(--start-rotation, -27deg));
+  animation: spin-to-stop 2200ms cubic-bezier(0.22, 0.88, 0.28, 1) forwards;
 }
 
-.panel {
+.face {
   position: absolute;
-  left: -360px;
-  top: -95vh;
-  width: 720px;
-  height: 190vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  backface-visibility: hidden;
+  left: -280px;
+  top: -90vh;
+  width: 560px;
+  height: 180vh;
+  display: grid;
+  place-items: center;
   transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
-.panel-text-stack {
+.face-card {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border-left: 1px solid rgba(138, 190, 255, 0.26);
+  border-right: 1px solid rgba(138, 190, 255, 0.26);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  position: relative;
+  overflow: hidden;
 }
 
-.panel-word {
+.face-card-name {
+  background: rgba(24, 41, 84, 0.2);
+}
+
+.face-card-empty {
+  background: transparent;
+  box-shadow: none;
+}
+
+.name-subtitle {
   margin: 0;
-  color: rgba(218, 232, 255, 0.92);
-  font-size: clamp(20px, 2.3vw, 34px);
-  letter-spacing: 0.22em;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  text-transform: uppercase;
-  text-shadow: 0 0 16px rgba(123, 183, 255, 0.55);
-  white-space: nowrap;
-}
-
-.cylinder-cap {
   position: absolute;
-  width: 1560px;
-  height: 1560px;
-  left: -780px;
-  border-radius: 50%;
-  border: 1px solid rgba(155, 203, 255, 0.2);
-  background: radial-gradient(circle, rgba(147, 205, 255, 0.05) 0%, rgba(147, 205, 255, 0.01) 45%, rgba(147, 205, 255, 0) 75%);
-  transform-style: preserve-3d;
-  pointer-events: none;
+  top: 16%;
+  left: 9%;
+  color: #ff3b3b;
+  font-size: clamp(18px, 1.7vw, 28px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-.cylinder-cap-top {
-  top: -95vh;
-  transform: rotateX(90deg);
+.name-title {
+  margin: 0;
+  color: rgba(241, 248, 255, 0.95);
+  font-size: clamp(54px, 8vw, 136px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-shadow: 0 0 22px rgba(140, 198, 255, 0.4);
 }
 
-.cylinder-cap-bottom {
-  top: calc(95vh - 1560px);
-  transform: rotateX(90deg);
+.face-image {
+  width: min(420px, 80%);
+  height: auto;
+  max-height: 65vh;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(192, 222, 255, 0.45);
+  box-shadow: 0 14px 40px rgba(2, 8, 24, 0.6);
 }
 
-@keyframes rotate-cylinder {
+.face-label {
+  position: absolute;
+  bottom: 7%;
+  left: 9%;
+  margin: 0;
+  color: rgba(236, 246, 255, 0.92);
+  font-size: clamp(18px, 1.6vw, 26px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-shadow: 0 0 14px rgba(130, 198, 255, 0.4);
+}
+
+@keyframes spin-to-stop {
   from {
-    transform: rotateX(-10deg) rotateY(0deg);
+    transform: translateX(-160px) rotateY(var(--start-rotation, -27deg));
   }
   to {
-    transform: rotateX(-10deg) rotateY(360deg);
+    transform: translateX(-160px) rotateY(var(--stop-rotation, -16deg));
   }
 }
