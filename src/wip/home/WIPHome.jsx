@@ -1,15 +1,11 @@
 import React, { useMemo } from 'react';
 import './WIPHome.css';
 
-const SIDES = 20;
+const SIDES = 48;
 const RADIUS = 760;
 const IMAGE_SRC = '/assets/images/carouselpfp.png';
-const START_ROTATION_DEG = -27;
-const ROTATION_PIXELS = 140;
-
-function pixelsToDegrees(px, radius) {
-  return (px / (2 * Math.PI * radius)) * 360;
-}
+const START_ROTATION_DEG = -40;
+const STOP_ROTATION_DEG = -10;
 
 function makeFace(index) {
   if (index === 0) {
@@ -32,8 +28,6 @@ function makeFace(index) {
 }
 
 export default function WIPHome() {
-  const stopRotationDeg = START_ROTATION_DEG + pixelsToDegrees(ROTATION_PIXELS, RADIUS);
-
   const faces = useMemo(() => {
     return Array.from({ length: SIDES }, (_, index) => {
       const angle = (360 / SIDES) * index;
@@ -65,7 +59,7 @@ export default function WIPHome() {
           aria-label="3D polygon merry-go-round of flat posters"
           style={{
             '--start-rotation': `${START_ROTATION_DEG}deg`,
-            '--stop-rotation': `${stopRotationDeg}deg`,
+            '--stop-rotation': `${STOP_ROTATION_DEG}deg`,
           }}
         >
           {faces.map((face) => (
