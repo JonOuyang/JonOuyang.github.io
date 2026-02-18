@@ -25,7 +25,11 @@
       "Bash(pkill:*)",
       "Bash(cd:*)",
       "Bash([ -d assets/videos ])",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(npx eslint:*)",
+      "Bash(node -e:*)",
+      "Bash(npx -y acorn:*)",
+      "Bash(npx vite build)"
     ],
     "deny": [],
     "ask": []
