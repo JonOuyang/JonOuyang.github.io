@@ -161,33 +161,42 @@ const PandaArm = ({ targetRef }) => {
 
 /* --- Cursor tracker — maps screen position directly to target around the robot --- */
 const CursorTracker = ({ mouseRef, targetRef }) => {
-  const { size } = useThree();
-  const frameSkip = useRef(0);
+  const { camera } = useThree();
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const interactionPlaneRef = useRef(new THREE.Plane());
+  const planeNormalRef = useRef(new THREE.Vector3());
+  const hitPointRef = useRef(new THREE.Vector3());
+  const planeAnchorRef = useRef(new THREE.Vector3(0, 1.0, 0.9));
 
   useFrame(() => {
-    frameSkip.current++;
-    if (frameSkip.current % 2 !== 0) return;
     if (!mouseRef.current) return;
 
-    const { x, y } = mouseRef.current;
-    const ndcX = (x / size.width) * 2 - 1;  // -1 (left) to 1 (right)
-    const ndcY = -(y / size.height) * 2 + 1; // -1 (bottom) to 1 (top)
+    const { x: ndcX, y: ndcY } = mouseRef.current;
+    const raycaster = raycasterRef.current;
+    const interactionPlane = interactionPlaneRef.current;
+    const planeNormal = planeNormalRef.current;
+    const hitPoint = hitPointRef.current;
 
-    // Cursor distance from center → reach distance
-    const distFromCenter = Math.sqrt(ndcX * ndcX + ndcY * ndcY);
-    const radius = 0.15 + Math.sqrt(distFromCenter) * 1.6; // sqrt curve: stays extended longer, only tucks in when very close
+    camera.getWorldDirection(planeNormal);
+    interactionPlane.setFromNormalAndCoplanarPoint(planeNormal, planeAnchorRef.current);
+    raycaster.setFromCamera({ x: ndcX, y: ndcY }, camera);
 
-    // Left/right cursor = horizontal sweep angle
-    const angle = ndcX * Math.PI * 0.6;
-    // Vertical: top of screen = higher reach
-    const height = 0.2 + (ndcY + 1) * 0.6;
+    if (!raycaster.ray.intersectPlane(interactionPlane, hitPoint)) return;
+
+    hitPoint.x = THREE.MathUtils.clamp(hitPoint.x, -1.45, 1.45);
+    hitPoint.y = THREE.MathUtils.clamp(hitPoint.y, 0.25, 1.85);
+    hitPoint.z = THREE.MathUtils.clamp(hitPoint.z, 0.2, 1.9);
+
+    const radial = Math.hypot(hitPoint.x, hitPoint.z);
+    const clampedRadial = THREE.MathUtils.clamp(radial, 0.35, 1.9);
+    if (radial > 1e-5 && clampedRadial !== radial) {
+      const scale = clampedRadial / radial;
+      hitPoint.x *= scale;
+      hitPoint.z *= scale;
+    }
 
     if (!targetRef.current) targetRef.current = new THREE.Vector3();
-    targetRef.current.set(
-      Math.sin(angle) * radius,
-      height,
-      Math.cos(angle) * radius
-    );
+    targetRef.current.copy(hitPoint);
   });
 
   return null;
@@ -312,7 +321,7 @@ const ContactTyping = () => {
 /* --- Expanding Robot Panel --- */
 const RobotArmSection = () => {
   const containerRef = useRef(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef(null);
   const targetRef = useRef(new THREE.Vector3(1, 1, 1));
 
   const { scrollYProgress } = useScroll({
@@ -324,7 +333,13 @@ const RobotArmSection = () => {
 
   const handleMouseMove = useCallback((e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+    mouseRef.current = { x: nx, y: ny };
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseRef.current = null;
   }, []);
 
   return (
@@ -340,7 +355,11 @@ const RobotArmSection = () => {
           </div>
 
           {/* Full-size 3D robot canvas, shifted right */}
-          <div className="absolute inset-y-0 right-0 w-3/5 h-full" onMouseMove={handleMouseMove}>
+          <div
+            className="absolute inset-y-0 right-0 w-3/5 h-full"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <Canvas
               camera={{ position: [3, 2.5, 4], fov: 45 }}
               dpr={[1, 1.5]}
