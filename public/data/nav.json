@@ -6,9 +6,9 @@
     { "name": "Research", "path": "/research" }
   ],
   "experimentalNavItems": [
+    { "name": "AGY Home", "path": "/agy-home" },
     { "name": "Projects (Exp)", "path": "/experimental-projects" },
     { "name": "WIP", "path": "/wip" },
-    { "name": "Home (WIP)", "path": "/wip/home" },
     { "name": "card", "path": "/card" }
   ]
 }

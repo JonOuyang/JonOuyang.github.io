@@ -10,6 +10,7 @@ const PublicHome = lazy(() => import('./components/PublicHome'));
 const WIP = lazy(() => import('./components/WIP'));
 const WIPHome = lazy(() => import('./wip/home/WIPHome'));
 const CardPage = lazy(() => import('./experimental/card/CardPage'));
+const AGYHomePage = lazy(() => import('./experimental/home/AGYHomePage'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
@@ -135,6 +136,15 @@ const App = () => {
             <MobileDock />
             <Suspense fallback={<Loading />}>
               <CardPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/agy-home" element={
+          <main className="bg-black">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <AGYHomePage />
             </Suspense>
          </main>
         } />

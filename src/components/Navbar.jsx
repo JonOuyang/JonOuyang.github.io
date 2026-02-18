@@ -12,7 +12,8 @@ const Navbar = () => {
     const isExperimentalRoute =
       location.pathname.startsWith("/experimental-projects") ||
       location.pathname.startsWith("/wip") ||
-      location.pathname.startsWith("/card");
+      location.pathname.startsWith("/card") ||
+      location.pathname.startsWith("/agy-home");
 
     setMode(isExperimentalRoute ? "experimental" : "public");
   }, [location.pathname]);
@@ -35,9 +36,9 @@ const Navbar = () => {
           { name: "Research", path: "/research" },
         ]);
         setExperimentalNav([
+          { name: "AGY Home", path: "/agy-home" },
           { name: "Projects (Exp)", path: "/experimental-projects" },
           { name: "WIP", path: "/wip" },
-          { name: "Home (WIP)", path: "/wip/home" },
           { name: "card", path: "/card" },
         ]);
       }
