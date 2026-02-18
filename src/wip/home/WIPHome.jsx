@@ -49,7 +49,7 @@ export default function WIPHome() {
       const order = LETTER_REVEAL_ORDER.indexOf(index);
       const step = order < 0 ? index : order;
       const outlineDelayMs = 180 + step * 30;
-      const fillDelayMs = outlineDelayMs + 182;
+      const fillDelayMs = outlineDelayMs + 360;
 
       return {
         key: `last-name-letter-${index}`,
@@ -115,7 +115,7 @@ export default function WIPHome() {
                     playsInline
                     preload="auto"
                     onLoadedData={(event) => {
-                      event.currentTarget.playbackRate = 0.5;
+                      event.currentTarget.playbackRate = 0.4;
                     }}
                   />
                 )}

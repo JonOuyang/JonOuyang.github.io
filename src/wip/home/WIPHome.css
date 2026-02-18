@@ -1,10 +1,25 @@
 .viewer-window {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background:
-    radial-gradient(100% 80% at 50% 45%, rgba(34, 65, 126, 0.5), rgba(8, 16, 35, 0.95) 60%),
-    linear-gradient(170deg, #060d1f 0%, #030712 100%);
+    linear-gradient(170deg, rgba(5, 12, 29, 0.22) 0%, rgba(3, 7, 18, 0.36) 100%),
+    radial-gradient(100% 80% at 50% 45%, rgba(34, 65, 126, 0.14), rgba(8, 16, 35, 0.38) 60%);
+}
+
+.viewer-window::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/images/ucla-background.jpg');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 112% auto;
+  transform-origin: 50% 50%;
+  transform: scale(1.12) translateX(0);
+  animation: background-pan-left 2050ms linear forwards;
+  pointer-events: none;
 }
 
 .alpha-filter-defs {
@@ -163,8 +178,8 @@
   border-radius: 0;
   background: transparent;
   mix-blend-mode: screen;
-  clip-path: inset(2px 2px 2px 2px);
-  transform: translateX(50px) translateY(0) scale(1.4);
+  clip-path: inset(2px 2px 12px 2px);
+  transform: translateX(50px) translateY(10px) scale(1.62);
 }
 
 .face-label {
@@ -230,5 +245,14 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes background-pan-left {
+  from {
+    transform: scale(1.12) translateX(0);
+  }
+  to {
+    transform: scale(1.12) translateX(-2.8%);
   }
 }
