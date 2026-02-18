@@ -1,7 +1,8 @@
-import React, { useRef, useMemo, useCallback } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Mail, Linkedin, Github, FileText } from 'lucide-react';
 
 /* --- Robot Arm Joint --- */
 const RobotJoint = ({ position, args, color = '#e0e0e0' }) => (
@@ -223,6 +224,91 @@ const WoodenTable = () => {
   );
 };
 
+/* --- Contact typing animation --- */
+const ContactTyping = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const fullText = "Contact me";
+  const [typed, setTyped] = useState('');
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorFading, setCursorFading] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+
+  useEffect(() => {
+    if (!isInView) return;
+    setTyped('');
+    setShowCursor(false);
+    setCursorFading(false);
+    setShowButtons(false);
+
+    // Show cursor blinking first
+    const cursorTimeout = setTimeout(() => setShowCursor(true), 200);
+    // Start typing
+    const startTimeout = setTimeout(() => {
+      let i = 0;
+      const interval = setInterval(() => {
+        i++;
+        setTyped(fullText.slice(0, i));
+        if (i >= fullText.length) {
+          clearInterval(interval);
+          // Fade cursor and show buttons
+          setTimeout(() => setCursorFading(true), 600);
+          setTimeout(() => setShowButtons(true), 400);
+        }
+      }, 45);
+    }, 800);
+
+    return () => {
+      clearTimeout(cursorTimeout);
+      clearTimeout(startTimeout);
+    };
+  }, [isInView]);
+
+  const buttons = [
+    { label: 'Email', icon: Mail, href: 'mailto:hello@example.com' },
+    { label: 'LinkedIn', icon: Linkedin, href: '#' },
+    { label: 'GitHub', icon: Github, href: '#' },
+    { label: 'Resume', icon: FileText, href: '#' },
+  ];
+
+  return (
+    <div ref={ref} className="flex flex-col justify-center h-full px-8 md:px-12">
+      <h2 className="text-4xl md:text-6xl font-semibold mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">
+        <span>{typed}</span>
+        {showCursor && (
+          <span
+            className="inline-block w-0 overflow-visible"
+            style={{
+              animation: cursorFading ? 'none' : 'blink 1s step-end infinite',
+              color: '#2997FF',
+              textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)',
+              transition: 'opacity 0.6s ease',
+              opacity: cursorFading ? 0 : 1,
+            }}
+          >|</span>
+        )}
+        <span className="invisible">{fullText.slice(typed.length)}</span>
+      </h2>
+
+      <div className="flex flex-wrap gap-3">
+        {buttons.map((btn, i) => (
+          <motion.a
+            key={btn.label}
+            href={btn.href}
+            initial={{ opacity: 0, y: 15 }}
+            animate={showButtons ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: i * 0.1, ease: 'easeOut' }}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors text-sm font-medium border border-zinc-700"
+          >
+            <btn.icon size={16} />
+            {btn.label}
+          </motion.a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 /* --- Expanding Robot Panel --- */
 const RobotArmSection = () => {
   const containerRef = useRef(null);
@@ -245,23 +331,29 @@ const RobotArmSection = () => {
     <section ref={containerRef} className="relative bg-black">
       <div className="flex items-center justify-center px-3">
         <motion.div
-          style={{ scale, borderRadius }}
+          style={{ scale, borderRadius, background: 'linear-gradient(180deg, #1a1a1a 0%, #111 100%)' }}
           className="overflow-hidden aspect-video w-full relative"
-          onMouseMove={handleMouseMove}
         >
-          <Canvas
-            camera={{ position: [3, 2.5, 4], fov: 45 }}
-            dpr={[1, 1.5]}
-            style={{ background: 'linear-gradient(180deg, #1a1a1a 0%, #111 100%)' }}
-            gl={{ antialias: true, powerPreference: 'high-performance' }}
-          >
-            <ambientLight intensity={0.4} />
-            <directionalLight position={[5, 8, 5]} intensity={1.2} />
-            <directionalLight position={[-3, 4, -2]} intensity={0.3} color="#2997FF" />
-            <CursorTracker mouseRef={mouseRef} targetRef={targetRef} />
-            <PandaArm targetRef={targetRef} />
-            <WoodenTable />
-          </Canvas>
+          {/* Left: text + buttons overlay */}
+          <div className="absolute inset-y-0 left-0 w-2/5 z-10">
+            <ContactTyping />
+          </div>
+
+          {/* Full-size 3D robot canvas, shifted right */}
+          <div className="absolute inset-y-0 right-0 w-3/5 h-full" onMouseMove={handleMouseMove}>
+            <Canvas
+              camera={{ position: [3, 2.5, 4], fov: 45 }}
+              dpr={[1, 1.5]}
+              gl={{ antialias: true, powerPreference: 'high-performance' }}
+            >
+              <ambientLight intensity={0.4} />
+              <directionalLight position={[5, 8, 5]} intensity={1.2} />
+              <directionalLight position={[-3, 4, -2]} intensity={0.3} color="#2997FF" />
+              <CursorTracker mouseRef={mouseRef} targetRef={targetRef} />
+              <PandaArm targetRef={targetRef} />
+              <WoodenTable />
+            </Canvas>
+          </div>
         </motion.div>
       </div>
     </section>
