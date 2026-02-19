@@ -43,8 +43,8 @@ const Header = () => (
 
 /* --- 2. Hero Section (Typing & Particles) --- */
 const Hero = () => {
-  const fullLineOne = "Experience liftoff with the";
-  const fullLineTwo = "next-generation IDE";
+  const fullLineOne = "Jonathan Ouyang";
+  const fullLineTwo = "Computer Science at UCLA";
   const [lineOne, setLineOne] = useState('');
   const [lineTwo, setLineTwo] = useState('');
   const [showActions, setShowActions] = useState(false);
@@ -683,6 +683,7 @@ const Hero = () => {
 /* --- 2.5 Expanding Video Section --- */
 const ExpandingVideo = () => {
   const containerRef = useRef(null);
+  const videoUrl = 'https://www.youtube.com/watch?v=shnW3VerkiM';
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -711,24 +712,31 @@ const ExpandingVideo = () => {
           onMouseLeave={() => setIsHovering(false)}
         >
           <video
-            src="/assets/videos/frame.mp4"
+            src="/assets/videos/jayu-gemini-winner.mp4"
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover pointer-events-none"
+          />
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute inset-0 z-10"
+            aria-label="Open video on YouTube"
           />
           <motion.div
-            className="absolute pointer-events-none bg-white text-black text-sm font-medium px-5 py-2.5 rounded-full"
+            className="absolute z-20 pointer-events-none -translate-x-1/2 -translate-y-[140%] rounded-2xl bg-white px-5 py-2.5 text-base font-semibold text-black shadow-xl"
             animate={{
-              x: cursorPos.x - 50,
-              y: cursorPos.y - 20,
+              left: cursorPos.x,
+              top: cursorPos.y,
               opacity: isHovering ? 1 : 0,
-              scale: isHovering ? 1 : 0.5,
+              scale: isHovering ? 1 : 0.85,
             }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25, mass: 0.5 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 30, mass: 0.35 }}
           >
-            Read more
+            See Video
           </motion.div>
         </motion.div>
       </div>
