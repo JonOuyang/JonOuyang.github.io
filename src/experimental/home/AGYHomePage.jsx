@@ -797,7 +797,7 @@ const Toolbelt = () => {
 };
 
 const ToolbeltTyping = () => {
-  const fullText = "Google Antigravity is our agentic development platform, evolving the IDE into the agent-first era.";
+  const fullText = "For the love of the game\nFor the future of intelligent systems\nFor better, more human AI";
   const [typed, setTyped] = useState('');
   const [showCursor, setShowCursor] = useState(false);
   const [cursorFading, setCursorFading] = useState(false);
@@ -839,7 +839,7 @@ const ToolbeltTyping = () => {
   }, [isInView]);
 
   return (
-    <p ref={ref} className="text-4xl md:text-6xl max-w-5xl text-left leading-tight font-medium px-6 mr-auto">
+    <p ref={ref} className="text-4xl md:text-6xl max-w-5xl text-left leading-tight font-medium px-6 mr-auto whitespace-pre-line">
       {typed}
       {showCursor && <span className="inline-block w-0 overflow-visible" style={{ animation: cursorFading ? 'none' : 'blink 1s step-end infinite', color: '#2997FF', textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)', transition: 'opacity 0.6s ease', opacity: cursorFading ? 0 : 1 }}>|</span>}
       <span className="invisible">{fullText.slice(typed.length)}</span>
@@ -880,10 +880,10 @@ const FeatureTypingText = ({ text }) => {
 
 const StickyFeatureSection = () => {
   const features = [
-    { title: "An AI IDE Core", desc: "Google Antigravity's Editor view offers tab autocompletion, natural language code commands, and a configurable agent.", color: "59, 130, 246" },
-    { title: "Higher-level Abstractions", desc: "A more intuitive task-based approach to monitoring agent activity, presenting you with essential artifacts.", color: "139, 92, 246" },
-    { title: "Cross-surface Agents", desc: "Synchronized agentic control across your editor, terminal, and browser for powerful development workflows.", color: "34, 197, 94" },
-    { title: "User Feedback", desc: "Intuitively integrate feedback across surfaces and artifacts to guide and refine the agent's work.", color: "234, 179, 8" },
+    { title: "My Work in Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246" },
+    { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246" },
+    { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94" },
+    { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8" },
   ];
 
   return (
@@ -955,32 +955,86 @@ const SplitCTA = () => {
 
 /* --- 8. Blog Section --- */
 const BlogSection = () => {
-  const blogs = [
-    { title: "Gemini 3 Flash in Google Antigravity", date: "Dec 17, 2025", type: "Product", color: "bg-zinc-800 text-white" },
-    { title: "Nano Banana Pro in Google Antigravity", date: "Nov 20, 2025", type: "Product", color: "bg-zinc-900 text-white border border-zinc-800" },
-    { title: "Introducing Google Antigravity", date: "Nov 18, 2025", type: "Product", color: "bg-zinc-800 text-white" },
+  // Add new posts here. `image` is optional:
+  // - with image: card shows image + text overlay
+  // - without image: card shows a text-first gradient header
+  const socialPosts = [
+    {
+      url: "https://www.linkedin.com/feed/update/urn:li:activity:7427449842383196161/",
+      embedUrl: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7427449538019409920?collapsed=1",
+      embedHeight: 470,
+      title: "Building agentic systems with strong product instincts and practical deployment focus.",
+      date: "LinkedIn",
+    },
+    {
+      url: "https://www.linkedin.com/posts/googleaidevs_developed-using-geminis-advanced-vision-ugcPost-7328449152445489153-zXKL?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEAze44B7770Sfnvaz-6R9-fzahVG5WmyVE",
+      embedUrl: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7328449152445489153?collapsed=1",
+      embedHeight: 470,
+      title: "Featured by Google AI Developers for work built with Gemini vision capabilities.",
+      date: "LinkedIn",
+    },
+    {
+      url: "https://www.linkedin.com/feed/update/urn:li:share:7265418644434690052/",
+      embedUrl: "https://www.linkedin.com/embed/feed/update/urn:li:share:7265418644434690052?collapsed=1",
+      embedHeight: 470,
+      title: "Additional project update and milestone highlight.",
+      date: "LinkedIn",
+    },
   ];
+
+  const platformFromUrl = (url) => {
+    if (url.includes('linkedin.com')) return 'LinkedIn';
+    if (url.includes('x.com') || url.includes('twitter.com')) return 'X / Twitter';
+    return 'Social';
+  };
 
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-end mb-12">
-        <h2 className="text-4xl font-medium bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Latest Blogs</h2>
-        <button className="text-zinc-400 hover:text-white transition-colors">View blog</button>
+        <h2 className="text-4xl font-medium bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Latest Social Posts</h2>
+        <a
+          href="https://www.linkedin.com/in/jon-ouyang/"
+          target="_blank"
+          rel="noreferrer"
+          className="text-zinc-400 hover:text-white transition-colors"
+        >
+          View all posts
+        </a>
       </div>
       
       <div className="grid md:grid-cols-3 gap-6">
-        {blogs.map((blog, i) => (
-          <div key={i} className="group cursor-pointer">
-            <div className={`aspect-square rounded-2xl mb-4 p-8 flex flex-col justify-end ${blog.color} transition-transform group-hover:-translate-y-2`}>
-                <h3 className="text-2xl font-medium">{blog.title}</h3>
+        {socialPosts.map((post, i) => (
+          <div key={i} className="group w-full max-w-[504px] mx-auto">
+            <div className="rounded-2xl mb-4 overflow-hidden relative transition-transform group-hover:-translate-y-2">
+              {post.embedUrl ? (
+                <iframe
+                  src={post.embedUrl}
+                  className="block w-full max-w-[504px] mx-auto"
+                  style={{ height: post.embedHeight || 500 }}
+                  frameBorder="0"
+                  allowFullScreen
+                  title={`Embedded social post ${i + 1}`}
+                />
+              ) : post.image ? (
+                <>
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex items-end">
+                    <h3 className="text-xl font-medium text-white">{post.title}</h3>
+                  </div>
+                </>
+              ) : (
+                <div className="aspect-square w-full h-full p-7 flex flex-col justify-end bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800">
+                  <h3 className="text-2xl font-medium leading-snug text-white">{post.title}</h3>
+                </div>
+              )}
             </div>
             <div className="flex justify-between text-sm text-zinc-400">
-                <span>{blog.date}</span>
-                <span>{blog.type}</span>
+              <span>{post.date}</span>
+              <span>{platformFromUrl(post.url)}</span>
             </div>
-            <div className="mt-2 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                Read blog <ArrowRight size={14} />
-            </div>
+            <a href={post.url} target="_blank" rel="noreferrer" className="mt-2 font-medium flex items-center gap-1 hover:gap-2 transition-all">
+              Open post <ArrowRight size={14} />
+            </a>
           </div>
         ))}
       </div>
