@@ -50,8 +50,6 @@ const Hero = () => {
   const [showActions, setShowActions] = useState(false);
   const [showCursor, setShowCursor] = useState({ one: false, two: false });
   const [cursorFading, setCursorFading] = useState(false);
-  const [animMode, setAnimMode] = useState(-1);
-  const animModeRef = useRef(-1);
   const heroRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -107,10 +105,7 @@ const Hero = () => {
     };
   }, []);
 
-  // Sync ref with state
-  useEffect(() => { animModeRef.current = animMode; }, [animMode]);
-
-  // Water cursor effect — 3 modes
+  // Water cursor effect
   useEffect(() => {
     const canvas = canvasRef.current;
     const hero = heroRef.current;
@@ -151,7 +146,7 @@ const Hero = () => {
       size: 6 + Math.random() * 14,
       phase: Math.random() * Math.PI * 2,
       pulseSpeed: 0.02 + Math.random() * 0.02,
-      hue: [170, 155, 185, 160, 140][Math.floor(Math.random() * 5)],
+      hue: [198, 206, 214, 222, 230][Math.floor(Math.random() * 5)],
       tentacleLen: 3 + Math.floor(Math.random() * 3),
     }));
 
@@ -165,95 +160,25 @@ const Hero = () => {
         mouse.y = e.clientY - rect.top;
         isInHero = true;
 
-        const mode = animModeRef.current;
         const speed = Math.sqrt((mouse.x - prevMouse.x) ** 2 + (mouse.y - prevMouse.y) ** 2);
 
-        if (mode === 0) {
-          // Mode 1: Ripples + droplets
-          if (speed > 2) {
-            ripples.push({
-              x: mouse.x, y: mouse.y,
-              radius: 0, maxRadius: 80 + speed * 2,
-              opacity: 0.8 + Math.min(speed * 0.01, 0.2),
-              speed: 1.8 + speed * 0.04,
-            });
-          }
-          for (let i = 0; i < 5; i++) {
+        // Bioluminescence — plankton bloom on cursor disturbance
+        if (droplets.length < 120) {
+          const count = Math.min(4, 2 + Math.floor(speed * 0.15));
+          for (let i = 0; i < count; i++) {
             const angle = Math.random() * Math.PI * 2;
-            const dist = Math.random() * 20;
+            const dist = Math.random() * 18;
             droplets.push({
               x: mouse.x + Math.cos(angle) * dist,
               y: mouse.y + Math.sin(angle) * dist,
-              vx: (Math.random() - 0.5) * 2.5 + (mouse.x - prevMouse.x) * 0.2,
-              vy: (Math.random() - 0.5) * 2.5 + (mouse.y - prevMouse.y) * 0.2 + 0.3,
-              radius: Math.random() * 4 + 1.5,
+              vx: (Math.random() - 0.5) * 1.5 + (mouse.x - prevMouse.x) * 0.1,
+              vy: (Math.random() - 0.5) * 1.5 + (mouse.y - prevMouse.y) * 0.1,
+              radius: Math.random() * 3 + 1,
               life: 1,
-              decay: 0.006 + Math.random() * 0.01,
-              hue: 195 + Math.random() * 25,
+              decay: 0.005 + Math.random() * 0.008,
+              hue: [198, 206, 214, 222][Math.floor(Math.random() * 4)],
+              mode: 'bio',
             });
-          }
-        } else if (mode === 1) {
-          // Mode 2: Chinese New Year — massive firework bursts
-          if (speed > 3 && droplets.length < 250) {
-            // Multiple bursts with different colors for variety
-            const numBursts = Math.min(3, 1 + Math.floor(speed * 0.1));
-            for (let b = 0; b < numBursts; b++) {
-              const burstCount = Math.min(20, 12 + Math.floor(speed * 0.4));
-              const burstHue = [0, 30, 50, 10, 330, 45, 60][Math.floor(Math.random() * 7)]; // red, orange, gold, crimson, magenta, amber, yellow
-              const offsetX = (Math.random() - 0.5) * 30;
-              const offsetY = (Math.random() - 0.5) * 30;
-              for (let i = 0; i < burstCount; i++) {
-                const angle = (Math.PI * 2 / burstCount) * i + (Math.random() - 0.5) * 0.4;
-                const vel = 3 + Math.random() * 4;
-                droplets.push({
-                  x: mouse.x + offsetX, y: mouse.y + offsetY,
-                  vx: Math.cos(angle) * vel,
-                  vy: Math.sin(angle) * vel,
-                  radius: Math.random() * 4 + 2,
-                  life: 1,
-                  decay: 0.008 + Math.random() * 0.008,
-                  hue: burstHue + Math.random() * 20,
-                  mode: 'cny',
-                });
-              }
-            }
-          }
-          // Bright trailing sparks
-          if (droplets.length < 250) {
-            for (let i = 0; i < 3; i++) {
-              const angle = Math.random() * Math.PI * 2;
-              droplets.push({
-                x: mouse.x + Math.cos(angle) * 10,
-                y: mouse.y + Math.sin(angle) * 10,
-                vx: (Math.random() - 0.5) * 2,
-                vy: -Math.random() * 3 - 1,
-                radius: Math.random() * 3 + 1.5,
-                life: 1,
-                decay: 0.012 + Math.random() * 0.012,
-                hue: [0, 40, 50, 330, 60][Math.floor(Math.random() * 5)],
-                mode: 'cny',
-              });
-            }
-          }
-        } else if (mode === 2) {
-          // Mode 3: Bioluminescence — plankton bloom on cursor disturbance
-          if (droplets.length < 120) {
-            const count = Math.min(4, 2 + Math.floor(speed * 0.15));
-            for (let i = 0; i < count; i++) {
-              const angle = Math.random() * Math.PI * 2;
-              const dist = Math.random() * 18;
-              droplets.push({
-                x: mouse.x + Math.cos(angle) * dist,
-                y: mouse.y + Math.sin(angle) * dist,
-                vx: (Math.random() - 0.5) * 1.5 + (mouse.x - prevMouse.x) * 0.1,
-                vy: (Math.random() - 0.5) * 1.5 + (mouse.y - prevMouse.y) * 0.1,
-                radius: Math.random() * 3 + 1,
-                life: 1,
-                decay: 0.005 + Math.random() * 0.008,
-                hue: [170, 155, 185, 140][Math.floor(Math.random() * 4)],
-                mode: 'bio',
-              });
-            }
           }
         }
       } else {
@@ -578,12 +503,12 @@ const Hero = () => {
         ctx.globalAlpha = 1;
       }
 
-      // Cursor glow — cool teal
+      // Cursor glow — bright electric blue
       if (isInHero) {
         const cGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 110);
-        cGrad.addColorStop(0, 'rgba(0, 255, 200, 0.1)');
-        cGrad.addColorStop(0.3, 'rgba(0, 200, 180, 0.04)');
-        cGrad.addColorStop(1, 'rgba(0, 180, 160, 0)');
+        cGrad.addColorStop(0, 'rgba(120, 210, 255, 0.2)');
+        cGrad.addColorStop(0.3, 'rgba(70, 170, 255, 0.1)');
+        cGrad.addColorStop(1, 'rgba(50, 140, 255, 0)');
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 110, 0, Math.PI * 2);
         ctx.fillStyle = cGrad;
@@ -591,30 +516,11 @@ const Hero = () => {
       }
     };
 
-    let lastMode = animModeRef.current;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const mode = animModeRef.current;
-      // Clear stale particles when switching modes
-      if (mode !== lastMode) {
-        droplets.length = 0;
-        ripples.length = 0;
-        lastMode = mode;
-      }
-
-      if (mode === -1) {
-        // No effect — skip all drawing
-        animId = requestAnimationFrame(animate);
-        return;
-      }
-
       drawAmbient();
-
-      if (mode === 0) drawMode0();
-      else if (mode === 1) drawMode1();
-      else if (mode === 2) drawMode2();
-
+      drawMode2();
       drawCursorGlow();
       animId = requestAnimationFrame(animate);
     };
@@ -632,23 +538,6 @@ const Hero = () => {
     <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden bg-black">
       {/* Water cursor canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-20" />
-
-      {/* Temporary animation mode sidebar */}
-      <div className="absolute top-1/2 right-4 -translate-y-1/2 z-50 flex flex-col gap-3">
-        {[{ label: 'None', mode: -1 }, { label: 'Water', mode: 0 }, { label: 'CNY', mode: 1 }, { label: 'Bio', mode: 2 }].map((item) => (
-          <button
-            key={item.mode}
-            onClick={() => setAnimMode(item.mode)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              animMode === item.mode
-                ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
 
       <div className="text-center z-10 max-w-5xl mx-auto px-4 -mt-32">
         <h1 className="text-5xl md:text-7xl font-normal tracking-tight mb-3 text-white">
