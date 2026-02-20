@@ -959,13 +959,13 @@ const StickyFeatureSection = () => {
           </div>
           <div className="w-full md:w-1/2">
             <div
-              className="w-full md:w-[122%] md:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.008] flex items-center justify-center p-6 origin-left relative isolate"
+              className="w-full md:w-[122%] md:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.009] flex items-center justify-center p-6 origin-left relative isolate"
               style={{
                 background: `
-                  radial-gradient(130% 120% at 12% 16%, rgba(${feature.color}, 0.018) 0%, rgba(${feature.color}, 0.004) 32%, rgba(0, 0, 0, 0) 56%),
-                  radial-gradient(110% 95% at 86% 24%, rgba(56, 189, 248, 0.01) 0%, rgba(0, 0, 0, 0) 50%),
-                  radial-gradient(120% 120% at 24% 86%, rgba(16, 185, 129, 0.008) 0%, rgba(0, 0, 0, 0) 48%),
-                  linear-gradient(155deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 52%, rgb(0, 0, 0) 100%)
+                  radial-gradient(130% 120% at 12% 16%, rgba(${feature.color}, 0.03) 0%, rgba(${feature.color}, 0.009) 32%, rgba(0, 0, 0, 0) 56%),
+                  radial-gradient(110% 95% at 86% 24%, rgba(56, 189, 248, 0.016) 0%, rgba(0, 0, 0, 0) 50%),
+                  radial-gradient(120% 120% at 24% 86%, rgba(16, 185, 129, 0.013) 0%, rgba(0, 0, 0, 0) 48%),
+                  linear-gradient(155deg, rgb(2, 3, 4) 0%, rgb(3, 4, 6) 52%, rgb(1, 2, 3) 100%)
                 `,
               }}
             >
@@ -976,7 +976,17 @@ const StickyFeatureSection = () => {
                 loop
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-[0.02] blur-3xl scale-105 saturate-125 contrast-110 pointer-events-none"
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.15] blur-[72px] scale-110 saturate-[2.8] contrast-150 pointer-events-none"
+                style={{ mixBlendMode: 'screen' }}
+              />
+              <video
+                src="/assets/videos/frame.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.14] blur-[52px] scale-115 saturate-[4] contrast-170 pointer-events-none"
+                style={{ mixBlendMode: 'color-dodge' }}
               />
 
               {/* Watercolor dye layers */}
@@ -984,12 +994,12 @@ const StickyFeatureSection = () => {
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background: `
-                    radial-gradient(42% 34% at 18% 22%, rgba(${feature.color}, 0.03) 0%, rgba(${feature.color}, 0.007) 58%, rgba(0, 0, 0, 0) 100%),
-                    radial-gradient(36% 30% at 76% 28%, rgba(96, 165, 250, 0.025) 0%, rgba(0, 0, 0, 0) 100%),
-                    radial-gradient(44% 36% at 34% 84%, rgba(52, 211, 153, 0.02) 0%, rgba(0, 0, 0, 0) 100%)
+                    radial-gradient(42% 34% at 18% 22%, rgba(${feature.color}, 0.05) 0%, rgba(${feature.color}, 0.012) 58%, rgba(0, 0, 0, 0) 100%),
+                    radial-gradient(36% 30% at 76% 28%, rgba(96, 165, 250, 0.032) 0%, rgba(0, 0, 0, 0) 100%),
+                    radial-gradient(44% 36% at 34% 84%, rgba(52, 211, 153, 0.026) 0%, rgba(0, 0, 0, 0) 100%)
                   `,
                   mixBlendMode: 'screen',
-                  opacity: 0.035,
+                  opacity: 0.06,
                 }}
               />
 
@@ -1003,20 +1013,7 @@ const StickyFeatureSection = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                {/* Color response layer that reacts to frame-to-frame video color changes */}
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: `
-                      radial-gradient(120% 100% at 10% 8%, rgba(${feature.color}, 0.035) 0%, rgba(0, 0, 0, 0) 58%),
-                      radial-gradient(95% 90% at 88% 78%, rgba(34, 211, 238, 0.03) 0%, rgba(0, 0, 0, 0) 60%)
-                    `,
-                    mixBlendMode: 'soft-light',
-                    opacity: 0.045,
-                  }}
-                />
-
-                <div className="absolute inset-0 pointer-events-none border border-white/[0.008] rounded-xl" />
+                <div className="absolute inset-0 pointer-events-none border border-white/[0.012] rounded-xl" />
               </div>
             </div>
           </div>
