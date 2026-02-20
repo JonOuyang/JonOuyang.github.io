@@ -572,6 +572,7 @@ const Hero = () => {
 /* --- 2.5 Expanding Video Section --- */
 const ExpandingVideo = () => {
   const containerRef = useRef(null);
+  const backgroundCanvasRef = useRef(null);
   const videoUrl = 'https://www.youtube.com/watch?v=shnW3VerkiM';
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -582,8 +583,147 @@ const ExpandingVideo = () => {
   });
 
   // Animation completes right as the full video is in view
-  const scale = useTransform(scrollYProgress, [0, 0.35], [0.6, 0.985]);
+  const scale = useTransform(scrollYProgress, [0, 0.35], [0.6, 0.97]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.35], [32, 16]);
+
+  useEffect(() => {
+    const canvas = backgroundCanvasRef.current;
+    const section = containerRef.current;
+    if (!canvas || !section) return;
+
+    const ctx = canvas.getContext('2d');
+    let animId;
+    const ambientParticles = [];
+    const jellies = [];
+
+    const seedScene = () => {
+      ambientParticles.length = 0;
+      jellies.length = 0;
+
+      for (let i = 0; i < 45; i += 1) {
+        ambientParticles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2.2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: -Math.random() * 0.3 - 0.05,
+          opacity: Math.random() * 0.25 + 0.08,
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+
+      for (let i = 0; i < 10; i += 1) {
+        jellies.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: -Math.random() * 0.22 - 0.06,
+          size: 8 + Math.random() * 14,
+          phase: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.02 + Math.random() * 0.02,
+          hue: [198, 206, 214, 222, 230][Math.floor(Math.random() * 5)],
+          tentacleLen: 3 + Math.floor(Math.random() * 3),
+        });
+      }
+    };
+
+    const resize = () => {
+      canvas.width = section.offsetWidth;
+      canvas.height = section.offsetHeight;
+      canvas.style.width = `${section.offsetWidth}px`;
+      canvas.style.height = `${section.offsetHeight}px`;
+      seedScene();
+    };
+
+    const draw = () => {
+      const t = Date.now() * 0.001;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ambientParticles.forEach((p) => {
+        p.x += p.vx + Math.sin(t + p.phase) * 0.16;
+        p.y += p.vy;
+
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(41, 151, 255, ${p.opacity})`;
+        ctx.fill();
+      });
+
+      jellies.forEach((j) => {
+        const pulse = Math.sin(t * j.pulseSpeed * 60 + j.phase) * 0.5 + 0.5;
+
+        j.vx += Math.sin(t * 0.55 + j.phase) * 0.004;
+        j.vy += -0.007 + Math.cos(t * 0.35 + j.phase) * 0.002;
+        j.vx *= 0.986;
+        j.vy *= 0.986;
+        j.x += j.vx;
+        j.y += j.vy;
+
+        if (j.y < -j.size * 3) {
+          j.y = canvas.height + j.size * 3;
+          j.x = Math.random() * canvas.width;
+        }
+        if (j.x < -50) j.x = canvas.width + 50;
+        if (j.x > canvas.width + 50) j.x = -50;
+
+        const bodyAlpha = 0.45 + pulse * 0.35;
+
+        ctx.globalAlpha = bodyAlpha * 0.12;
+        ctx.beginPath();
+        ctx.arc(j.x, j.y, j.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${j.hue}, 100%, 60%)`;
+        ctx.fill();
+
+        ctx.globalAlpha = bodyAlpha * 0.55;
+        ctx.beginPath();
+        ctx.arc(j.x, j.y, j.size, 0, Math.PI, true);
+        ctx.fillStyle = `hsl(${j.hue}, 80%, 65%)`;
+        ctx.fill();
+
+        ctx.globalAlpha = bodyAlpha * 0.85;
+        ctx.beginPath();
+        ctx.arc(j.x, j.y - j.size * 0.2, j.size * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${j.hue}, 100%, 85%)`;
+        ctx.fill();
+
+        ctx.globalAlpha = bodyAlpha * 0.36;
+        ctx.strokeStyle = `hsl(${j.hue}, 90%, 70%)`;
+        ctx.lineWidth = 1;
+        for (let ti = 0; ti < j.tentacleLen; ti += 1) {
+          const offsetX = (ti - (j.tentacleLen - 1) / 2) * (j.size * 0.4);
+          ctx.beginPath();
+          ctx.moveTo(j.x + offsetX, j.y);
+          const len = j.size * 1.8;
+          const segments = 4;
+          for (let s = 1; s <= segments; s += 1) {
+            const sy = j.y + (len / segments) * s;
+            const sx = j.x + offsetX + Math.sin(t * 2 + j.phase + ti + s * 0.8) * (j.size * 0.3);
+            ctx.lineTo(sx, sy);
+          }
+          ctx.stroke();
+        }
+      });
+
+      ctx.globalAlpha = 1;
+      animId = requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+    animId = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -592,7 +732,14 @@ const ExpandingVideo = () => {
 
   return (
     <section ref={containerRef} className="relative bg-black">
-      <div className="flex items-center justify-center px-3">
+      <canvas ref={backgroundCanvasRef} className="absolute inset-0 pointer-events-none z-0" />
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.16) 28%, rgba(0,0,0,0.38) 46%, rgba(0,0,0,0.66) 60%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%)',
+        }}
+      />
+      <div className="relative z-10 flex items-center justify-center px-3">
         <motion.div
           style={{ scale, borderRadius }}
           className="overflow-hidden aspect-video w-full relative cursor-none"
@@ -663,22 +810,40 @@ const IntroGradient = () => {
 
 /* --- 4. Toolbelt Icons --- */
 const Toolbelt = () => {
-  const icons = [Layout, Search, GitBranch, Terminal, FileCode, Cpu, MousePointer2, Layout, Search, GitBranch, Terminal, FileCode, Cpu, MousePointer2];
+  const icons = [Layout, Search, GitBranch, Terminal, FileCode, Cpu, MousePointer2];
+  const bubbleSlot = 104; // 80px bubble + 24px gap
+  const [bubbleCount, setBubbleCount] = useState(16);
+
+  useEffect(() => {
+    const updateBubbleCount = () => {
+      const viewportWidth = window.innerWidth;
+      setBubbleCount(Math.max(10, Math.ceil(viewportWidth / bubbleSlot) + 2));
+    };
+
+    updateBubbleCount();
+    window.addEventListener('resize', updateBubbleCount);
+    return () => window.removeEventListener('resize', updateBubbleCount);
+  }, []);
 
   return (
     <div className="pt-32 pb-20 flex flex-col items-center">
-      <div className="flex gap-6 mb-16 px-4 w-full justify-center flex-wrap">
-        {icons.map((Icon, i) => (
-          <motion.div
-            key={i}
-            initial={{ y: 0 }}
-            animate={{ y: [0, -30, 0] }}
-            transition={{ duration: 2.5, delay: i * 0.15, repeat: Infinity, ease: "easeInOut" }}
-            className="w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400"
-          >
-            <Icon size={30} />
-          </motion.div>
-        ))}
+      <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-x-hidden overflow-y-visible mb-16 py-8">
+        <div className="flex flex-nowrap items-center" style={{ gap: '24px', marginLeft: '-52px' }}>
+          {Array.from({ length: bubbleCount }).map((_, i) => {
+            const Icon = icons[i % icons.length];
+            return (
+              <motion.div
+                key={i}
+                initial={{ y: 0 }}
+                animate={{ y: [0, -30, 0] }}
+                transition={{ duration: 2.5, delay: i * 0.15, repeat: Infinity, ease: "easeInOut" }}
+                className="shrink-0 w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400"
+              >
+                <Icon size={30} />
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
       <ToolbeltTyping />
     </div>
@@ -728,7 +893,7 @@ const ToolbeltTyping = () => {
   }, [isInView]);
 
   return (
-    <p ref={ref} className="text-4xl md:text-6xl max-w-5xl text-left leading-tight font-medium px-6 mr-auto whitespace-pre-line">
+    <p ref={ref} className="text-4xl md:text-6xl w-screen max-w-none text-left leading-tight font-medium px-6 md:px-8 mr-auto ml-8 md:ml-16 whitespace-pre-line">
       {typed}
       {showCursor && <span className="inline-block w-0 overflow-visible" style={{ animation: cursorFading ? 'none' : 'blink 1s step-end infinite', color: '#2997FF', textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)', transition: 'opacity 0.6s ease', opacity: cursorFading ? 0 : 1 }}>|</span>}
       <span className="invisible">{fullText.slice(typed.length)}</span>
@@ -769,14 +934,14 @@ const FeatureTypingText = ({ text }) => {
 
 const StickyFeatureSection = () => {
   const features = [
-    { title: "My Work in Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246" },
+    { title: "Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246" },
     { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246" },
     { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94" },
     { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8" },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20 space-y-24">
+    <section className="max-w-7xl mx-auto px-6 py-20 space-y-10">
       {features.map((feature, i) => (
         <motion.div
           key={i}
@@ -784,28 +949,75 @@ const StickyFeatureSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col md:flex-row items-center gap-12"
+          className="flex flex-col md:flex-row items-center gap-12 md:gap-y-12 md:gap-x-0"
         >
-          <div className="w-full md:w-1/2">
-            <h3 className="text-4xl font-semibold mb-4 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">{feature.title}</h3>
-            <FeatureTypingText text={feature.desc} />
+          <div className="w-full md:w-1/2 md:pr-4">
+            <div className="md:-translate-x-[180px]">
+              <h3 className="text-4xl font-semibold mb-4 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">{feature.title}</h3>
+              <FeatureTypingText text={feature.desc} />
+            </div>
           </div>
           <div className="w-full md:w-1/2">
             <div
-              className="aspect-square rounded-2xl overflow-hidden border border-zinc-800 flex items-center justify-center p-6"
+              className="w-full md:w-[122%] md:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.008] flex items-center justify-center p-6 origin-left relative isolate"
               style={{
-                background: `radial-gradient(circle at center, rgba(${feature.color}, 0.08) 0%, rgba(${feature.color}, 0.03) 40%, rgb(24, 24, 27) 70%)`,
+                background: `
+                  radial-gradient(130% 120% at 12% 16%, rgba(${feature.color}, 0.018) 0%, rgba(${feature.color}, 0.004) 32%, rgba(0, 0, 0, 0) 56%),
+                  radial-gradient(110% 95% at 86% 24%, rgba(56, 189, 248, 0.01) 0%, rgba(0, 0, 0, 0) 50%),
+                  radial-gradient(120% 120% at 24% 86%, rgba(16, 185, 129, 0.008) 0%, rgba(0, 0, 0, 0) 48%),
+                  linear-gradient(155deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 52%, rgb(0, 0, 0) 100%)
+                `,
               }}
             >
+              {/* Video-driven ambient glow behind the main frame */}
               <video
                 src="/assets/videos/frame.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full rounded-xl"
-                style={{ aspectRatio: '16/9' }}
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.02] blur-3xl scale-105 saturate-125 contrast-110 pointer-events-none"
               />
+
+              {/* Watercolor dye layers */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `
+                    radial-gradient(42% 34% at 18% 22%, rgba(${feature.color}, 0.03) 0%, rgba(${feature.color}, 0.007) 58%, rgba(0, 0, 0, 0) 100%),
+                    radial-gradient(36% 30% at 76% 28%, rgba(96, 165, 250, 0.025) 0%, rgba(0, 0, 0, 0) 100%),
+                    radial-gradient(44% 36% at 34% 84%, rgba(52, 211, 153, 0.02) 0%, rgba(0, 0, 0, 0) 100%)
+                  `,
+                  mixBlendMode: 'screen',
+                  opacity: 0.035,
+                }}
+              />
+
+              <div className="relative w-full rounded-xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                <video
+                  src="/assets/videos/frame.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                {/* Color response layer that reacts to frame-to-frame video color changes */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: `
+                      radial-gradient(120% 100% at 10% 8%, rgba(${feature.color}, 0.035) 0%, rgba(0, 0, 0, 0) 58%),
+                      radial-gradient(95% 90% at 88% 78%, rgba(34, 211, 238, 0.03) 0%, rgba(0, 0, 0, 0) 60%)
+                    `,
+                    mixBlendMode: 'soft-light',
+                    opacity: 0.045,
+                  }}
+                />
+
+                <div className="absolute inset-0 pointer-events-none border border-white/[0.008] rounded-xl" />
+              </div>
             </div>
           </div>
         </motion.div>

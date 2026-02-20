@@ -670,7 +670,7 @@ const RobotArmSection = () => {
     target: containerRef,
     offset: ["start end", "end start"],
   });
-  const scale = useTransform(scrollYProgress, [0, 0.35], [0.6, 0.985]);
+  const scale = useTransform(scrollYProgress, [0, 0.35], [0.6, 0.97]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.35], [96, 48]);
 
   const handleMouseMove = useCallback((e) => {
