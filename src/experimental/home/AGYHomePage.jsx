@@ -1142,80 +1142,45 @@ const BlogSection = () => {
 
 /* --- 9. Starfield Footer --- */
 const StarfieldFooter = () => {
-  const canvasRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0.8, 1], [200, -100]); // Parallax text effect
-
-  // Starfield Animation
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const stars = Array.from({ length: 400 }).map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      z: Math.random() * canvas.width,
-    }));
-
-    const animate = () => {
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.fillStyle = 'white';
-      stars.forEach(star => {
-        star.z -= 2; // Speed
-        if (star.z <= 0) {
-            star.z = canvas.width;
-            star.x = Math.random() * canvas.width;
-            star.y = Math.random() * canvas.height;
-        }
-        
-        const x = (star.x - canvas.width / 2) * (canvas.width / star.z) + canvas.width / 2;
-        const y = (star.y - canvas.height / 2) * (canvas.width / star.z) + canvas.height / 2;
-        const size = (1 - star.z / canvas.width) * 3;
-        
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(animate);
-    };
-
-    const animId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animId);
-  }, []);
-
   return (
-    <footer className="relative bg-black text-white min-h-screen overflow-hidden flex flex-col items-center justify-center pt-20">
-      <canvas ref={canvasRef} className="absolute inset-0 opacity-50" />
-      
-      <div className="relative z-10 text-center space-y-8">
-        <h2 className="text-5xl md:text-7xl font-medium tracking-tight">Download Google<br/>Antigravity for MacOS</h2>
-        
-        <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
-          <button className="bg-white text-black px-8 py-4 rounded-full text-lg font-medium hover:scale-105 transition-transform">
-            Download for Apple Silicon
-          </button>
-          <button className="border border-white/30 px-8 py-4 rounded-full text-lg font-medium hover:bg-white/10 transition-colors">
-            Download for Intel
-          </button>
+    <footer className="bg-black text-white px-10 md:px-24 pt-24 md:pt-28 pb-10">
+      <div className="max-w-[1680px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8">
+          <h2 className="text-4xl md:text-[42px] leading-tight font-medium tracking-tight text-zinc-100">
+            Build the Future
+          </h2>
+
+          <div className="flex gap-14 md:gap-20 text-base md:text-[15px] leading-[1.75] font-medium text-zinc-400 md:justify-self-start">
+            <div className="flex flex-col">
+              <a href="/" className="hover:text-white transition-colors">Home</a>
+              <a href="/work-history" className="hover:text-white transition-colors">Work History</a>
+              <a href="/projects" className="hover:text-white transition-colors">Projects</a>
+              <a href="/research" className="hover:text-white transition-colors">Research</a>
+              <a href="/resumes/CV/Jonathan_Ouyang_CV.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Resume</a>
+            </div>
+            <div className="flex flex-col">
+              <a href="/agy-home" className="hover:text-white transition-colors">AGY Home</a>
+              <a href="/experimental-projects" className="hover:text-white transition-colors">Experimental Projects</a>
+              <a href="/wip" className="hover:text-white transition-colors">WIP Hub</a>
+              <a href="/wip/home" className="hover:text-white transition-colors">WIP Home</a>
+              <a href="/card" className="hover:text-white transition-colors">Card Sandbox</a>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <motion.div style={{ y }} className="mt-auto pointer-events-none">
-        <h1 className="text-[15vw] leading-none font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800 opacity-20">
-          Antigravity
-        </h1>
-      </motion.div>
+        <div className="mt-4 md:mt-8 pointer-events-none select-none">
+          <h1 className="text-[clamp(3.6rem,18vw,21rem)] leading-[0.86] font-medium tracking-[0.07em] text-zinc-100 text-center">
+            jouyang
+          </h1>
+        </div>
 
-      <div className="absolute bottom-10 flex gap-8 text-sm text-gray-400 z-20">
-        <a href="#" className="hover:text-white">About Google</a>
-        <a href="#" className="hover:text-white">Google Products</a>
-        <a href="#" className="hover:text-white">Privacy</a>
-        <a href="#" className="hover:text-white">Terms</a>
+        <div className="mt-16 md:mt-24 flex justify-end text-sm md:text-[15px] text-zinc-400">
+          <div className="flex flex-wrap items-center justify-end gap-8 md:gap-10 text-right">
+            <a href="#" className="hover:text-white transition-colors">About Jonathan</a>
+            <a href="#" className="hover:text-white transition-colors">Jonathan&apos;s Projects</a>
+            <a href="#" className="hover:text-white transition-colors">See Website Code</a>
+          </div>
+        </div>
       </div>
     </footer>
   );
