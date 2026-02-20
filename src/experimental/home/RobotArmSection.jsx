@@ -235,7 +235,7 @@ const TableProps = ({ endEffectorRef }) => {
     {
       id: 'book-bottom',
       type: 'book',
-      base: [0.88, 0.06, 0.54],
+      base: [1.2, 0.06, 0.3],
       size: [0.56, 0.096, 0.34],
       color: '#8f3e36',
       pageColor: '#e7dccb',
@@ -247,7 +247,7 @@ const TableProps = ({ endEffectorRef }) => {
     {
       id: 'book-middle',
       type: 'book',
-      base: [0.91, 0.16, 0.52],
+      base: [1.22, 0.16, 0.28],
       size: [0.5, 0.09, 0.3],
       color: '#3b587b',
       pageColor: '#e8e1d4',
@@ -259,7 +259,7 @@ const TableProps = ({ endEffectorRef }) => {
     {
       id: 'book-top',
       type: 'book',
-      base: [0.94, 0.256, 0.5],
+      base: [1.24, 0.256, 0.26],
       size: [0.46, 0.088, 0.29],
       color: '#446045',
       pageColor: '#e7e0d2',
@@ -305,6 +305,8 @@ const TableProps = ({ endEffectorRef }) => {
 
   useFrame((_, delta) => {
     const endEffector = endEffectorRef?.current;
+    const endEffectorRadius = 0.12;
+    const endEffectorHalfY = 0.075;
     const tableEdgeX = 1.58;
     const tableEdgeZ = 0.88;
     const tableTopY = 0.01;
@@ -316,19 +318,51 @@ const TableProps = ({ endEffectorRef }) => {
 
       if (endEffector) {
         const dx = s.x - endEffector.x;
+        const bodyCenterY = def.type === 'book' ? s.y : colliderY;
+        const dy = bodyCenterY - endEffector.y;
         const dz = s.z - endEffector.z;
         const horizontalDist = Math.hypot(dx, dz);
-        const verticalDist = Math.abs(colliderY - endEffector.y);
+        const verticalDist = Math.abs(dy);
 
-        if (horizontalDist < def.hitRadius && verticalDist < 0.56) {
+        if (def.type === 'book') {
+          const halfX = def.size[0] * 0.5;
+          const halfY = def.size[1] * 0.5;
+          const halfZ = def.size[2] * 0.5;
+          const overlapX = halfX + endEffectorRadius - Math.abs(dx);
+          const overlapY = halfY + endEffectorHalfY - Math.abs(dy);
+          const overlapZ = halfZ + endEffectorRadius - Math.abs(dz);
+
+          if (overlapX > 0 && overlapY > 0 && overlapZ > 0) {
+            const pushAlongX = overlapX < overlapZ;
+            const dirX = dx >= 0 ? 1 : -1;
+            const dirZ = dz >= 0 ? 1 : -1;
+            const pushMag = Math.min(0.24, (pushAlongX ? overlapX : overlapZ) * 1.6);
+            const pushX = pushAlongX ? dirX : 0;
+            const pushZ = pushAlongX ? 0 : dirZ;
+
+            s.vx += pushX * pushMag;
+            s.vz += pushZ * pushMag;
+            s.avX += pushZ * overlapY * 4.2;
+            s.avZ += -pushX * overlapY * 4.2;
+            s.rotY += (Math.random() - 0.5) * overlapY * 0.08;
+
+            const force = Math.min(1, overlapY / (halfY + endEffectorHalfY));
+            s.impact = Math.min(2.5, s.impact + force * 1.1);
+
+            if (!s.fallen && s.impact > def.stability) {
+              s.fallen = true;
+              s.fallX = THREE.MathUtils.clamp(pushZ * def.maxFall, -def.maxFall, def.maxFall);
+              s.fallZ = THREE.MathUtils.clamp(-pushX * def.maxFall, -def.maxFall, def.maxFall);
+            }
+          }
+        } else if (horizontalDist < def.hitRadius && verticalDist < 0.56) {
           const force = (1 - horizontalDist / def.hitRadius) * (1 - verticalDist / 0.56);
           const invLen = horizontalDist > 1e-5 ? 1 / horizontalDist : 0;
           const pushX = horizontalDist > 1e-5 ? dx * invLen : (Math.random() > 0.5 ? 1 : -1);
           const pushZ = horizontalDist > 1e-5 ? dz * invLen : 1;
-          const pushStrength = def.type === 'plant' ? 0.62 : 0.5;
 
-          s.vx += pushX * force * pushStrength;
-          s.vz += pushZ * force * pushStrength;
+          s.vx += pushX * force * 0.62;
+          s.vz += pushZ * force * 0.62;
           s.avX += pushZ * force * 3.2;
           s.avZ += -pushX * force * 3.2;
           s.rotY += (Math.random() - 0.5) * force * 0.08;
@@ -418,8 +452,9 @@ const TableProps = ({ endEffectorRef }) => {
       if (a.offTable) continue;
 
       const aCenterY = aDef.type === 'book' ? a.y : a.y + 0.16;
-      const aHalfH = aDef.type === 'book' ? aDef.size[1] * 0.5 + 0.008 : 0.3;
-      const aRadius = aDef.type === 'book' ? Math.max(aDef.size[0], aDef.size[2]) * 0.42 : 0.24;
+      const aHalfX = aDef.type === 'book' ? aDef.size[0] * 0.5 : 0.16;
+      const aHalfY = aDef.type === 'book' ? aDef.size[1] * 0.5 + 0.008 : 0.3;
+      const aHalfZ = aDef.type === 'book' ? aDef.size[2] * 0.5 : 0.16;
 
       for (let j = i + 1; j < itemDefs.length; j++) {
         const bDef = itemDefs[j];
@@ -427,21 +462,28 @@ const TableProps = ({ endEffectorRef }) => {
         if (b.offTable) continue;
 
         const bCenterY = bDef.type === 'book' ? b.y : b.y + 0.16;
-        const bHalfH = bDef.type === 'book' ? bDef.size[1] * 0.5 + 0.008 : 0.3;
-        const bRadius = bDef.type === 'book' ? Math.max(bDef.size[0], bDef.size[2]) * 0.42 : 0.24;
+        const bHalfX = bDef.type === 'book' ? bDef.size[0] * 0.5 : 0.16;
+        const bHalfY = bDef.type === 'book' ? bDef.size[1] * 0.5 + 0.008 : 0.3;
+        const bHalfZ = bDef.type === 'book' ? bDef.size[2] * 0.5 : 0.16;
 
-        const verticalOverlap = aHalfH + bHalfH - Math.abs(aCenterY - bCenterY);
-        if (verticalOverlap <= 0.01) continue;
+        const verticalGap = Math.abs(aCenterY - bCenterY);
+        if (verticalGap >= aHalfY + bHalfY) continue;
+
+        // Stacked books are intentionally close in XZ; skip lateral separation unless they are on the same layer.
+        if (aDef.type === 'book' && bDef.type === 'book' && verticalGap > Math.min(aHalfY, bHalfY) * 0.8) {
+          continue;
+        }
 
         const dx = b.x - a.x;
         const dz = b.z - a.z;
-        const dist = Math.hypot(dx, dz);
-        const minDist = aRadius + bRadius;
-        if (dist >= minDist) continue;
+        const overlapX = aHalfX + bHalfX - Math.abs(dx);
+        const overlapZ = aHalfZ + bHalfZ - Math.abs(dz);
+        if (overlapX <= 0 || overlapZ <= 0) continue;
 
-        const nx = dist > 1e-5 ? dx / dist : 1;
-        const nz = dist > 1e-5 ? dz / dist : 0;
-        const penetration = minDist - dist;
+        const separateX = overlapX < overlapZ;
+        const nx = separateX ? (dx >= 0 ? 1 : -1) : 0;
+        const nz = separateX ? 0 : (dz >= 0 ? 1 : -1);
+        const penetration = separateX ? overlapX : overlapZ;
         const push = penetration * 0.5 + 0.0005;
 
         a.x -= nx * push;
@@ -453,17 +495,17 @@ const TableProps = ({ endEffectorRef }) => {
         const relVz = b.vz - a.vz;
         const relAlongNormal = relVx * nx + relVz * nz;
         if (relAlongNormal < 0) {
-          const impulse = -relAlongNormal * 0.32;
+          const impulse = -relAlongNormal * 0.18;
           a.vx -= nx * impulse;
           a.vz -= nz * impulse;
           b.vx += nx * impulse;
           b.vz += nz * impulse;
         }
 
-        a.avX += nz * penetration * 1.2;
-        a.avZ += -nx * penetration * 1.2;
-        b.avX -= nz * penetration * 1.2;
-        b.avZ -= -nx * penetration * 1.2;
+        a.avX += nz * penetration * 0.45;
+        a.avZ += -nx * penetration * 0.45;
+        b.avX -= nz * penetration * 0.45;
+        b.avZ -= -nx * penetration * 0.45;
       }
     }
 
