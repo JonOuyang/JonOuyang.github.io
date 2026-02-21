@@ -1026,23 +1026,320 @@ const StickyFeatureSection = () => {
 
 /* --- 7. Split CTA --- */
 const SplitCTA = () => {
+  const sectionRef = useRef(null);
+  const canvasRef = useRef(null);
+  const cursorRef = useRef({ x: -9999, y: -9999, inside: false });
+  const hoverModeRef = useRef(null);
+  const [hoverMode, setHoverMode] = useState(null);
+
+  useEffect(() => {
+    hoverModeRef.current = hoverMode;
+  }, [hoverMode]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const section = sectionRef.current;
+    if (!canvas || !section) return;
+
+    const ctx = canvas.getContext('2d');
+    let rafId;
+    let width = 0;
+    let height = 0;
+    let time = 0;
+    const dotCount = 760;
+    const shapeScale = 1.8;
+
+    const dots = [];
+    let robotTargets = [];
+    let laptopTargets = [];
+
+    const scaleShape = (points, cx, cy, scale) =>
+      points.map((p) => ({
+        x: cx + (p.x - cx) * scale,
+        y: cy + (p.y - cy) * scale,
+      }));
+
+    const linePoints = (x1, y1, x2, y2, spacing = 10) => {
+      const points = [];
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const length = Math.max(1, Math.hypot(dx, dy));
+      const steps = Math.max(2, Math.floor(length / spacing));
+      for (let i = 0; i <= steps; i += 1) {
+        const t = i / steps;
+        points.push({ x: x1 + dx * t, y: y1 + dy * t });
+      }
+      return scaleShape(points, cx, cy, shapeScale);
+    };
+
+    const arcPoints = (cx, cy, radius, start, end, spacing = 10) => {
+      const points = [];
+      const arcLength = Math.abs(end - start) * radius;
+      const steps = Math.max(3, Math.floor(arcLength / spacing));
+      for (let i = 0; i <= steps; i += 1) {
+        const t = i / steps;
+        const angle = start + (end - start) * t;
+        points.push({ x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius });
+      }
+      return points;
+    };
+
+    const buildRobotTargets = () => {
+      const cx = width * 0.66;
+      const cy = height * 0.56;
+      const points = [];
+
+      points.push(...linePoints(cx - 95, cy + 78, cx + 95, cy + 78, 6));
+      points.push(...linePoints(cx - 32, cy + 78, cx - 32, cy + 22, 6));
+      points.push(...linePoints(cx + 32, cy + 78, cx + 32, cy + 22, 6));
+      points.push(...linePoints(cx - 32, cy + 22, cx + 32, cy + 22, 6));
+      points.push(...arcPoints(cx, cy + 18, 18, 0, Math.PI * 2, 5));
+
+      points.push(...linePoints(cx, cy + 18, cx + 72, cy - 18, 5));
+      points.push(...linePoints(cx + 8, cy + 28, cx + 80, cy - 8, 5));
+      points.push(...arcPoints(cx + 82, cy - 22, 16, 0, Math.PI * 2, 5));
+
+      points.push(...linePoints(cx + 82, cy - 22, cx + 138, cy - 56, 5));
+      points.push(...linePoints(cx + 92, cy - 12, cx + 148, cy - 46, 5));
+      points.push(...arcPoints(cx + 148, cy - 50, 10, 0, Math.PI * 2, 5));
+
+      points.push(...linePoints(cx + 148, cy - 50, cx + 176, cy - 65, 4));
+      points.push(...linePoints(cx + 148, cy - 50, cx + 176, cy - 35, 4));
+      points.push(...linePoints(cx + 176, cy - 65, cx + 188, cy - 79, 4));
+      points.push(...linePoints(cx + 176, cy - 35, cx + 188, cy - 21, 4));
+
+      return points;
+    };
+
+    const buildLaptopTargets = () => {
+      const cx = width * 0.34;
+      const cy = height * 0.57;
+      const points = [];
+
+      points.push(...linePoints(cx - 140, cy + 55, cx + 140, cy + 55, 5));
+      points.push(...linePoints(cx - 126, cy + 28, cx + 126, cy + 28, 5));
+      points.push(...linePoints(cx - 126, cy + 28, cx - 140, cy + 55, 5));
+      points.push(...linePoints(cx + 126, cy + 28, cx + 140, cy + 55, 5));
+      points.push(...linePoints(cx - 86, cy + 41, cx + 86, cy + 41, 6));
+
+      points.push(...linePoints(cx - 108, cy + 26, cx - 94, cy - 82, 5));
+      points.push(...linePoints(cx + 108, cy + 26, cx + 94, cy - 82, 5));
+      points.push(...linePoints(cx - 94, cy - 82, cx + 94, cy - 82, 5));
+      points.push(...linePoints(cx - 92, cy - 72, cx + 92, cy - 72, 7));
+      points.push(...linePoints(cx - 92, cy - 72, cx - 106, cy + 20, 7));
+      points.push(...linePoints(cx + 92, cy - 72, cx + 106, cy + 20, 7));
+
+      return scaleShape(points, cx, cy, shapeScale);
+    };
+
+    const sparsify = (points, stride = 1) => points.filter((_, idx) => idx % stride === 0);
+
+    const reassignTargets = () => {
+      robotTargets = sparsify(buildRobotTargets(), 1);
+      laptopTargets = sparsify(buildLaptopTargets(), 1);
+      dots.forEach((dot) => {
+        dot.robotIndex = Math.floor(Math.random() * robotTargets.length);
+        dot.laptopIndex = Math.floor(Math.random() * laptopTargets.length);
+      });
+    };
+
+    const initDots = () => {
+      dots.length = 0;
+      for (let i = 0; i < dotCount; i += 1) {
+        dots.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: 0,
+          vy: 0,
+          size: Math.random() * 1.6 + 0.7,
+          seed: Math.random() * Math.PI * 2,
+          homeX: Math.random() * width,
+          homeY: Math.random() * height,
+          driftX: (Math.random() - 0.5) * 0.09,
+          driftY: (Math.random() - 0.5) * 0.09,
+          joinBias: Math.random(),
+          robotIndex: 0,
+          laptopIndex: 0,
+        });
+      }
+      reassignTargets();
+    };
+
+    const resize = () => {
+      const rect = section.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initDots();
+    };
+
+    const animate = () => {
+      time += 0.011;
+      const mode = hoverModeRef.current;
+      const cursor = cursorRef.current;
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < dots.length; i += 1) {
+        const dot = dots[i];
+        let pullMix = 0;
+
+        // Persistent ambient motion even without hover.
+        dot.homeX += dot.driftX + Math.sin(time * 0.45 + dot.seed) * 0.02;
+        dot.homeY += dot.driftY + Math.cos(time * 0.4 + dot.seed * 1.1) * 0.02;
+        if (dot.homeX < 0 || dot.homeX > width) {
+          dot.driftX *= -1;
+          dot.homeX = Math.max(0, Math.min(width, dot.homeX));
+        }
+        if (dot.homeY < 0 || dot.homeY > height) {
+          dot.driftY *= -1;
+          dot.homeY = Math.max(0, Math.min(height, dot.homeY));
+        }
+        if (Math.random() < 0.0008) {
+          dot.driftX += (Math.random() - 0.5) * 0.012;
+          dot.driftY += (Math.random() - 0.5) * 0.012;
+          dot.driftX = Math.max(-0.12, Math.min(0.12, dot.driftX));
+          dot.driftY = Math.max(-0.12, Math.min(0.12, dot.driftY));
+        }
+
+        let tx = dot.homeX + Math.sin(time * 1.5 + dot.seed) * 20 + Math.cos(time * 0.9 + dot.seed * 1.3) * 8;
+        let ty = dot.homeY + Math.cos(time * 1.25 + dot.seed) * 18;
+
+        if (mode === 'robot' && robotTargets.length > 0) {
+          const target = robotTargets[dot.robotIndex];
+          const targetX = target.x + Math.sin(time * 3 + dot.seed) * 0.7;
+          const targetY = target.y + Math.cos(time * 3 + dot.seed) * 0.7;
+          const sameHalf = dot.homeX >= width * 0.5;
+          const distToTarget = Math.hypot(targetX - dot.x, targetY - dot.y);
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 460 : 620));
+          const halfCenter = width * 0.75;
+          const halfFalloff = Math.max(0, 1 - Math.abs(dot.x - halfCenter) / (width * 0.48));
+          const joinChance = sameHalf ? 0.82 : 0.08;
+          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.22) : (sameHalf ? 0.5 : 0.14);
+          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 1.35 : 0.55));
+          tx = tx + (targetX - tx) * pullMix;
+          ty = ty + (targetY - ty) * pullMix;
+        } else if (mode === 'laptop' && laptopTargets.length > 0) {
+          const target = laptopTargets[dot.laptopIndex];
+          const targetX = target.x + Math.sin(time * 3 + dot.seed) * 0.7;
+          const targetY = target.y + Math.cos(time * 3 + dot.seed) * 0.7;
+          const sameHalf = dot.homeX < width * 0.5;
+          const distToTarget = Math.hypot(targetX - dot.x, targetY - dot.y);
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 460 : 620));
+          const halfCenter = width * 0.25;
+          const halfFalloff = Math.max(0, 1 - Math.abs(dot.x - halfCenter) / (width * 0.48));
+          const joinChance = sameHalf ? 0.82 : 0.08;
+          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.22) : (sameHalf ? 0.5 : 0.14);
+          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 1.35 : 0.55));
+          tx = tx + (targetX - tx) * pullMix;
+          ty = ty + (targetY - ty) * pullMix;
+        }
+
+        const spring = mode ? 0.02 + pullMix * 0.12 : 0.018;
+        dot.vx += (tx - dot.x) * spring;
+        dot.vy += (ty - dot.y) * spring;
+
+        if (cursor.inside) {
+          const dx = cursor.x - dot.x;
+          const dy = cursor.y - dot.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 170 && dist > 0.1) {
+            const pull = (1 - dist / 170) * (mode ? 0.07 : 0.035);
+            dot.vx += (dx / dist) * pull;
+            dot.vy += (dy / dist) * pull;
+          }
+        }
+
+        dot.vx *= mode ? 0.9 : 0.94;
+        dot.vy *= mode ? 0.9 : 0.94;
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+
+        if (!mode) {
+          if (dot.x < 0 || dot.x > width) {
+            dot.vx *= -0.55;
+            dot.x = Math.max(0, Math.min(width, dot.x));
+          }
+          if (dot.y < 0 || dot.y > height) {
+            dot.vy *= -0.55;
+            dot.y = Math.max(0, Math.min(height, dot.y));
+          }
+        }
+
+        const cursorDist = Math.hypot(cursor.x - dot.x, cursor.y - dot.y);
+        const cursorBoost = cursor.inside && cursorDist < 140 ? (1 - cursorDist / 140) : 0;
+        const alpha = mode ? 0.52 + pullMix * 0.46 : 0.5;
+        const radius = dot.size * (1 + pullMix * 0.55) + cursorBoost * 1.25;
+        const glow = 8 + pullMix * 30 + cursorBoost * (mode ? 25 : 15);
+
+        ctx.shadowBlur = glow;
+        ctx.shadowColor = 'rgba(41, 151, 255, 0.95)';
+        ctx.fillStyle = `rgba(58, 166, 255, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.shadowBlur = 0;
+      rafId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    cursorRef.current = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+      inside: true,
+    };
+  };
+
+  const handleMouseLeaveSection = () => {
+    cursorRef.current = { x: -9999, y: -9999, inside: false };
+    setHoverMode(null);
+  };
+
   return (
-    <div className="border-t border-b border-zinc-800 grid md:grid-cols-2 min-h-[400px]">
-      <div className="p-16 flex flex-col justify-center border-r border-zinc-800 relative overflow-hidden group">
-        <div className="relative z-10">
-            <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Available at no charge</span>
-            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">For developers<br/>Achieve new heights</h3>
-            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Download</button>
+    <div
+      ref={sectionRef}
+      className="relative border-t border-b border-zinc-800 grid md:grid-cols-2 min-h-[560px] overflow-hidden bg-black"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeaveSection}
+    >
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
+
+      <div
+        className="p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
+        onMouseEnter={() => setHoverMode('laptop')}
+      >
+        <div className="relative z-10 md:translate-x-8">
+            <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
+            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Computer-Use Agents<br/>Multimodal systems for real workflows</h3>
+            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Agent Projects</button>
         </div>
-        {/* Decorative BG */}
-        <div className="absolute right-0 bottom-0 w-64 h-64 bg-zinc-900 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700"></div>
       </div>
 
-      <div className="p-16 flex flex-col justify-center relative overflow-hidden group">
-        <div className="relative z-10">
-            <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Coming soon</span>
-            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">For organizations<br/>Level up your entire team</h3>
-            <button className="border border-zinc-700 px-8 py-3 rounded-full hover:bg-zinc-900 transition text-white">Notify me</button>
+      <div
+        className="p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
+        onMouseEnter={() => setHoverMode('robot')}
+      >
+        <div className="relative z-10 md:-translate-x-8">
+            <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
+            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Imitation Learning Robotics<br/>Gaze-conditioned shared autonomy</h3>
+            <button className="border border-zinc-700 px-8 py-3 rounded-full hover:bg-zinc-900 transition text-white">Research Highlights</button>
         </div>
         {/* Decorative BG */}
          <div className="absolute right-0 bottom-0 w-64 h-64 border border-dashed border-zinc-800 rounded-full animate-spin-slow"></div>
