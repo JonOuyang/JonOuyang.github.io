@@ -1028,7 +1028,6 @@ const StickyFeatureSection = () => {
 const SplitCTA = () => {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
-  const cursorRef = useRef({ x: -9999, y: -9999, inside: false });
   const hoverModeRef = useRef(null);
   const [hoverMode, setHoverMode] = useState(null);
 
@@ -1046,8 +1045,16 @@ const SplitCTA = () => {
     let width = 0;
     let height = 0;
     let time = 0;
-    const dotCount = 760;
-    const shapeScale = 1.8;
+    let lastFrameMs = 0;
+    let sectionInView = true;
+    let pageVisible = !document.hidden;
+    const targetFps = 42;
+    const frameIntervalMs = 1000 / targetFps;
+    const renderScale = 0.74;
+    const dotCount = 1550;
+    const middleDotCount = 45;
+    const robotShapeScale = 2.85;
+    const laptopShapeScale = 2.93;
 
     const dots = [];
     let robotTargets = [];
@@ -1069,7 +1076,7 @@ const SplitCTA = () => {
         const t = i / steps;
         points.push({ x: x1 + dx * t, y: y1 + dy * t });
       }
-      return scaleShape(points, cx, cy, shapeScale);
+      return points;
     };
 
     const arcPoints = (cx, cy, radius, start, end, spacing = 10) => {
@@ -1085,8 +1092,8 @@ const SplitCTA = () => {
     };
 
     const buildRobotTargets = () => {
-      const cx = width * 0.66;
-      const cy = height * 0.56;
+      const cx = width * 0.67;
+      const cy = height * 0.50;
       const points = [];
 
       points.push(...linePoints(cx - 95, cy + 78, cx + 95, cy + 78, 6));
@@ -1108,12 +1115,12 @@ const SplitCTA = () => {
       points.push(...linePoints(cx + 176, cy - 65, cx + 188, cy - 79, 4));
       points.push(...linePoints(cx + 176, cy - 35, cx + 188, cy - 21, 4));
 
-      return points;
+      return scaleShape(points, cx, cy, robotShapeScale);
     };
 
     const buildLaptopTargets = () => {
-      const cx = width * 0.34;
-      const cy = height * 0.57;
+      const cx = width * 0.255;
+      const cy = height * 0.56;
       const points = [];
 
       points.push(...linePoints(cx - 140, cy + 55, cx + 140, cy + 55, 5));
@@ -1129,7 +1136,7 @@ const SplitCTA = () => {
       points.push(...linePoints(cx - 92, cy - 72, cx - 106, cy + 20, 7));
       points.push(...linePoints(cx + 92, cy - 72, cx + 106, cy + 20, 7));
 
-      return scaleShape(points, cx, cy, shapeScale);
+      return scaleShape(points, cx, cy, laptopShapeScale);
     };
 
     const sparsify = (points, stride = 1) => points.filter((_, idx) => idx % stride === 0);
@@ -1145,19 +1152,43 @@ const SplitCTA = () => {
 
     const initDots = () => {
       dots.length = 0;
-      for (let i = 0; i < dotCount; i += 1) {
+      const outerDotCount = dotCount - middleDotCount;
+
+      for (let i = 0; i < outerDotCount; i += 1) {
+        const homeX = Math.random() * width;
+        const homeY = Math.random() * height;
         dots.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: 0,
-          vy: 0,
+          x: homeX,
+          y: homeY,
           size: Math.random() * 1.6 + 0.7,
           seed: Math.random() * Math.PI * 2,
-          homeX: Math.random() * width,
-          homeY: Math.random() * height,
-          driftX: (Math.random() - 0.5) * 0.09,
-          driftY: (Math.random() - 0.5) * 0.09,
+          homeX,
+          homeY,
+          wobbleX: Math.random() * 1.1 + 0.45,
+          wobbleY: Math.random() * 1.1 + 0.45,
+          wobbleSpeed: 0.35 + Math.random() * 0.35,
           joinBias: Math.random(),
+          isMiddleBuffer: false,
+          robotIndex: 0,
+          laptopIndex: 0,
+        });
+      }
+
+      for (let i = 0; i < middleDotCount; i += 1) {
+        const homeX = width * 0.5 + (Math.random() - 0.5) * (width * 0.24);
+        const homeY = Math.random() * height;
+        dots.push({
+          x: homeX,
+          y: homeY,
+          size: Math.random() * 1.5 + 0.8,
+          seed: Math.random() * Math.PI * 2,
+          homeX,
+          homeY,
+          wobbleX: Math.random() * 1.0 + 0.4,
+          wobbleY: Math.random() * 1.0 + 0.4,
+          wobbleSpeed: 0.3 + Math.random() * 0.25,
+          joinBias: Math.random(),
+          isMiddleBuffer: true,
           robotIndex: 0,
           laptopIndex: 0,
         });
@@ -1170,123 +1201,145 @@ const SplitCTA = () => {
       width = rect.width;
       height = rect.height;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
+      const renderDpr = dpr * renderScale;
+      canvas.width = Math.floor(width * renderDpr);
+      canvas.height = Math.floor(height * renderDpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.setTransform(renderDpr, 0, 0, renderDpr, 0, 0);
       initDots();
     };
 
-    const animate = () => {
-      time += 0.011;
+    const animate = (nowMs = 0) => {
+      if (!pageVisible || !sectionInView) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
+
+      if (lastFrameMs && nowMs - lastFrameMs < frameIntervalMs) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
+
+      const deltaMs = lastFrameMs ? nowMs - lastFrameMs : frameIntervalMs;
+      lastFrameMs = nowMs;
+      time += (deltaMs / 1000) * 0.45;
       const mode = hoverModeRef.current;
-      const cursor = cursorRef.current;
       ctx.clearRect(0, 0, width, height);
+      const activeTargets = mode === 'robot' ? robotTargets : mode === 'laptop' ? laptopTargets : null;
+
+      // Subtle guide glow so the silhouette reads clearly even while dots are in motion.
+      if (activeTargets && activeTargets.length > 0) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(56, 166, 255, 0.08)';
+        ctx.beginPath();
+        for (let i = 0; i < activeTargets.length; i += 1) {
+          const p = activeTargets[i];
+          ctx.moveTo(p.x + 1.35, p.y);
+          ctx.arc(p.x, p.y, 1.35, 0, Math.PI * 2);
+        }
+        ctx.fill();
+        ctx.restore();
+      }
 
       for (let i = 0; i < dots.length; i += 1) {
         const dot = dots[i];
         let pullMix = 0;
 
-        // Persistent ambient motion even without hover.
-        dot.homeX += dot.driftX + Math.sin(time * 0.45 + dot.seed) * 0.02;
-        dot.homeY += dot.driftY + Math.cos(time * 0.4 + dot.seed * 1.1) * 0.02;
-        if (dot.homeX < 0 || dot.homeX > width) {
-          dot.driftX *= -1;
-          dot.homeX = Math.max(0, Math.min(width, dot.homeX));
-        }
-        if (dot.homeY < 0 || dot.homeY > height) {
-          dot.driftY *= -1;
-          dot.homeY = Math.max(0, Math.min(height, dot.homeY));
-        }
-        if (Math.random() < 0.0008) {
-          dot.driftX += (Math.random() - 0.5) * 0.012;
-          dot.driftY += (Math.random() - 0.5) * 0.012;
-          dot.driftX = Math.max(-0.12, Math.min(0.12, dot.driftX));
-          dot.driftY = Math.max(-0.12, Math.min(0.12, dot.driftY));
-        }
+        const idleX = dot.homeX + Math.sin(time * dot.wobbleSpeed + dot.seed) * dot.wobbleX;
+        const idleY = dot.homeY + Math.cos(time * (dot.wobbleSpeed * 0.9) + dot.seed * 1.2) * dot.wobbleY;
+        let tx = idleX;
+        let ty = idleY;
 
-        let tx = dot.homeX + Math.sin(time * 1.5 + dot.seed) * 20 + Math.cos(time * 0.9 + dot.seed * 1.3) * 8;
-        let ty = dot.homeY + Math.cos(time * 1.25 + dot.seed) * 18;
-
-        if (mode === 'robot' && robotTargets.length > 0) {
+        if (dot.isMiddleBuffer) {
+          if (mode) {
+            const activeCx = mode === 'robot' ? width * 0.67 : width * 0.255;
+            const activeCy = mode === 'robot' ? height * 0.50 : height * 0.56;
+            const dx = activeCx - dot.homeX;
+            const dy = activeCy - dot.homeY;
+            const dist = Math.hypot(dx, dy);
+            const influence = Math.max(0, 1 - dist / (width * 0.7));
+            const slightShift = 0.04 * influence;
+            tx += dx * slightShift;
+            ty += dy * slightShift;
+            pullMix = influence * 0.18;
+          }
+        } else if (mode === 'robot' && robotTargets.length > 0) {
           const target = robotTargets[dot.robotIndex];
-          const targetX = target.x + Math.sin(time * 3 + dot.seed) * 0.7;
-          const targetY = target.y + Math.cos(time * 3 + dot.seed) * 0.7;
-          const sameHalf = dot.homeX >= width * 0.5;
-          const distToTarget = Math.hypot(targetX - dot.x, targetY - dot.y);
-          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 460 : 620));
-          const halfCenter = width * 0.75;
-          const halfFalloff = Math.max(0, 1 - Math.abs(dot.x - halfCenter) / (width * 0.48));
-          const joinChance = sameHalf ? 0.82 : 0.08;
-          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.22) : (sameHalf ? 0.5 : 0.14);
-          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 1.35 : 0.55));
+          const targetX = target.x;
+          const targetY = target.y;
+          const sameHalf = dot.homeX >= width * 0.4;
+          const distToTarget = Math.hypot(targetX - dot.homeX, targetY - dot.homeY);
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 900 : 320));
+          const halfCenter = width * 0.67;
+          const halfFalloff = Math.max(0, 1 - Math.abs(dot.homeX - halfCenter) / (width * 0.42));
+          const joinChance = sameHalf ? 0.998 : 0.02;
+          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.1) : (sameHalf ? 0.55 : 0.02);
+          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 4.0 : 0.05));
           tx = tx + (targetX - tx) * pullMix;
           ty = ty + (targetY - ty) * pullMix;
+          if (sameHalf) {
+            const edgeLock = Math.max(0, (pullMix - 0.2) / 0.8);
+            tx = tx + (targetX - tx) * edgeLock;
+            ty = ty + (targetY - ty) * edgeLock;
+          }
         } else if (mode === 'laptop' && laptopTargets.length > 0) {
           const target = laptopTargets[dot.laptopIndex];
-          const targetX = target.x + Math.sin(time * 3 + dot.seed) * 0.7;
-          const targetY = target.y + Math.cos(time * 3 + dot.seed) * 0.7;
-          const sameHalf = dot.homeX < width * 0.5;
-          const distToTarget = Math.hypot(targetX - dot.x, targetY - dot.y);
-          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 460 : 620));
-          const halfCenter = width * 0.25;
-          const halfFalloff = Math.max(0, 1 - Math.abs(dot.x - halfCenter) / (width * 0.48));
-          const joinChance = sameHalf ? 0.82 : 0.08;
-          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.22) : (sameHalf ? 0.5 : 0.14);
-          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 1.35 : 0.55));
+          const targetX = target.x;
+          const targetY = target.y;
+          const sameHalf = dot.homeX < width * 0.6;
+          const distToTarget = Math.hypot(targetX - dot.homeX, targetY - dot.homeY);
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 900 : 320));
+          const halfCenter = width * 0.255;
+          const halfFalloff = Math.max(0, 1 - Math.abs(dot.homeX - halfCenter) / (width * 0.42));
+          const joinChance = sameHalf ? 0.998 : 0.02;
+          const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.1) : (sameHalf ? 0.55 : 0.02);
+          pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 4.0 : 0.05));
           tx = tx + (targetX - tx) * pullMix;
           ty = ty + (targetY - ty) * pullMix;
-        }
-
-        const spring = mode ? 0.02 + pullMix * 0.12 : 0.018;
-        dot.vx += (tx - dot.x) * spring;
-        dot.vy += (ty - dot.y) * spring;
-
-        if (cursor.inside) {
-          const dx = cursor.x - dot.x;
-          const dy = cursor.y - dot.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 170 && dist > 0.1) {
-            const pull = (1 - dist / 170) * (mode ? 0.07 : 0.035);
-            dot.vx += (dx / dist) * pull;
-            dot.vy += (dy / dist) * pull;
+          if (sameHalf) {
+            const edgeLock = Math.max(0, (pullMix - 0.2) / 0.8);
+            tx = tx + (targetX - tx) * edgeLock;
+            ty = ty + (targetY - ty) * edgeLock;
           }
         }
 
-        dot.vx *= mode ? 0.9 : 0.94;
-        dot.vy *= mode ? 0.9 : 0.94;
-        dot.x += dot.vx;
-        dot.y += dot.vy;
+        const lerp = mode ? 0.22 + pullMix * 0.38 : 0.06;
+        dot.x += (tx - dot.x) * lerp;
+        dot.y += (ty - dot.y) * lerp;
 
-        if (!mode) {
-          if (dot.x < 0 || dot.x > width) {
-            dot.vx *= -0.55;
-            dot.x = Math.max(0, Math.min(width, dot.x));
-          }
-          if (dot.y < 0 || dot.y > height) {
-            dot.vy *= -0.55;
-            dot.y = Math.max(0, Math.min(height, dot.y));
-          }
-        }
-
-        const cursorDist = Math.hypot(cursor.x - dot.x, cursor.y - dot.y);
-        const cursorBoost = cursor.inside && cursorDist < 140 ? (1 - cursorDist / 140) : 0;
-        const alpha = mode ? 0.52 + pullMix * 0.46 : 0.5;
-        const radius = dot.size * (1 + pullMix * 0.55) + cursorBoost * 1.25;
-        const glow = 8 + pullMix * 30 + cursorBoost * (mode ? 25 : 15);
-
-        ctx.shadowBlur = glow;
-        ctx.shadowColor = 'rgba(41, 151, 255, 0.95)';
-        ctx.fillStyle = `rgba(58, 166, 255, ${alpha})`;
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
-        ctx.fill();
       }
 
+      // Batched draw is significantly faster than per-dot fill/shadow.
+      ctx.globalAlpha = 0.66;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = 'rgba(41, 151, 255, 0.95)';
+      ctx.fillStyle = 'rgba(58, 166, 255, 1)';
+      ctx.beginPath();
+      for (let i = 0; i < dots.length; i += 1) {
+        const dot = dots[i];
+        const radius = dot.size;
+        ctx.moveTo(dot.x + radius, dot.y);
+        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
       rafId = requestAnimationFrame(animate);
     };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        sectionInView = !!entries[0]?.isIntersecting;
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(section);
+
+    const onVisibilityChange = () => {
+      pageVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     resize();
     window.addEventListener('resize', resize);
@@ -1295,28 +1348,19 @@ const SplitCTA = () => {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      observer.disconnect();
     };
   }, []);
 
-  const handleMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    cursorRef.current = {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-      inside: true,
-    };
-  };
-
   const handleMouseLeaveSection = () => {
-    cursorRef.current = { x: -9999, y: -9999, inside: false };
     setHoverMode(null);
   };
 
   return (
     <div
       ref={sectionRef}
-      className="relative border-t border-b border-zinc-800 grid md:grid-cols-2 min-h-[560px] overflow-hidden bg-black"
-      onMouseMove={handleMouseMove}
+      className="relative border-t border-b border-white/[0.025] grid md:grid-cols-2 min-h-[840px] overflow-hidden bg-black"
       onMouseLeave={handleMouseLeaveSection}
     >
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
@@ -1339,10 +1383,8 @@ const SplitCTA = () => {
         <div className="relative z-10 md:-translate-x-8">
             <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
             <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Imitation Learning Robotics<br/>Gaze-conditioned shared autonomy</h3>
-            <button className="border border-zinc-700 px-8 py-3 rounded-full hover:bg-zinc-900 transition text-white">Research Highlights</button>
+            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Research Highlights</button>
         </div>
-        {/* Decorative BG */}
-         <div className="absolute right-0 bottom-0 w-64 h-64 border border-dashed border-zinc-800 rounded-full animate-spin-slow"></div>
       </div>
     </div>
   );

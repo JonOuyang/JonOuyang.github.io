@@ -3,7 +3,8 @@
     { "name": "Home", "path": "/" },
     { "name": "Work History", "path": "/work-history" },
     { "name": "Projects", "path": "/projects" },
-    { "name": "Research", "path": "/research" }
+    { "name": "Research", "path": "/research" },
+    { "name": "Labs", "path": "/labs" }
   ],
   "experimentalNavItems": [
     { "name": "AGY Home", "path": "/agy-home" },
