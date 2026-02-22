@@ -535,17 +535,17 @@ const Hero = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden bg-black">
+    <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 overflow-hidden bg-black">
       {/* Water cursor canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-20" />
 
-      <div className="text-center z-10 max-w-5xl mx-auto px-4 -mt-32">
-        <h1 className="text-5xl md:text-7xl font-normal tracking-tight mb-3 text-white">
+      <div className="text-center z-10 max-w-5xl mx-auto px-4 sm:px-6 -mt-16 md:-mt-24 lg:-mt-32">
+        <h1 className="text-[clamp(2.2rem,8vw,4.5rem)] font-normal tracking-tight mb-3 text-white">
           {lineOne}
           {showCursor.one && <span className="inline-block w-0 overflow-visible" style={{ animation: 'blink 1s step-end infinite', color: '#2997FF', textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)', transition: 'opacity 0.6s ease', opacity: cursorFading ? 0 : 1 }}>|</span>}
           <span className="invisible">{fullLineOne.slice(lineOne.length)}</span>
         </h1>
-        <h2 className="text-5xl md:text-7xl font-normal tracking-tight text-white mb-10">
+        <h2 className="text-[clamp(2.2rem,8vw,4.5rem)] font-normal tracking-tight text-white mb-8 sm:mb-10">
           {lineTwo}
           {showCursor.two && <span className="inline-block w-0 overflow-visible" style={{ animation: cursorFading ? 'none' : 'blink 1s step-end infinite', color: '#2997FF', textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)', transition: 'opacity 0.6s ease', opacity: cursorFading ? 0 : 1 }}>|</span>}
           <span className="invisible">{fullLineTwo.slice(lineTwo.length)}</span>
@@ -826,8 +826,8 @@ const Toolbelt = () => {
   }, []);
 
   return (
-    <div className="pt-32 pb-20 flex flex-col items-center">
-      <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-x-hidden overflow-y-visible mb-16 py-8">
+    <div className="pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 flex flex-col items-center">
+      <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-x-hidden overflow-y-visible mb-10 sm:mb-12 md:mb-16 py-8">
         <div className="flex flex-nowrap items-center" style={{ gap: '24px', marginLeft: '-52px' }}>
           {Array.from({ length: bubbleCount }).map((_, i) => {
             const Icon = icons[i % icons.length];
@@ -893,7 +893,7 @@ const ToolbeltTyping = () => {
   }, [isInView]);
 
   return (
-    <p ref={ref} className="text-4xl md:text-6xl w-screen max-w-none text-left leading-tight font-medium px-6 md:px-8 mr-auto ml-8 md:ml-16 whitespace-pre-line">
+    <p ref={ref} className="text-[clamp(2rem,6.8vw,3.75rem)] w-screen max-w-none text-left leading-tight font-medium px-4 sm:px-6 md:px-8 mr-auto ml-2 sm:ml-6 md:ml-16 whitespace-pre-line">
       {typed}
       {showCursor && <span className="inline-block w-0 overflow-visible" style={{ animation: cursorFading ? 'none' : 'blink 1s step-end infinite', color: '#2997FF', textShadow: '0 0 8px #2997FF, 0 0 20px rgba(41,151,255,0.4)', transition: 'opacity 0.6s ease', opacity: cursorFading ? 0 : 1 }}>|</span>}
       <span className="invisible">{fullText.slice(typed.length)}</span>
@@ -925,7 +925,7 @@ const FeatureTypingText = ({ text }) => {
   }, [isInView, text]);
 
   return (
-    <p ref={ref} className="text-xl text-zinc-300 max-w-md">
+    <p ref={ref} className="text-base sm:text-lg lg:text-xl text-zinc-300 max-w-xl lg:max-w-md">
       <span>{typed}</span>
       <span className="invisible">{text.slice(typed.length)}</span>
     </p>
@@ -941,7 +941,7 @@ const StickyFeatureSection = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20 space-y-10">
+    <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 space-y-10">
       {features.map((feature, i) => (
         <motion.div
           key={i}
@@ -949,17 +949,17 @@ const StickyFeatureSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col md:flex-row items-center gap-12 md:gap-y-12 md:gap-x-0"
+          className="flex flex-col lg:flex-row items-center gap-10 sm:gap-12 lg:gap-y-12 lg:gap-x-0"
         >
-          <div className="w-full md:w-1/2 md:pr-4">
-            <div className="md:-translate-x-[180px]">
-              <h3 className="text-4xl font-semibold mb-4 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">{feature.title}</h3>
+          <div className="w-full lg:w-1/2 lg:pr-4">
+            <div className="lg:-translate-x-[120px] xl:-translate-x-[180px]">
+              <h3 className="text-3xl sm:text-4xl font-semibold mb-4 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">{feature.title}</h3>
               <FeatureTypingText text={feature.desc} />
             </div>
           </div>
-          <div className="w-full md:w-1/2">
+          <div className="w-full lg:w-1/2">
             <div
-              className="w-full md:w-[122%] md:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.009] flex items-center justify-center p-6 origin-left relative isolate"
+              className="w-full lg:w-[112%] xl:w-[122%] lg:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.009] flex items-center justify-center p-4 sm:p-5 lg:p-6 origin-left relative isolate"
               style={{
                 background: `
                   radial-gradient(130% 120% at 12% 16%, rgba(${feature.color}, 0.03) 0%, rgba(${feature.color}, 0.009) 32%, rgba(0, 0, 0, 0) 56%),
@@ -1050,11 +1050,14 @@ const SplitCTA = () => {
     let pageVisible = !document.hidden;
     const targetFps = 42;
     const frameIntervalMs = 1000 / targetFps;
-    const renderScale = 0.74;
-    const dotCount = 1550;
-    const middleDotCount = 45;
-    const robotShapeScale = 2.85;
-    const laptopShapeScale = 2.93;
+    const desktopRenderScale = 0.74;
+    const desktopDotCount = 1550;
+    const desktopMiddleDotCount = 45;
+    const desktopRobotShapeScale = 2.85;
+    const desktopLaptopShapeScale = 2.93;
+    let renderScale = desktopRenderScale;
+    let dotCount = desktopDotCount;
+    let middleDotCount = desktopMiddleDotCount;
 
     const dots = [];
     let robotTargets = [];
@@ -1065,6 +1068,26 @@ const SplitCTA = () => {
         x: cx + (p.x - cx) * scale,
         y: cy + (p.y - cy) * scale,
       }));
+
+    const getLayoutMetrics = () => {
+      const stacked = width < 768;
+      const compact = width < 480;
+      const narrowDesktop = width >= 768 && width < 1280;
+
+      return {
+        stacked,
+        robotCx: stacked ? width * 0.52 : width * 0.67,
+        robotCy: stacked ? height * 0.74 : height * 0.50,
+        laptopCx: stacked ? width * 0.48 : width * 0.255,
+        laptopCy: stacked ? height * 0.30 : height * 0.56,
+        robotScale: stacked
+          ? (compact ? 1.9 : 2.1)
+          : (narrowDesktop ? 2.62 : desktopRobotShapeScale),
+        laptopScale: stacked
+          ? (compact ? 1.86 : 2.08)
+          : (narrowDesktop ? 2.68 : desktopLaptopShapeScale),
+      };
+    };
 
     const linePoints = (x1, y1, x2, y2, spacing = 10) => {
       const points = [];
@@ -1092,8 +1115,7 @@ const SplitCTA = () => {
     };
 
     const buildRobotTargets = () => {
-      const cx = width * 0.67;
-      const cy = height * 0.50;
+      const { robotCx: cx, robotCy: cy, robotScale } = getLayoutMetrics();
       const points = [];
 
       points.push(...linePoints(cx - 95, cy + 78, cx + 95, cy + 78, 6));
@@ -1115,12 +1137,11 @@ const SplitCTA = () => {
       points.push(...linePoints(cx + 176, cy - 65, cx + 188, cy - 79, 4));
       points.push(...linePoints(cx + 176, cy - 35, cx + 188, cy - 21, 4));
 
-      return scaleShape(points, cx, cy, robotShapeScale);
+      return scaleShape(points, cx, cy, robotScale);
     };
 
     const buildLaptopTargets = () => {
-      const cx = width * 0.255;
-      const cy = height * 0.56;
+      const { laptopCx: cx, laptopCy: cy, laptopScale } = getLayoutMetrics();
       const points = [];
 
       points.push(...linePoints(cx - 140, cy + 55, cx + 140, cy + 55, 5));
@@ -1136,7 +1157,7 @@ const SplitCTA = () => {
       points.push(...linePoints(cx - 92, cy - 72, cx - 106, cy + 20, 7));
       points.push(...linePoints(cx + 92, cy - 72, cx + 106, cy + 20, 7));
 
-      return scaleShape(points, cx, cy, laptopShapeScale);
+      return scaleShape(points, cx, cy, laptopScale);
     };
 
     const sparsify = (points, stride = 1) => points.filter((_, idx) => idx % stride === 0);
@@ -1152,6 +1173,7 @@ const SplitCTA = () => {
 
     const initDots = () => {
       dots.length = 0;
+      const layout = getLayoutMetrics();
       const outerDotCount = dotCount - middleDotCount;
 
       for (let i = 0; i < outerDotCount; i += 1) {
@@ -1175,8 +1197,12 @@ const SplitCTA = () => {
       }
 
       for (let i = 0; i < middleDotCount; i += 1) {
-        const homeX = width * 0.5 + (Math.random() - 0.5) * (width * 0.24);
-        const homeY = Math.random() * height;
+        const homeX = layout.stacked
+          ? Math.random() * width
+          : width * 0.5 + (Math.random() - 0.5) * (width * 0.24);
+        const homeY = layout.stacked
+          ? height * 0.5 + (Math.random() - 0.5) * (height * 0.2)
+          : Math.random() * height;
         dots.push({
           x: homeX,
           y: homeY,
@@ -1200,6 +1226,23 @@ const SplitCTA = () => {
       const rect = section.getBoundingClientRect();
       width = rect.width;
       height = rect.height;
+      if (width < 480) {
+        renderScale = 0.56;
+        dotCount = 860;
+        middleDotCount = 24;
+      } else if (width < 768) {
+        renderScale = 0.6;
+        dotCount = 980;
+        middleDotCount = 28;
+      } else if (width < 1280) {
+        renderScale = 0.68;
+        dotCount = 1260;
+        middleDotCount = 36;
+      } else {
+        renderScale = desktopRenderScale;
+        dotCount = desktopDotCount;
+        middleDotCount = desktopMiddleDotCount;
+      }
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const renderDpr = dpr * renderScale;
       canvas.width = Math.floor(width * renderDpr);
@@ -1225,6 +1268,7 @@ const SplitCTA = () => {
       lastFrameMs = nowMs;
       time += (deltaMs / 1000) * 0.45;
       const mode = hoverModeRef.current;
+      const layout = getLayoutMetrics();
       ctx.clearRect(0, 0, width, height);
       const activeTargets = mode === 'robot' ? robotTargets : mode === 'laptop' ? laptopTargets : null;
 
@@ -1253,13 +1297,13 @@ const SplitCTA = () => {
 
         if (dot.isMiddleBuffer) {
           if (mode) {
-            const activeCx = mode === 'robot' ? width * 0.67 : width * 0.255;
-            const activeCy = mode === 'robot' ? height * 0.50 : height * 0.56;
+            const activeCx = mode === 'robot' ? layout.robotCx : layout.laptopCx;
+            const activeCy = mode === 'robot' ? layout.robotCy : layout.laptopCy;
             const dx = activeCx - dot.homeX;
             const dy = activeCy - dot.homeY;
             const dist = Math.hypot(dx, dy);
-            const influence = Math.max(0, 1 - dist / (width * 0.7));
-            const slightShift = 0.04 * influence;
+            const influence = Math.max(0, 1 - dist / (layout.stacked ? height * 0.62 : width * 0.7));
+            const slightShift = (layout.stacked ? 0.05 : 0.04) * influence;
             tx += dx * slightShift;
             ty += dy * slightShift;
             pullMix = influence * 0.18;
@@ -1268,11 +1312,13 @@ const SplitCTA = () => {
           const target = robotTargets[dot.robotIndex];
           const targetX = target.x;
           const targetY = target.y;
-          const sameHalf = dot.homeX >= width * 0.4;
+          const sameHalf = layout.stacked ? dot.homeY >= height * 0.5 : dot.homeX >= width * 0.4;
           const distToTarget = Math.hypot(targetX - dot.homeX, targetY - dot.homeY);
-          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 900 : 320));
-          const halfCenter = width * 0.67;
-          const halfFalloff = Math.max(0, 1 - Math.abs(dot.homeX - halfCenter) / (width * 0.42));
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? (layout.stacked ? 760 : 900) : (layout.stacked ? 300 : 320)));
+          const halfCenter = layout.stacked ? layout.robotCy : layout.robotCx;
+          const axisPos = layout.stacked ? dot.homeY : dot.homeX;
+          const halfRange = layout.stacked ? height * 0.42 : width * 0.42;
+          const halfFalloff = Math.max(0, 1 - Math.abs(axisPos - halfCenter) / halfRange);
           const joinChance = sameHalf ? 0.998 : 0.02;
           const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.1) : (sameHalf ? 0.55 : 0.02);
           pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 4.0 : 0.05));
@@ -1287,11 +1333,13 @@ const SplitCTA = () => {
           const target = laptopTargets[dot.laptopIndex];
           const targetX = target.x;
           const targetY = target.y;
-          const sameHalf = dot.homeX < width * 0.6;
+          const sameHalf = layout.stacked ? dot.homeY < height * 0.5 : dot.homeX < width * 0.6;
           const distToTarget = Math.hypot(targetX - dot.homeX, targetY - dot.homeY);
-          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? 900 : 320));
-          const halfCenter = width * 0.255;
-          const halfFalloff = Math.max(0, 1 - Math.abs(dot.homeX - halfCenter) / (width * 0.42));
+          const distFalloff = Math.max(0, 1 - distToTarget / (sameHalf ? (layout.stacked ? 760 : 900) : (layout.stacked ? 300 : 320)));
+          const halfCenter = layout.stacked ? layout.laptopCy : layout.laptopCx;
+          const axisPos = layout.stacked ? dot.homeY : dot.homeX;
+          const halfRange = layout.stacked ? height * 0.42 : width * 0.42;
+          const halfFalloff = Math.max(0, 1 - Math.abs(axisPos - halfCenter) / halfRange);
           const joinChance = sameHalf ? 0.998 : 0.02;
           const joinWeight = dot.joinBias < joinChance ? (sameHalf ? 1 : 0.1) : (sameHalf ? 0.55 : 0.02);
           pullMix = Math.min(1, distFalloff * halfFalloff * joinWeight * (sameHalf ? 4.0 : 0.05));
@@ -1360,29 +1408,31 @@ const SplitCTA = () => {
   return (
     <div
       ref={sectionRef}
-      className="relative border-t border-b border-white/[0.025] grid md:grid-cols-2 min-h-[840px] overflow-hidden bg-black"
+      className="relative border-t border-b border-white/[0.025] grid md:grid-cols-2 min-h-[560px] sm:min-h-[680px] md:min-h-[840px] overflow-hidden bg-black"
       onMouseLeave={handleMouseLeaveSection}
     >
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
 
       <div
-        className="p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
+        className="p-8 sm:p-12 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
         onMouseEnter={() => setHoverMode('laptop')}
+        onTouchStart={() => setHoverMode('laptop')}
       >
-        <div className="relative z-10 md:translate-x-8">
+        <div className="relative z-10 md:translate-x-6 lg:translate-x-8 max-w-[40rem]">
             <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
-            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Computer-Use Agents<br/>Multimodal systems for real workflows</h3>
+            <h3 className="text-3xl sm:text-4xl font-medium mt-2 mb-7 sm:mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Computer-Use Agents<br/>Multimodal systems for real workflows</h3>
             <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Agent Projects</button>
         </div>
       </div>
 
       <div
-        className="p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
+        className="p-8 sm:p-12 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden group z-10"
         onMouseEnter={() => setHoverMode('robot')}
+        onTouchStart={() => setHoverMode('robot')}
       >
-        <div className="relative z-10 md:-translate-x-8">
+        <div className="relative z-10 md:-translate-x-6 lg:-translate-x-8 max-w-[40rem]">
             <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
-            <h3 className="text-4xl font-medium mt-2 mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Imitation Learning Robotics<br/>Gaze-conditioned shared autonomy</h3>
+            <h3 className="text-3xl sm:text-4xl font-medium mt-2 mb-7 sm:mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Imitation Learning Robotics<br/>Gaze-conditioned shared autonomy</h3>
             <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Research Highlights</button>
         </div>
       </div>
@@ -1426,9 +1476,9 @@ const BlogSection = () => {
   };
 
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-12">
-        <h2 className="text-4xl font-medium bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Latest Social Posts</h2>
+    <section className="py-20 sm:py-24 px-5 sm:px-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-10 sm:mb-12">
+        <h2 className="text-3xl sm:text-4xl font-medium bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Latest Social Posts</h2>
         <a
           href="https://www.linkedin.com/in/jon-ouyang/"
           target="_blank"
@@ -1439,9 +1489,9 @@ const BlogSection = () => {
         </a>
       </div>
       
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
         {socialPosts.map((post, i) => (
-          <div key={i} className="group w-full max-w-[504px] mx-auto">
+          <div key={i} className="group w-full max-w-[504px] mx-auto sm:max-w-none">
             <div className="rounded-2xl mb-4 overflow-hidden relative transition-transform group-hover:-translate-y-2">
               {post.embedUrl ? (
                 <iframe
@@ -1482,22 +1532,22 @@ const BlogSection = () => {
 /* --- 9. Starfield Footer --- */
 const StarfieldFooter = () => {
   return (
-    <footer className="bg-black text-white px-10 md:px-24 pt-24 md:pt-28 pb-10">
+    <footer className="bg-black text-white px-5 sm:px-8 md:px-24 pt-20 sm:pt-24 md:pt-28 pb-10">
       <div className="max-w-[1680px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8">
-          <h2 className="text-4xl md:text-[42px] leading-tight font-medium tracking-tight text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl md:text-[42px] leading-tight font-medium tracking-tight text-zinc-100">
             Build the Future
           </h2>
 
-          <div className="flex gap-14 md:gap-20 text-base md:text-[15px] leading-[1.75] font-medium text-zinc-400 md:justify-self-start">
-            <div className="flex flex-col">
+          <div className="flex flex-wrap gap-x-10 gap-y-8 md:gap-20 text-sm sm:text-base md:text-[15px] leading-[1.75] font-medium text-zinc-400 md:justify-self-start">
+            <div className="flex flex-col gap-1">
               <a href="/" className="hover:text-white transition-colors">Home</a>
               <a href="/work-history" className="hover:text-white transition-colors">Work History</a>
               <a href="/projects" className="hover:text-white transition-colors">Projects</a>
               <a href="/research" className="hover:text-white transition-colors">Research</a>
               <a href="/resumes/CV/Jonathan_Ouyang_CV.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Resume</a>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <a href="/agy-home" className="hover:text-white transition-colors">AGY Home</a>
               <a href="/experimental-projects" className="hover:text-white transition-colors">Experimental Projects</a>
               <a href="/wip" className="hover:text-white transition-colors">WIP Hub</a>
@@ -1513,8 +1563,8 @@ const StarfieldFooter = () => {
           </h1>
         </div>
 
-        <div className="mt-16 md:mt-24 flex justify-end text-sm md:text-[15px] text-zinc-400">
-          <div className="flex flex-wrap items-center justify-end gap-8 md:gap-10 text-right">
+        <div className="mt-14 sm:mt-16 md:mt-24 flex justify-center md:justify-end text-sm md:text-[15px] text-zinc-400">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-8 md:gap-10 text-center md:text-right">
             <a href="#" className="hover:text-white transition-colors">About Jonathan</a>
             <a href="#" className="hover:text-white transition-colors">Jonathan&apos;s Projects</a>
             <a href="#" className="hover:text-white transition-colors">See Website Code</a>
