@@ -939,9 +939,20 @@ const StickyFeatureSection = () => {
     { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94" },
     { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8" },
   ];
+  const featureTextMaxWidth = 'clamp(16rem, 34vw, 40rem)';
+  const featureCardMaxWidth = 'clamp(18rem, 56vw, 58rem)';
+  const featureParticleFrameMaxWidth = 'clamp(15rem, 28vw, 31rem)';
+  const desktopTextInset = 'clamp(0px, calc((100vw - 1180px) * 0.18), 10rem)';
+  const ambientGlowScalePrimary = 'clamp(1.02, 0.7vw + 1, 1.08)';
+  const ambientGlowScaleSecondary = 'clamp(1.03, 0.9vw + 1, 1.1)';
+  const ambientGlowBlurPrimary = 'blur(clamp(22px, 4vw, 60px)) saturate(2.8) contrast(1.5)';
+  const ambientGlowBlurSecondary = 'blur(clamp(16px, 3vw, 44px)) saturate(4) contrast(1.7)';
 
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 py-16 sm:py-20 space-y-10">
+    <section
+      className="w-full mx-auto px-4 sm:px-6 md:px-8 xl:px-10 py-16 sm:py-20 space-y-10 sm:space-y-12"
+      style={{ maxWidth: 'min(100%, 1600px)' }}
+    >
       {features.map((feature, i) => (
         <motion.div
           key={i}
@@ -949,18 +960,25 @@ const StickyFeatureSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col lg:flex-row items-center gap-10 sm:gap-12 lg:gap-y-12 lg:gap-x-0"
+          className="grid w-full min-w-0 grid-cols-1 lg:grid-cols-2 items-center gap-8 sm:gap-10 lg:gap-y-10 lg:gap-x-0"
         >
-          <div className="w-full lg:w-1/2 lg:pr-4">
-            <div className="lg:-translate-x-[120px] xl:-translate-x-[180px]">
+          <div className="w-full min-w-0 lg:col-span-1">
+            <div
+              className="w-full mx-auto lg:mx-0 lg:pr-2"
+              style={{
+                maxWidth: `min(100%, ${featureTextMaxWidth})`,
+                paddingLeft: desktopTextInset,
+              }}
+            >
               <h3 className="text-3xl sm:text-4xl font-semibold mb-4 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">{feature.title}</h3>
               <FeatureTypingText text={feature.desc} />
             </div>
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full min-w-0 lg:col-span-1 flex lg:justify-start">
             <div
-              className="w-full lg:w-[112%] xl:w-[122%] lg:max-w-none aspect-square rounded-2xl overflow-hidden border border-white/[0.009] flex items-center justify-center p-4 sm:p-5 lg:p-6 origin-left relative isolate"
+              className="w-full aspect-square min-h-[18rem] sm:min-h-0 rounded-2xl overflow-hidden border border-white/[0.009] flex items-center justify-center p-4 sm:p-5 lg:p-6 relative isolate"
               style={{
+                maxWidth: `min(100%, ${featureCardMaxWidth})`,
                 background: `
                   radial-gradient(130% 120% at 12% 16%, rgba(${feature.color}, 0.03) 0%, rgba(${feature.color}, 0.009) 32%, rgba(0, 0, 0, 0) 56%),
                   radial-gradient(110% 95% at 86% 24%, rgba(56, 189, 248, 0.016) 0%, rgba(0, 0, 0, 0) 50%),
@@ -976,8 +994,12 @@ const StickyFeatureSection = () => {
                 loop
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-[0.15] blur-[72px] scale-110 saturate-[2.8] contrast-150 pointer-events-none"
-                style={{ mixBlendMode: 'screen' }}
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.15] pointer-events-none"
+                style={{
+                  mixBlendMode: 'screen',
+                  filter: ambientGlowBlurPrimary,
+                  transform: `scale(${ambientGlowScalePrimary})`,
+                }}
               />
               <video
                 src="/assets/videos/frame.mp4"
@@ -985,8 +1007,12 @@ const StickyFeatureSection = () => {
                 loop
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-[0.14] blur-[52px] scale-115 saturate-[4] contrast-170 pointer-events-none"
-                style={{ mixBlendMode: 'color-dodge' }}
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.14] pointer-events-none"
+                style={{
+                  mixBlendMode: 'color-dodge',
+                  filter: ambientGlowBlurSecondary,
+                  transform: `scale(${ambientGlowScaleSecondary})`,
+                }}
               />
 
               {/* Watercolor dye layers */}
@@ -1003,7 +1029,13 @@ const StickyFeatureSection = () => {
                 }}
               />
 
-              <div className="relative w-full rounded-xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+              <div
+                className="relative w-full mx-auto rounded-xl overflow-hidden"
+                style={{
+                  aspectRatio: '16/9',
+                  maxWidth: `min(100%, ${featureParticleFrameMaxWidth})`,
+                }}
+              >
                 <video
                   src="/assets/videos/frame.mp4"
                   autoPlay
@@ -1053,8 +1085,10 @@ const SplitCTA = () => {
     const desktopRenderScale = 0.74;
     const desktopDotCount = 1550;
     const desktopMiddleDotCount = 45;
-    const desktopRobotShapeScale = 2.85;
-    const desktopLaptopShapeScale = 2.93;
+    const desktopRobotShapeScaleMin = 2.56;
+    const desktopRobotShapeScaleMax = 2.75;
+    const desktopLaptopShapeScaleMin = 2.62;
+    const desktopLaptopShapeScaleMax = 2.82;
     let renderScale = desktopRenderScale;
     let dotCount = desktopDotCount;
     let middleDotCount = desktopMiddleDotCount;
@@ -1062,6 +1096,8 @@ const SplitCTA = () => {
     const dots = [];
     let robotTargets = [];
     let laptopTargets = [];
+    const clamp01 = (value) => Math.max(0, Math.min(1, value));
+    const lerp = (start, end, t) => start + (end - start) * t;
 
     const scaleShape = (points, cx, cy, scale) =>
       points.map((p) => ({
@@ -1073,6 +1109,9 @@ const SplitCTA = () => {
       const stacked = width < 768;
       const compact = width < 480;
       const narrowDesktop = width >= 768 && width < 1280;
+      const desktopWidthProgress = clamp01((width - 1280) / 800);
+      const desktopRobotShapeScale = lerp(desktopRobotShapeScaleMin, desktopRobotShapeScaleMax, desktopWidthProgress);
+      const desktopLaptopShapeScale = lerp(desktopLaptopShapeScaleMin, desktopLaptopShapeScaleMax, desktopWidthProgress);
 
       return {
         stacked,
