@@ -5,3 +5,4 @@ vite.config.js.timestamp*
 
 # claude
 .claude/*
+debug_frames/

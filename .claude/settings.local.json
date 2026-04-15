@@ -32,7 +32,22 @@
       "Bash(npx vite build)",
       "Bash(gh api *)",
       "WebFetch(domain:api.github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(node *)",
+      "Bash(mkdir -p debug_frames/v5)",
+      "Bash(ffmpeg -y -i public/assets/videos/netflix_intro.mp4 -vf \"fps=10\" debug_frames/v5/frame_%03d.png)",
+      "Bash(rm -rf debug_frames/v6)",
+      "Bash(mkdir -p debug_frames/v6)",
+      "Bash(ffmpeg -y -i public/assets/videos/netflix_intro.mp4 -vf \"fps=10\" debug_frames/v6/frame_%03d.png)",
+      "Bash(rm -rf debug_frames/v7)",
+      "Bash(mkdir -p debug_frames/v7)",
+      "Bash(ffmpeg -y -i public/assets/videos/netflix_intro.mp4 -vf \"fps=10\" debug_frames/v7/frame_%03d.png)",
+      "Bash(rm -rf debug_frames/v8)",
+      "Bash(mkdir -p debug_frames/v8)",
+      "Bash(ffmpeg -y -i public/assets/videos/netflix_intro.mp4 -vf \"fps=10\" debug_frames/v8/frame_%03d.png)",
+      "Bash(rm -rf debug_frames/v8 debug_frames/v9)",
+      "Bash(mkdir -p debug_frames/v9)",
+      "Bash(ffmpeg -y -i public/assets/videos/netflix_intro.mp4 -vf \"fps=10\" debug_frames/v9/frame_%03d.png)"
     ],
     "deny": [],
     "ask": []

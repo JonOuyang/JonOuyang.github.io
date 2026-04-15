@@ -1,51 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import './NetflixIntro.css';
 
-const FUR_COUNT = 31;
-const LAMP_COUNT = 28;
-
-const BrushEffect = () => (
-  <div className="effect-brush">
-    {Array.from({ length: FUR_COUNT }, (_, i) => (
-      <span key={i} className={`fur-${FUR_COUNT - i}`} />
-    ))}
-  </div>
-);
-
-const LampEffect = () => (
-  <div className="effect-lumieres">
-    {Array.from({ length: LAMP_COUNT }, (_, i) => (
-      <span key={i} className={`lamp-${i + 1}`} />
-    ))}
-  </div>
-);
-
 const NetflixIntro = ({ onComplete }) => {
+  const videoRef = useRef(null);
+
   useEffect(() => {
-    // zoom-in: 0.5s delay + 3.5s duration = 4s total
-    const timer = setTimeout(() => {
+    // Fallback timer
+    const fallbackTimer = setTimeout(() => {
       if (onComplete) onComplete();
-    }, 4000);
-    return () => clearTimeout(timer);
+    }, 4500);
+
+    return () => clearTimeout(fallbackTimer);
   }, [onComplete]);
 
   return (
     <div className="netflix-intro-wrapper">
-      <div className="netflix-n">
-        {/* Left vertical bar — has both brush and lamp effects */}
-        <div className="helper helper-1">
-          <BrushEffect />
-          <LampEffect />
-        </div>
-        {/* Right vertical bar */}
-        <div className="helper helper-2">
-          <BrushEffect />
-        </div>
-        {/* Diagonal bar — must be last so it renders on top */}
-        <div className="helper helper-3">
-          <BrushEffect />
-        </div>
-      </div>
+      <video
+        ref={videoRef}
+        src="/assets/videos/netflix_intro.mp4"
+        style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'black' }}
+        autoPlay
+        muted
+        playsInline
+        onEnded={onComplete}
+      />
     </div>
   );
 };
