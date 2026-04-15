@@ -29,7 +29,10 @@
       "Bash(npx eslint:*)",
       "Bash(node -e:*)",
       "Bash(npx -y acorn:*)",
-      "Bash(npx vite build)"
+      "Bash(npx vite build)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []

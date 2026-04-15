@@ -4,6 +4,23 @@ import { Play, Apple, ArrowRight, Search, Terminal, GitBranch, Layout, FileCode,
 import RobotArmSection from './RobotArmSection';
 
 const blinkKeyframes = `@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }`;
+const AGY_LINKS = {
+  showcaseVideo: 'https://www.youtube.com/watch?v=shnW3VerkiM',
+  repo: 'https://github.com/JonOuyang/JonOuyang.github.io',
+  resume: '/resumes/SWE/Jonathan_Ouyang_Resume.pdf',
+  nav: {
+    product: '#agy-video',
+    useCases: '#agy-features',
+    pricing: '/work-history',
+    blog: '#agy-blog',
+    resources: '/research',
+  },
+  cta: {
+    exploreUseCases: '#agy-features',
+    agentProjects: '/experimental-projects',
+    researchHighlights: '/research',
+  },
+};
 
 const GoogleAntigravityClone = () => {
   return (
@@ -29,15 +46,20 @@ const Header = () => (
       <span className="text-xl tracking-tight text-gray-500">Google <span className="font-bold text-gray-900">Antigravity</span></span>
     </div>
     <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-      <a href="#" className="hover:text-black transition-colors">Product</a>
-      <a href="#" className="hover:text-black transition-colors">Use Cases</a>
-      <a href="#" className="hover:text-black transition-colors">Pricing</a>
-      <a href="#" className="hover:text-black transition-colors">Blog</a>
-      <a href="#" className="hover:text-black transition-colors">Resources</a>
+      <a href={AGY_LINKS.nav.product} className="hover:text-black transition-colors">Product</a>
+      <a href={AGY_LINKS.nav.useCases} className="hover:text-black transition-colors">Use Cases</a>
+      <a href={AGY_LINKS.nav.pricing} className="hover:text-black transition-colors">Pricing</a>
+      <a href={AGY_LINKS.nav.blog} className="hover:text-black transition-colors">Blog</a>
+      <a href={AGY_LINKS.nav.resources} className="hover:text-black transition-colors">Resources</a>
     </div>
-    <button className="bg-black text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+    <a
+      href={AGY_LINKS.resume}
+      target="_blank"
+      rel="noreferrer"
+      className="bg-black text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+    >
       Download
-    </button>
+    </a>
   </nav>
 );
 
@@ -535,7 +557,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 overflow-hidden bg-black">
+    <section id="agy-hero" ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 overflow-hidden bg-black">
       {/* Water cursor canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-20" />
 
@@ -556,12 +578,20 @@ const Hero = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <button className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-base font-medium hover:scale-105 transition-transform">
+            <a
+              href={AGY_LINKS.resume}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-base font-medium hover:scale-105 transition-transform"
+            >
               <Apple size={18} fill="black" /> Download for MacOS
-            </button>
-            <button className="px-5 py-2.5 rounded-full text-base font-medium text-zinc-400 bg-zinc-900 hover:bg-zinc-800 transition-all">
+            </a>
+            <a
+              href={AGY_LINKS.cta.exploreUseCases}
+              className="px-5 py-2.5 rounded-full text-base font-medium text-zinc-400 bg-zinc-900 hover:bg-zinc-800 transition-all"
+            >
               Explore use cases
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>
@@ -573,7 +603,7 @@ const Hero = () => {
 const ExpandingVideo = () => {
   const containerRef = useRef(null);
   const backgroundCanvasRef = useRef(null);
-  const videoUrl = 'https://www.youtube.com/watch?v=shnW3VerkiM';
+  const videoUrl = AGY_LINKS.showcaseVideo;
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -731,7 +761,7 @@ const ExpandingVideo = () => {
   };
 
   return (
-    <section ref={containerRef} className="relative bg-black">
+    <section id="agy-video" ref={containerRef} className="relative bg-black">
       <canvas ref={backgroundCanvasRef} className="absolute inset-0 pointer-events-none z-0" />
       <div
         className="absolute inset-0 pointer-events-none z-[1]"
@@ -801,9 +831,14 @@ const IntroGradient = () => {
         </div>
       </motion.div>
       
-      <button className="absolute z-20 flex items-center gap-2 bg-white shadow-xl px-6 py-3 rounded-full text-sm font-semibold hover:scale-105 transition-transform">
+      <a
+        href={AGY_LINKS.showcaseVideo}
+        target="_blank"
+        rel="noreferrer"
+        className="absolute z-20 inline-flex items-center gap-2 bg-white shadow-xl px-6 py-3 rounded-full text-sm font-semibold hover:scale-105 transition-transform"
+      >
         <Play size={16} fill="black" /> Play intro
-      </button>
+      </a>
     </div>
   );
 };
@@ -934,10 +969,10 @@ const FeatureTypingText = ({ text }) => {
 
 const StickyFeatureSection = () => {
   const features = [
-    { title: "Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246" },
-    { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246" },
-    { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94" },
-    { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8" },
+    { title: "Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246", video: "/assets/videos/jayu-gemini-winner.mp4" },
+    { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246", video: "/assets/videos/armfold_6p30_to_7p30.MOV" },
+    { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94", video: "/assets/videos/BruinBite%20Launch%20Video.mp4" },
+    { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8", video: "/assets/videos/explore.mp4" },
   ];
   const featureTextMaxWidth = 'clamp(16rem, 34vw, 40rem)';
   const featureCardMaxWidth = 'clamp(18rem, 56vw, 58rem)';
@@ -950,6 +985,7 @@ const StickyFeatureSection = () => {
 
   return (
     <section
+      id="agy-features"
       className="w-full mx-auto px-4 sm:px-6 md:px-8 xl:px-10 py-16 sm:py-20 space-y-10 sm:space-y-12"
       style={{ maxWidth: 'min(100%, 1600px)' }}
     >
@@ -989,7 +1025,7 @@ const StickyFeatureSection = () => {
             >
               {/* Video-driven ambient glow behind the main frame */}
               <video
-                src="/assets/videos/frame.mp4"
+                src={feature.video}
                 autoPlay
                 loop
                 muted
@@ -1002,7 +1038,7 @@ const StickyFeatureSection = () => {
                 }}
               />
               <video
-                src="/assets/videos/frame.mp4"
+                src={feature.video}
                 autoPlay
                 loop
                 muted
@@ -1037,7 +1073,7 @@ const StickyFeatureSection = () => {
                 }}
               >
                 <video
-                  src="/assets/videos/frame.mp4"
+                  src={feature.video}
                   autoPlay
                   loop
                   muted
@@ -1446,6 +1482,7 @@ const SplitCTA = () => {
 
   return (
     <div
+      id="agy-specializations"
       ref={sectionRef}
       className="relative border-t border-b border-white/[0.025] grid md:grid-cols-2 min-h-[560px] sm:min-h-[680px] md:min-h-[840px] overflow-hidden bg-black"
       onMouseLeave={handleMouseLeaveSection}
@@ -1460,7 +1497,7 @@ const SplitCTA = () => {
         <div className="relative z-10 md:translate-x-6 lg:translate-x-8 max-w-[40rem]">
             <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
             <h3 className="text-3xl sm:text-4xl font-medium mt-2 mb-7 sm:mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Computer-Use Agents<br/>Multimodal systems for real workflows</h3>
-            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Agent Projects</button>
+            <a href={AGY_LINKS.cta.agentProjects} className="inline-flex bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Agent Projects</a>
         </div>
       </div>
 
@@ -1472,7 +1509,7 @@ const SplitCTA = () => {
         <div className="relative z-10 md:-translate-x-6 lg:-translate-x-8 max-w-[40rem]">
             <span className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Specialization</span>
             <h3 className="text-3xl sm:text-4xl font-medium mt-2 mb-7 sm:mb-8 bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Imitation Learning Robotics<br/>Gaze-conditioned shared autonomy</h3>
-            <button className="bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Research Highlights</button>
+            <a href={AGY_LINKS.cta.researchHighlights} className="inline-flex bg-white text-black px-8 py-3 rounded-full hover:bg-zinc-200 transition">Research Highlights</a>
         </div>
       </div>
     </div>
@@ -1515,7 +1552,7 @@ const BlogSection = () => {
   };
 
   return (
-    <section className="py-20 sm:py-24 px-5 sm:px-6 max-w-7xl mx-auto">
+    <section id="agy-blog" className="py-20 sm:py-24 px-5 sm:px-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-10 sm:mb-12">
         <h2 className="text-3xl sm:text-4xl font-medium bg-gradient-to-r from-white via-white to-zinc-300 bg-clip-text text-transparent">Latest Social Posts</h2>
         <a
@@ -1571,7 +1608,7 @@ const BlogSection = () => {
 /* --- 9. Starfield Footer --- */
 const StarfieldFooter = () => {
   return (
-    <footer className="bg-black text-white px-5 sm:px-8 md:px-24 pt-20 sm:pt-24 md:pt-28 pb-10">
+    <footer id="agy-footer" className="bg-black text-white px-5 sm:px-8 md:px-24 pt-20 sm:pt-24 md:pt-28 pb-10">
       <div className="max-w-[1680px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8">
           <h2 className="text-3xl sm:text-4xl md:text-[42px] leading-tight font-medium tracking-tight text-zinc-100">
@@ -1604,9 +1641,9 @@ const StarfieldFooter = () => {
 
         <div className="mt-14 sm:mt-16 md:mt-24 flex justify-center md:justify-end text-sm md:text-[15px] text-zinc-400">
           <div className="flex flex-wrap items-center justify-center md:justify-end gap-6 sm:gap-8 md:gap-10 text-center md:text-right">
-            <a href="#" className="hover:text-white transition-colors">About Jonathan</a>
-            <a href="#" className="hover:text-white transition-colors">Jonathan&apos;s Projects</a>
-            <a href="#" className="hover:text-white transition-colors">See Website Code</a>
+            <a href="/" className="hover:text-white transition-colors">About Jonathan</a>
+            <a href="/projects" className="hover:text-white transition-colors">Jonathan&apos;s Projects</a>
+            <a href={AGY_LINKS.repo} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">See Website Code</a>
           </div>
         </div>
       </div>
