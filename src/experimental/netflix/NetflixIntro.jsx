@@ -1,16 +1,24 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import './NetflixIntro.css';
 
 const NetflixIntro = ({ onComplete }) => {
   const videoRef = useRef(null);
+  const [isFlashing, setIsFlashing] = useState(false);
 
   useEffect(() => {
-    // Fallback timer
-    const fallbackTimer = setTimeout(() => {
+    // Flash at 3.5s, complete after 4.5s
+    const flashTimer = setTimeout(() => {
+      setIsFlashing(true);
+    }, 3500);
+
+    const completionTimer = setTimeout(() => {
       if (onComplete) onComplete();
     }, 4500);
 
-    return () => clearTimeout(fallbackTimer);
+    return () => {
+      clearTimeout(flashTimer);
+      clearTimeout(completionTimer);
+    };
   }, [onComplete]);
 
   return (
@@ -22,8 +30,8 @@ const NetflixIntro = ({ onComplete }) => {
         autoPlay
         muted
         playsInline
-        onEnded={onComplete}
       />
+      <div className={`flash-overlay ${isFlashing ? 'flash-animation' : ''}`} />
     </div>
   );
 };
