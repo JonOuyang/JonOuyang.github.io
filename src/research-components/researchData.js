@@ -4,16 +4,6 @@ export const researchData = [
   // Add your newest papers here
   {
     year: 2026,
-    image: 'https://media.licdn.com/dms/image/v2/D560BAQGrCVs1ojx3oA/company-logo_200_200/company-logo_200_200/0/1691024285196/stanford_university_department_of_computer_science_logo?e=2147483647&v=beta&t=ekeefbiDnq-rY1R9wZ9-WAp6bKJ2VNfuIRz6zGixGSI', // Replace with your image path
-    title: 'In Progress Project',
-    authors: 'Megha Srivastava, **Jonathan Ouyang**, Eric Ziyang Zhou, Yuchen Cui, Dorsa Sadigh, and Toyota Research Institute', // Use **Your Name** to highlight
-    conference: 'Targeting International Conference on Learning Representations (ICLR), 2026',
-    pdf: null, // Link to PDF
-    code: 'https://github.com/JonOuyang/ILIAD-CARLA', // Link to Code
-    website: null, // Link to website page (optional)
-  },
-  {
-    year: 2026,
     image: 'https://conferences.ucla.edu/wp-content/uploads/2021/01/uclalogo.png', // Replace with your image path
     title: 'In Progress Project',
     authors: '**Jonathan Ouyang***, Yike Shi*, and Yuchen Cui', // Use **Your Name** to highlight
