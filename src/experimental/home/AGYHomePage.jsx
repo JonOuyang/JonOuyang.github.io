@@ -970,7 +970,7 @@ const FeatureTypingText = ({ text }) => {
 const StickyFeatureSection = () => {
   const features = [
     { title: "Agentic Systems", desc: "I build computer-use and multimodal agents that plan, act, and adapt in real workflows, from prototype to production.", color: "59, 130, 246", video: "/assets/videos/jayu-gemini-winner.mp4" },
-    { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246", video: "/assets/videos/armfold_6p30_to_7p30.MOV" },
+    { title: "Robotics Research", desc: "My research spans shared autonomy, gaze-conditioned control, and robot learning, with work across UCLA, Stanford, and SJSU labs.", color: "139, 92, 246", video: "/assets/videos/1BABB795-0F83-44DA-8592-FDEC340234C7.MOV.mov" },
     { title: "Production Code at Scale", desc: "I ship reliable software systems that handle real traffic, improve developer velocity, and hold up under production constraints.", color: "34, 197, 94", video: "/assets/videos/BruinBite%20Launch%20Video.mp4" },
     { title: "Outside of Work", desc: "I lead communities, mentor builders, and explore side projects that blend creativity, engineering, and practical impact.", color: "234, 179, 8", video: "/assets/videos/explore.mp4" },
   ];
