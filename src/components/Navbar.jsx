@@ -38,8 +38,6 @@ const Navbar = () => {
         setExperimentalNav([
           { name: "AGY Home", path: "/agy-home" },
           { name: "Projects (Exp)", path: "/experimental-projects" },
-          { name: "WIP", path: "/wip" },
-          { name: "card", path: "/card" },
         ]);
       }
     };
