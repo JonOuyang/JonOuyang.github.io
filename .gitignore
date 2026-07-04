@@ -6,3 +6,7 @@ vite.config.js.timestamp*
 # claude
 .claude/*
 debug_frames/
+/public/_stepframes/
+
+# ML model weights (downloadable; never commit — GitHub 100MB limit)
+*.pt

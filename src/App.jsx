@@ -12,6 +12,7 @@ const WIPHome = lazy(() => import('./wip/home/WIPHome'));
 const CardPage = lazy(() => import('./experimental/card/CardPage'));
 const AGYHomePage = lazy(() => import('./experimental/home/AGYHomePage'));
 const NetflixPage = lazy(() => import('./experimental/netflix/NetflixPage'));
+const WalkPage = lazy(() => import('./experimental/walk/WalkPage'));
 const Labs = lazy(() => import('./components/Labs'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
@@ -158,6 +159,15 @@ const App = () => {
               <NetflixPage />
             </Suspense>
          </main>
+        } />
+        <Route path="/walk" element={
+          <main className="bg-white min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <WalkPage />
+            </Suspense>
+          </main>
         } />
         <Route path="/labs" element={
           <main className="bg-black min-h-screen">
