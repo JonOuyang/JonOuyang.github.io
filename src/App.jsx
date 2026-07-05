@@ -34,6 +34,18 @@ const App = () => {
         <Route
           path="/"
           element={
+            <main className="bg-white min-h-screen">
+              <Navbar />
+              <MobileDock />
+              <Suspense fallback={<Loading />}>
+                <WalkPage />
+              </Suspense>
+            </main>
+          }
+        />
+        <Route
+          path="/old-home"
+          element={
             <>
               <Navbar />
               <MobileDock />

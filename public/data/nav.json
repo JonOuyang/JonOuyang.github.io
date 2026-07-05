@@ -7,7 +7,6 @@
   ],
   "experimentalNavItems": [
     { "name": "AGY Home", "path": "/agy-home" },
-    { "name": "Projects (Exp)", "path": "/experimental-projects" },
-    { "name": "walk", "path": "/walk" }
+    { "name": "Projects (Exp)", "path": "/experimental-projects" }
   ]
 }
