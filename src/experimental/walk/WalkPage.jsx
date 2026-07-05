@@ -465,6 +465,59 @@ playback: dt ${hud.dt}ms  peak ${hud.maxDt}ms  frame-skips ${hud.skips}`}
   );
 };
 
+// ── barn-door close ──────────────────────────────────────────────────────────
+// Scroll progress 0→1 of a tall wrapper passing through the viewport, using the
+// SAME rAF-throttled getBoundingClientRect technique as WalkSections' useSceneProgress
+// (that file isn't imported here, so the hook is kept local). Skips state churn when
+// the clamped value is idle.
+const useScrollProgress = (ref) => {
+  const [p, setP] = useState(0);
+  const pRef = useRef(0);
+  useEffect(() => {
+    let raf = 0;
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const next = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+      if (Math.abs(next - pRef.current) > 0.0004) {
+        pRef.current = next;
+        setP(next);
+      }
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+  return p;
+};
+
+// under reduced motion we swap the sliding doors for a plain fade-to-black
+const usePrefersReducedMotion = () => {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const on = () => setReduce(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return reduce;
+};
+
+// smoothstep — the close accelerates naturally instead of reading perfectly linear
+const smoothstep = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
+
 // ── main page ──────────────────────────────────────────────────────────────
 const WalkPage = () => {
   if (DIAG_MODE) return <DiagLoop />;
@@ -477,6 +530,25 @@ const WalkPage = () => {
   const capVideoRef = useRef(null);   // hidden source we capture frames from
   const bitmapsRef = useRef(null);    // captured cropped alpha ImageBitmap[]
   const [framesReady, setFramesReady] = useState(false);
+
+  // ── barn-door close overlay (scroll-driven; additive only — playback is untouched) ──
+  // The hero <section> is pinned inside a tall wrapper (heroWrapRef). As that wrapper
+  // scrolls through the viewport, two pitch-black panels close from the SIDES so the
+  // centered figure is the last thing swallowed as the doors meet.
+  const heroWrapRef = useRef(null);
+  const scrollP = useScrollProgress(heroWrapRef);
+  const reduceMotion = usePrefersReducedMotion();
+  // stops: 0 = doors fully open (invisible) · 0.75 = fully MET (full pitch black) ·
+  // 0.75→1.0 = held full black (the dark index lives on this beat).
+  const doorClose = smoothstep(Math.min(1, scrollP / 0.75));
+
+  // once the black is deep, fade the GLOBAL nav pill out so pitch black is truly
+  // pitch black (and the dark index owns navigation). Reversible on scroll-up;
+  // cleaned up on unmount so no other route inherits the class. CSS lives in index.css.
+  useEffect(() => {
+    document.body.classList.toggle("walk-blackout", doorClose > 0.6);
+    return () => document.body.classList.remove("walk-blackout");
+  }, [doorClose]);
 
   // ── probe instrumentation (only live under ?probe) ──
   const [probe, setProbe] = useState(
@@ -791,7 +863,13 @@ const WalkPage = () => {
     "absolute left-1/2 bottom-0 h-[92vh] w-auto max-w-none -translate-x-1/2 object-contain";
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-white">
+    <div className="relative w-full bg-black">
+      {/* ── hero scroll runway ── ~2.4 screens tall so the sticky hero stays pinned
+            while the barn-door close plays out; the impact fires near the end and the
+            menu (born from the slam) lives on the held-black beat, pinned to the end. ── */}
+      <div ref={heroWrapRef} style={{ height: "240vh", position: "relative" }}>
+      {/* ── hero: pinned full-screen scene; the editorial sheet below scrolls OVER it ── */}
+      <section className="sticky top-0 h-screen w-full overflow-hidden bg-white">
 
       {/* ── playback-timing probe HUD (?probe) ── */}
       {PROBE_MODE && probe && (() => {
@@ -832,6 +910,12 @@ target: wrap ≈ ${ideal.toFixed(1)}ms · skips 0`}
         @keyframes subIn {
           from { opacity: 0; transform: translateY(6px); }
           to   { opacity: 1; transform: none; }
+        }
+        @keyframes cueDrop {
+          0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+          30%  { opacity: 1; }
+          70%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+          100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
         }
       `}</style>
       <div
@@ -919,6 +1003,45 @@ target: wrap ≈ ${ideal.toFixed(1)}ms · skips 0`}
         </h1>
       </div>
 
+      {/* ── scroll cue — invites the reader down into the editorial sheet ── */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "9px",
+          opacity: showName ? 1 : 0,
+          transition: "opacity 1.4s ease 0.9s",
+          pointerEvents: "none",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Google Sans", sans-serif',
+            fontSize: "9px",
+            fontWeight: 600,
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+            color: "#9C9C9C",
+          }}
+        >
+          Scroll
+        </span>
+        <span
+          style={{
+            width: "1px",
+            height: "34px",
+            background: "#0A0A0A",
+            animation: "cueDrop 2s ease-in-out infinite",
+          }}
+        />
+      </div>
+
       {/* ── poster safety layer: first-frame image UNDER the intro video, shown ONLY until the video's first
             frame paints (dropped in the reveal effect). Covers the white gap during decoder/compositor churn
             at load without ghosting through the transparent silhouette once the figure starts moving. ── */}
@@ -969,6 +1092,47 @@ target: wrap ≈ ${ideal.toFixed(1)}ms · skips 0`}
         muted playsInline preload="auto" loop aria-hidden
         style={{ position: "absolute", left: 0, top: 0, width: "64px", height: "36px", opacity: 0, pointerEvents: "none", zIndex: -1 }}
       />
+
+      {/* ── barn-door close ── two pitch-black panels slide in from the LEFT and RIGHT
+            edges and meet in the center, closing the white hero to FULL BLACK. They sit
+            ABOVE the canvas/video (zIndex 3/2) and every foreground layer; because they
+            close from the sides, the centered figure survives longest — he's the last
+            thing swallowed as the doors meet. Rendered via scaleX() off a fixed 50.5vw
+            box (transform-origin at the outer edge) to avoid layout thrash; the 0.5vw
+            overlap guarantees a seamless, crisp black seam when fully met. ── */}
+      {reduceMotion ? (
+        // reduced motion: no sliding — just fade the same pitch black in
+        <div
+          aria-hidden
+          style={{
+            position: "absolute", inset: 0, zIndex: 30,
+            background: "#000", opacity: doorClose, pointerEvents: "none",
+          }}
+        />
+      ) : (
+        <>
+          <div
+            aria-hidden
+            style={{
+              position: "absolute", top: 0, bottom: 0, left: 0, width: "50.5vw",
+              background: "#000", transformOrigin: "left center",
+              transform: `scaleX(${doorClose})`, zIndex: 30,
+              pointerEvents: "none", willChange: "transform",
+            }}
+          />
+          <div
+            aria-hidden
+            style={{
+              position: "absolute", top: 0, bottom: 0, right: 0, width: "50.5vw",
+              background: "#000", transformOrigin: "right center",
+              transform: `scaleX(${doorClose})`, zIndex: 30,
+              pointerEvents: "none", willChange: "transform",
+            }}
+          />
+        </>
+      )}
+      </section>
+      </div>
     </div>
   );
 };

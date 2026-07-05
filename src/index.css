@@ -133,3 +133,10 @@ canvas {
     @apply opacity-0 translate-y-[100px]
   }
 }
+
+/* /walk barn-door blackout: fade the global floating nav pill out while the
+   hero closes to pitch black, so the dark index below reads as truly black.
+   Scoped to the body.walk-blackout class that WalkPage toggles (and removes on
+   unmount), so no other route is affected. */
+header { transition: opacity 0.6s ease; }
+body.walk-blackout header { opacity: 0; pointer-events: none; }
