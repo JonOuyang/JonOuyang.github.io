@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import WalkJanitor from "./WalkJanitor";
 
 const NAME = "Jonathan";
 
@@ -867,7 +868,7 @@ const WalkPage = () => {
       {/* ── hero scroll runway ── ~2.4 screens tall so the sticky hero stays pinned
             while the barn-door close plays out; the impact fires near the end and the
             menu (born from the slam) lives on the held-black beat, pinned to the end. ── */}
-      <div ref={heroWrapRef} style={{ height: "240vh", position: "relative" }}>
+      <div ref={heroWrapRef} style={{ height: "175vh", position: "relative" }}>
       {/* ── hero: pinned full-screen scene; the editorial sheet below scrolls OVER it ── */}
       <section className="sticky top-0 h-screen w-full overflow-hidden bg-white">
 
@@ -1133,6 +1134,12 @@ target: wrap ≈ ${ideal.toFixed(1)}ms · skips 0`}
       )}
       </section>
       </div>
+
+      {/* ── after the black: the janitor's menu ── the doors are fully shut by
+            the end of the hero wrapper, so this section scrolls in invisibly
+            (black onto black). Four dim nav lines + a tiny orange stickman
+            with a flashlight who keeps the place tidy. ── */}
+      <WalkJanitor />
     </div>
   );
 };
