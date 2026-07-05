@@ -96,9 +96,9 @@ const Navbar = () => {
     <>
       {/* spacer keeps normal-flow layout on every page except /walk, where the
           pill floats over the animation */}
-      {!isWalk && <div className="h-14" />}
+      {!isWalk && <div className="hidden md:block h-14" />}
 
-      <header className="fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none">
+      <header className="fixed top-0 inset-x-0 z-50 hidden md:flex justify-center pointer-events-none">
         <nav
           className="mt-3 flex items-center gap-1 rounded-full py-1.5 pl-3 pr-1.5"
           style={{
