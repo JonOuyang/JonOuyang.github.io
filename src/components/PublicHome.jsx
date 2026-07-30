@@ -78,7 +78,7 @@ const PublicHome = () => {
     });
   const featuredExperienceCompanies = new Set([
     "Stealth Startup",
-    "Google",
+    "Google DeepMind",
     "Amazon Prime Video Studios",
     "UCLA Daily Bruin",
   ]);
@@ -159,7 +159,7 @@ const PublicHome = () => {
                 <p className="relative text-zinc-400 text-sm sm:text-base leading-relaxed max-w-xl font-light pl-6 before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[1.5px] before:bg-white before:rounded-full">
                   I am an undergraduate at UCLA studying Computer Science, specializing in building practical, human-centered <span className="text-indigo-400 font-medium">AI Agents</span>.{" "}
                   Robotics and Computer Vision research at <span className="text-white/90 font-medium">Stanford</span>, <span className="text-white/90 font-medium">UCLA</span>, and <span className="text-white/90 font-medium">SJSU</span>.{" "}
-                  Previously interned at <span className="text-white/90 font-medium">Amazon</span> & <span className="text-white/90 font-medium">Google</span>.
+                  Currently interning at <span className="text-white/90 font-medium">Google DeepMind</span>. Previously at <span className="text-white/90 font-medium">Amazon</span>.
                 </p>
                 
                 <div className="flex items-center gap-6 pl-6">

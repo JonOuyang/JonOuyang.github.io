@@ -1,6 +1,38 @@
 {
   "experiences": [
     {
+      "id": "exp0a",
+      "date": "Jul 2026 - Present",
+      "title": "Research Intern",
+      "company": "Google DeepMind",
+      "description": "Experimental Gemini projects \u2014 building new prototypes and novel benchmarks with the research team for Gemini pre-training efforts.",
+      "branches": [
+        "main",
+        "ai-ml"
+      ],
+      "image": "/assets/images/google.png",
+      "bullets": [
+        "Building new and interesting prototypes and novel benchmarks with the research team for Gemini pre-training efforts."
+      ]
+    },
+    {
+      "id": "exp0b",
+      "date": "Jun 2026 - Present",
+      "title": "Software Engineer Intern",
+      "company": "Google DeepMind",
+      "description": "Benchmarks & evals for Gemini. Led efforts to increase visibility and demystify eval results for stakeholders from everyday users to the Gemini post-training team.",
+      "branches": [
+        "main",
+        "swe",
+        "ai-ml"
+      ],
+      "image": "/assets/images/google.png",
+      "bullets": [
+        "Led multiple efforts to increase visibility and demystify eval results for stakeholders ranging from everyday users to the Gemini post-training team.",
+        "Represented Google DeepMind at YC Startup School 2026."
+      ]
+    },
+    {
       "id": "exp1",
       "date": "Dec 2025 - Present",
       "title": "Founding Engineer",
@@ -18,10 +50,10 @@
     },
     {
       "id": "exp2",
-      "date": "Jan 2025 - Present",
+      "date": "Jan 2025 - Jun 2026",
       "title": "Visiting Researcher",
       "company": "Stanford ILIAD Lab",
-      "description": "Working with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Developed NMPC expert agent achieving 96% success rate in parallel parking tasks.",
+      "description": "Worked with Prof. Dorsa Sadigh & Toyota Research Institute on shared autonomy algorithms. Co-authored a paper presented at ICML 2026 in Seoul, South Korea.",
       "branches": [
         "main",
         "ai-ml"
@@ -30,7 +62,8 @@
       "bullets": [
         "Collaborated with Toyota Research Institute to develop shared autonomy algorithms using zone of proximal development (ZPD), validated in CARLA user studies.",
         "Built a two-phase NMPC expert agent for parallel parking in CARLA, achieving 96% success by blending expert and user control.",
-        "Iterated on trajectory analysis with NumPy/Pandas to refine controller behavior based on user feedback."
+        "Iterated on trajectory analysis with NumPy/Pandas to refine controller behavior based on user feedback.",
+        "Co-authored a paper on AI-assisted learning paradigms presented at ICML 2026 in Seoul, South Korea."
       ]
     },
     {

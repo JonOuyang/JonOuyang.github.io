@@ -2,11 +2,14 @@
   "experiences": [
     {
       "id": "extra1",
-      "date": "Jan 2025 - Present",
+      "date": "Jan 2025 - Apr 2026",
       "title": "President & Founder",
       "company": "GLITCH",
-      "description": "Founded UCLA's premier hackathon club. Train students to compete in hackathons and build projects. Host hackathons with Google and NVIDIA partnerships.",
-      "branches": ["main", "leadership"]
+      "description": "Founded UCLA's premier hackathon club. Proud partners of Google DeepMind \u2014 brought Gemini's first LA hackathon to UCLA with 300+ participants and over $10k in prizes.",
+      "branches": [
+        "main",
+        "leadership"
+      ]
     },
     {
       "id": "extra2",
@@ -14,7 +17,10 @@
       "title": "Operations Officer",
       "company": "ACM at UCLA",
       "description": "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
-      "branches": ["main", "leadership"]
+      "branches": [
+        "main",
+        "leadership"
+      ]
     },
     {
       "id": "extra2b",
@@ -22,7 +28,10 @@
       "title": "Operations Intern",
       "company": "ACM at UCLA",
       "description": "Organize events including yearly Tech Gala and quarterly General Meetings for UCLA's largest CS club.",
-      "branches": ["main", "leadership"]
+      "branches": [
+        "main",
+        "leadership"
+      ]
     },
     {
       "id": "extra3",
@@ -30,7 +39,10 @@
       "title": "Technical Recruiter",
       "company": "VEST",
       "description": "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
-      "branches": ["main", "leadership"]
+      "branches": [
+        "main",
+        "leadership"
+      ]
     },
     {
       "id": "extra3",
@@ -38,7 +50,10 @@
       "title": "Developer",
       "company": "VEST",
       "description": "One of three technical recruiters conducting interviews for UCLA's tech entrepreneurship and consulting club.",
-      "branches": ["main", "tech"]
+      "branches": [
+        "main",
+        "tech"
+      ]
     },
     {
       "id": "extra4",
@@ -46,12 +61,24 @@
       "title": "Software Engineer",
       "company": "Daily Bruin",
       "description": "Maintain main newspaper website. Developing Oliver RAG bot trained on Daily Bruin articles.",
-      "branches": ["tech", "main"]
+      "branches": [
+        "tech",
+        "main"
+      ]
     }
   ],
   "branches": {
-    "main": { "name": "Main", "color": "#ff7b00" },
-    "leadership": { "name": "Leadership", "color": "#a371f7" },
-    "tech": { "name": "Technical", "color": "#00aaff" }
+    "main": {
+      "name": "Main",
+      "color": "#ff7b00"
+    },
+    "leadership": {
+      "name": "Leadership",
+      "color": "#a371f7"
+    },
+    "tech": {
+      "name": "Technical",
+      "color": "#00aaff"
+    }
   }
 }
