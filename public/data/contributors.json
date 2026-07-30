@@ -1,6 +1,34 @@
 {
   "contributors": [
     {
+      "username": "Tuan Nguyen",
+      "description": "Google DeepMind PI",
+      "link": null,
+      "relatedTo": "Google DeepMind",
+      "avatarUrl": "https://ui-avatars.com/api/?name=Tuan+Nguyen&background=1d232b&color=D7DCE2&size=64"
+    },
+    {
+      "username": "Nesh Devanathan",
+      "description": "Google Manager",
+      "link": null,
+      "relatedTo": "Google DeepMind",
+      "avatarUrl": "https://ui-avatars.com/api/?name=Nesh+Devanathan&background=1d232b&color=D7DCE2&size=64"
+    },
+    {
+      "username": "Mohamed Amin",
+      "description": "Google Mentor",
+      "link": null,
+      "relatedTo": "Google DeepMind",
+      "avatarUrl": "https://ui-avatars.com/api/?name=Mohamed+Amin&background=1d232b&color=D7DCE2&size=64"
+    },
+    {
+      "username": "Felipe Hannud",
+      "description": "Amazon Mentor",
+      "link": null,
+      "relatedTo": "Amazon Prime Video Studios",
+      "avatarUrl": "https://ui-avatars.com/api/?name=Felipe+Hannud&background=1d232b&color=D7DCE2&size=64"
+    },
+    {
       "username": "Yuchen Cui",
       "description": "UCLA Research Advisor",
       "link": "https://yuchencui.cc/",
