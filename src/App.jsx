@@ -13,11 +13,14 @@ const CardPage = lazy(() => import('./experimental/card/CardPage'));
 const AGYHomePage = lazy(() => import('./experimental/home/AGYHomePage'));
 const NetflixPage = lazy(() => import('./experimental/netflix/NetflixPage'));
 const WalkPage = lazy(() => import('./experimental/walk/WalkPage'));
+const KineticHome = lazy(() => import('./experimental/kinetic/KineticHome'));
+const ChatPage = lazy(() => import('./experimental/chat/ChatPage'));
 const Labs = lazy(() => import('./components/Labs'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
 const ExperimentalProjectsPage = lazy(() => import('./experimental/projects/ExperimentalProjectsPage'));
+const ProjectsV2Page = lazy(() => import('./experimental/projects-v2/ProjectsV2Page'));
 const ExperimentalProjectDetailPage = lazy(() => import('./experimental/projects/ExperimentalProjectDetailPage'));
 
 const Loading = () => (
@@ -34,15 +37,24 @@ const App = () => {
         <Route
           path="/"
           element={
-            <main className="bg-white min-h-screen">
+            <main className="bg-black min-h-screen">
               <Navbar />
               <MobileDock />
               <Suspense fallback={<Loading />}>
-                <WalkPage />
+                <ChatPage />
               </Suspense>
             </main>
           }
         />
+        <Route path="/kinetic" element={
+          <main className="bg-black min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <KineticHome />
+            </Suspense>
+         </main>
+        } />
         <Route
           path="/old-home"
           element={
@@ -106,6 +118,15 @@ const App = () => {
             <MobileDock />
             <Suspense fallback={<Loading />}>
               <ProjectDetailPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/projects-v2" element={
+          <main className="bg-black">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <ProjectsV2Page />
             </Suspense>
          </main>
         } />
@@ -180,6 +201,15 @@ const App = () => {
               <WalkPage />
             </Suspense>
           </main>
+        } />
+        <Route path="/chat" element={
+          <main className="bg-black min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <ChatPage />
+            </Suspense>
+         </main>
         } />
         <Route path="/labs" element={
           <main className="bg-black min-h-screen">
