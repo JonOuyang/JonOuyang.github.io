@@ -28,6 +28,7 @@ const Navbar = () => {
   useEffect(() => {
     const isExperimentalRoute =
       location.pathname.startsWith("/experimental-projects") ||
+      location.pathname.startsWith("/projects-v2") ||
       location.pathname.startsWith("/wip") ||
       location.pathname.startsWith("/card") ||
       location.pathname.startsWith("/walk") ||

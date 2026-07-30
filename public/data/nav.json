@@ -1,12 +1,34 @@
 {
   "publicNavItems": [
-    { "name": "Home", "path": "/" },
-    { "name": "Work History", "path": "/work-history" },
-    { "name": "Projects", "path": "/projects" },
-    { "name": "Research", "path": "/research" }
+    {
+      "name": "Home",
+      "path": "/"
+    },
+    {
+      "name": "Work History",
+      "path": "/work-history"
+    },
+    {
+      "name": "Projects",
+      "path": "/projects"
+    },
+    {
+      "name": "Research",
+      "path": "/research"
+    }
   ],
   "experimentalNavItems": [
-    { "name": "AGY Home", "path": "/agy-home" },
-    { "name": "Projects (Exp)", "path": "/experimental-projects" }
+    {
+      "name": "AGY Home",
+      "path": "/agy-home"
+    },
+    {
+      "name": "Projects (Exp)",
+      "path": "/experimental-projects"
+    },
+    {
+      "name": "Projects v2",
+      "path": "/projects-v2"
+    }
   ]
 }
