@@ -152,6 +152,8 @@ const ChatPage = () => (
           loop
           muted
           playsInline
+          preload="auto"
+          disablePictureInPicture
         />
         <div className="cv-mask">
           <h1 className="cv-grid">
