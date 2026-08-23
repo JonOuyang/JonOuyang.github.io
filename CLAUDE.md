@@ -1,0 +1,1 @@
+/Users/jonathanouyang/.gemini/GEMINI.md

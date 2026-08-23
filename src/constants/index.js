@@ -10,5 +10,7 @@ export const experimentalNavItems = [
   { name: "Projects (Exp)", path: "/experimental-projects" },
   { name: "WIP", path: "/wip" },
   { name: "card", path: "/card" },
-  { name: "chat", path: "/chat" }
+  { name: "chat", path: "/chat" },
+  { name: "delorean", path: "/delorean" },
+  { name: "glasses", path: "/glasses" }
 ];

@@ -15,6 +15,8 @@ const NetflixPage = lazy(() => import('./experimental/netflix/NetflixPage'));
 const WalkPage = lazy(() => import('./experimental/walk/WalkPage'));
 const KineticHome = lazy(() => import('./experimental/kinetic/KineticHome'));
 const ChatPage = lazy(() => import('./experimental/chat/ChatPage'));
+const DeloreanPage = lazy(() => import('./experimental/delorean/DeloreanPage'));
+const GlassesPage = lazy(() => import('./experimental/glasses/GlassesPage'));
 const Labs = lazy(() => import('./components/Labs'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
@@ -38,7 +40,6 @@ const App = () => {
           path="/"
           element={
             <main className="bg-black min-h-screen">
-              <Navbar />
               <MobileDock />
               <Suspense fallback={<Loading />}>
                 <ChatPage />
@@ -201,6 +202,24 @@ const App = () => {
               <WalkPage />
             </Suspense>
           </main>
+        } />
+        <Route path="/delorean" element={
+          <main className="bg-black min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <DeloreanPage />
+            </Suspense>
+         </main>
+        } />
+        <Route path="/glasses" element={
+          <main className="bg-black min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <GlassesPage />
+            </Suspense>
+         </main>
         } />
         <Route path="/chat" element={
           <main className="bg-black min-h-screen">
