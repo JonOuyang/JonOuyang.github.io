@@ -30,7 +30,7 @@ const ChatPage = () => (
         position: relative;
         z-index: 1;
         text-align: center;
-        padding: 0 1.5rem;
+        padding: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -66,17 +66,18 @@ const ChatPage = () => (
         align-items: center;
         font-family: "Space Grotesk", "Google Sans", sans-serif;
         font-weight: 800;
-        font-size: clamp(5.85rem, min(22vw, 28vh), 18rem);
+        font-size: clamp(5.5rem, min(37.5vw, 28.5vh), 22rem);
         line-height: 0.88;
         letter-spacing: -0.03em;
-        gap: clamp(4px, 0.6vw, 8px);
+        gap: 0.035em;
+        padding: clamp(4px, 0.8vw, 14px);
         color: #fff;
-        -webkit-text-stroke: 16px #fff;
+        -webkit-text-stroke: 0.065em #fff;
         paint-order: stroke fill;
         text-align: center;
       }
       .cv-grid span:nth-child(5) {
-        -webkit-text-stroke: 45px #fff;
+        -webkit-text-stroke: 0.185em #fff;
       }
       .cv-grid span:not(:nth-child(5)) {
         transform: scale(1.135);
@@ -89,47 +90,51 @@ const ChatPage = () => (
       }
       .cv-nav {
         position: fixed;
-        top: clamp(1.4rem, 4vh, 2.6rem);
+        top: clamp(1.2rem, 3.5vh, 2.5rem);
         left: 0;
         right: 0;
         display: flex;
         justify-content: center;
-        gap: clamp(2rem, 5vw, 4.5rem);
+        gap: clamp(0.75rem, 3.5vw, 3.5rem);
+        padding: 0 1rem;
+        box-sizing: border-box;
         z-index: 2;
       }
       .cv-nav a {
+        position: relative;
         font-family: "Space Grotesk", "Google Sans", sans-serif;
         font-weight: 500;
-        font-size: clamp(0.7rem, 0.95vw, 0.85rem);
-        letter-spacing: 0.22em;
+        font-size: clamp(0.62rem, 1.8vw, 0.82rem);
+        letter-spacing: clamp(0.10em, 1.2vw, 0.22em);
         text-transform: uppercase;
         text-decoration: none;
-        padding: 0.6rem 0.4rem;
-        color: transparent;
-        background-image: linear-gradient(
-          100deg,
-          #b9c0ca 0%,
-          #b9c0ca 38%,
-          #ffffff 50%,
-          #494f58 62%,
-          #494f58 100%
-        );
-        background-size: 300% 100%;
-        background-position: 100% 0;
-        -webkit-background-clip: text;
-        background-clip: text;
-        transition: background-position 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        padding: 0.4rem 0.3rem;
+        white-space: nowrap;
+        color: #71717a;
+        transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    letter-spacing 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    text-shadow 0.3s ease;
+      }
+      .cv-nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        width: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .cv-nav a:hover {
-        background-position: 0 0;
+        color: #ffffff;
+        letter-spacing: 0.26em;
+        text-shadow: 0 0 14px rgba(255, 255, 255, 0.55);
       }
-      .cv-sub {
-        font-family: "Space Grotesk", "Google Sans", sans-serif;
-        font-weight: 500;
-        font-size: clamp(0.7rem, 1.1vw, 0.92rem);
-        letter-spacing: 0.02em;
-        color: #5c6672;
-        margin-top: clamp(1rem, 2.5vh, 1.8rem);
+      .cv-nav a:hover::after {
+        width: 100%;
+        left: 0;
       }
     `}</style>
     <nav className="cv-nav">
@@ -156,7 +161,6 @@ const ChatPage = () => (
           </h1>
         </div>
       </div>
-      <div className="cv-sub">I couldn&apos;t figure out how to design a good home page. I&apos;m just an engineer</div>
     </div>
   </div>
 );

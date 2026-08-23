@@ -40,7 +40,6 @@ const App = () => {
           path="/"
           element={
             <main className="bg-black min-h-screen">
-              <MobileDock />
               <Suspense fallback={<Loading />}>
                 <ChatPage />
               </Suspense>
