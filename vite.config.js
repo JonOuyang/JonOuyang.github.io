@@ -4,4 +4,15 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 100,
+      ignored: [
+        '**/hidden-local/**',
+        '**/scratchpad/**',
+        '**/dist/**',
+      ],
+    },
+  },
 })

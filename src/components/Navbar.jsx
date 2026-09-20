@@ -12,7 +12,7 @@ const Navbar = () => {
   // into the sequence. Everywhere else it shows immediately.
   const isWalk = location.pathname.startsWith("/walk");
   // white-background routes get the light glass; black routes get dark glass
-  const lightGlass = isWalk;
+  const lightGlass = isWalk || location.pathname.startsWith("/rectangle");
   const [shown, setShown] = useState(!isWalk);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const Navbar = () => {
       location.pathname.startsWith("/wip") ||
       location.pathname.startsWith("/card") ||
       location.pathname.startsWith("/walk") ||
+      location.pathname.startsWith("/rectangle") ||
       location.pathname.startsWith("/agy-home");
 
     setMode(isExperimentalRoute ? "experimental" : "public");
@@ -57,6 +58,7 @@ const Navbar = () => {
         setExperimentalNav([
           { name: "AGY Home", path: "/agy-home" },
           { name: "Projects (Exp)", path: "/experimental-projects" },
+          { name: "rectangle", path: "/rectangle" },
         ]);
       }
     };
@@ -114,7 +116,7 @@ const Navbar = () => {
         >
           <button
             onDoubleClick={toggleMode}
-            className="flex items-center gap-2 focus:outline-none active:opacity-80 shrink-0"
+            className="flex items-center gap-2 focus:outline-none active:opacity-80 shrink-0 select-none cursor-pointer"
             title="Double-click to toggle public/experimental"
           >
             <img src="https://cdn-icons-png.flaticon.com/512/2395/2395608.png" alt="Logo" width={22} height={22} />

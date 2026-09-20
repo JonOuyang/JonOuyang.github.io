@@ -18,6 +18,7 @@ const ChatPage = lazy(() => import('./experimental/chat/ChatPage'));
 const DeloreanPage = lazy(() => import('./experimental/delorean/DeloreanPage'));
 const GlassesPage = lazy(() => import('./experimental/glasses/GlassesPage'));
 const Labs = lazy(() => import('./components/Labs'));
+const RectanglePage = lazy(() => import('./experimental/rectangle/RectanglePage'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
@@ -235,6 +236,15 @@ const App = () => {
             <MobileDock />
             <Suspense fallback={<Loading />}>
               <Labs />
+            </Suspense>
+          </main>
+        } />
+        <Route path="/rectangle" element={
+          <main className="bg-white min-h-screen">
+            <Navbar />
+            <MobileDock />
+            <Suspense fallback={<Loading />}>
+              <RectanglePage />
             </Suspense>
           </main>
         } />

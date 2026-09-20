@@ -3,6 +3,10 @@ node_modules/
 hidden-local/
 vite.config.js.timestamp*
 
+# OS junk
+.DS_Store
+*.DS_Store
+
 # claude
 .claude/*
 debug_frames/
@@ -10,3 +14,15 @@ debug_frames/
 
 # ML model weights (downloadable; never commit — GitHub 100MB limit)
 *.pt
+
+# Test harness & scratch
+scratchpad/
+
+# Screen recordings / raw video
+*.mov
+*.MOV
+
+# Local preserved assets / models
+public/assets/marvel/
+public/models/
+

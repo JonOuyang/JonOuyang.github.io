@@ -29,6 +29,10 @@
     {
       "name": "Projects v2",
       "path": "/projects-v2"
+    },
+    {
+      "name": "rectangle",
+      "path": "/rectangle"
     }
   ]
 }
