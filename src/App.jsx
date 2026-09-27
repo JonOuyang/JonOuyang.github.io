@@ -19,6 +19,8 @@ const DeloreanPage = lazy(() => import('./experimental/delorean/DeloreanPage'));
 const GlassesPage = lazy(() => import('./experimental/glasses/GlassesPage'));
 const Labs = lazy(() => import('./components/Labs'));
 const RectanglePage = lazy(() => import('./experimental/rectangle/RectanglePage'));
+// REQUIRED by the Google OAuth app behind /schedule (privacy policy + terms links) — don't remove
+const LegalPage = lazy(() => import('./legal/LegalPage'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
@@ -248,6 +250,9 @@ const App = () => {
             </Suspense>
           </main>
         } />
+        {/* REQUIRED: linked from the Google OAuth consent screen — keep these routes */}
+        <Route path="/privacy" element={<Suspense fallback={<Loading />}><LegalPage page="privacy" /></Suspense>} />
+        <Route path="/tos" element={<Suspense fallback={<Loading />}><LegalPage page="tos" /></Suspense>} />
 
       </Routes>
     </BrowserRouter>
