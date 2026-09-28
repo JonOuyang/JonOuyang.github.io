@@ -21,6 +21,7 @@ const Labs = lazy(() => import('./components/Labs'));
 const RectanglePage = lazy(() => import('./experimental/rectangle/RectanglePage'));
 // REQUIRED by the Google OAuth app behind /schedule (privacy policy + terms links) — don't remove
 const LegalPage = lazy(() => import('./legal/LegalPage'));
+const NotesApp = lazy(() => import('./notes/NotesApp'));
 
 const ProjectsPage = lazy(() => import('./hidden/projects/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./hidden/projects/ProjectDetailPage2'));
@@ -250,6 +251,18 @@ const App = () => {
             </Suspense>
           </main>
         } />
+        {/* /notes — unlisted, standalone layout (no Navbar/MobileDock).
+            Off-white fallback (not null) so the black body doesn't flash
+            through while the notes chunk loads. */}
+        <Route
+          path="/notes/*"
+          element={
+            <Suspense fallback={<div style={{ minHeight: '100vh', background: '#faf5f0' }} />}>
+              <NotesApp />
+            </Suspense>
+          }
+        />
+
         {/* REQUIRED: linked from the Google OAuth consent screen — keep these routes */}
         <Route path="/privacy" element={<Suspense fallback={<Loading />}><LegalPage page="privacy" /></Suspense>} />
         <Route path="/tos" element={<Suspense fallback={<Loading />}><LegalPage page="tos" /></Suspense>} />

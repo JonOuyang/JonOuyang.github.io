@@ -1,0 +1,847 @@
+/* ============================================================
+   /notes — Obsidian-Publish-ish, quiet + techy, light only (v1)
+   Scoped entirely under .notes-root so it can't leak into the
+   rest of the (black, user-select:none) site.
+   ============================================================ */
+
+.notes-root {
+  --n-bg: #faf5f0;
+  --n-bg-sidebar: #f5ede6;
+  --n-surface: #fffaf6;
+  --n-border: #e9dcd2;
+  --n-text: #2b2521;
+  --n-text-muted: #7d6f66;
+  --n-accent: #e0875a;
+  --n-accent-soft: #f7dccb;
+  --n-code-text: #3b332e;
+
+  background: var(--n-bg);
+  color: var(--n-text);
+  min-height: 100vh;
+  user-select: text;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
+  isolation: isolate;
+}
+
+.notes-root ::selection {
+  background: var(--n-accent-soft);
+  color: var(--n-text);
+}
+
+.notes-root a {
+  color: var(--n-accent);
+  text-decoration: none;
+}
+.notes-root a:hover {
+  text-decoration: underline;
+}
+
+.notes-root * {
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------- layout */
+
+.n-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: 100vh;
+}
+/* Note: the TOC's 200px column lives inside `.n-article-col` (see below),
+   not here — `.n-layout` only ever has two real children (sidebar + page).
+   Deliberately no max-width/margin here: the sidebar must sit flush at
+   x=0 at any viewport width. Centering the *content* (article + TOC)
+   happens inside `.n-article-col` instead, so on very wide screens the
+   TOC stays right next to the article instead of pinned to the outer
+   edge of the window. */
+
+/* ---------------------------------------------------------- sidebar */
+
+.n-sidebar {
+  background: var(--n-bg-sidebar);
+  border-right: 1px solid var(--n-border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+.n-sidebar-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--n-border);
+}
+
+.n-wordmark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--n-text);
+}
+
+a.n-home-link {
+  font-size: 12px;
+  color: var(--n-text-muted);
+}
+a.n-home-link:hover {
+  color: var(--n-accent);
+}
+
+.n-tree-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px 24px;
+}
+
+.n-tree,
+.n-tree-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.n-tree-children {
+  padding-left: 0;
+}
+
+.n-tree-row {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding-left: calc(8px + var(--n-depth, 0) * 14px);
+  border-radius: 5px;
+  transition: background-color 180ms ease-out;
+}
+
+.n-tree-row:hover {
+  background: rgba(224, 135, 90, 0.08);
+}
+
+/* Height-animated folder contents: the outer element is always mounted so
+   the row track can transition between 0fr (collapsed) and 1fr (open) —
+   no measured heights, no jank, nests fine for sub-folders. */
+.n-tree-fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease-out;
+}
+.n-tree-fold-open {
+  grid-template-rows: 1fr;
+}
+.n-tree-fold-inner {
+  overflow: hidden;
+  min-height: 0;
+  /* Collapsed children are still in the DOM (so the height can animate),
+     which would otherwise leave their links keyboard-focusable at zero
+     height. Hide them from focus/AT once the collapse animation finishes;
+     reveal instantly on open. */
+  visibility: hidden;
+  transition: visibility 0s linear 200ms;
+}
+.n-tree-fold-open .n-tree-fold-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.n-tree-chevron-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-right: 2px;
+  color: var(--n-text-muted);
+  cursor: pointer;
+  border-radius: 4px;
+}
+.n-tree-chevron-btn:hover {
+  color: var(--n-text);
+}
+
+.n-tree-chevron-spacer {
+  width: 18px;
+  margin-right: 2px;
+  flex: none;
+}
+
+.n-chevron {
+  transition: transform 200ms ease-out;
+  transform: rotate(0deg);
+}
+.n-chevron-open {
+  transform: rotate(90deg);
+}
+
+.n-tree-label {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--n-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  transition: color 180ms ease-out, background-color 180ms ease-out;
+}
+.n-tree-label:hover {
+  text-decoration: none;
+  color: var(--n-accent);
+}
+
+.n-tree-folder {
+  font-weight: 500;
+  color: var(--n-text);
+}
+
+/* The global `.notes-root a` rule (class + tag) outranks the plain
+   `.n-tree-label` class on its own, so re-assert text color here for the
+   anchor-rendered rows (files, and folders that have an index.md). */
+a.n-tree-label {
+  color: var(--n-text);
+}
+a.n-tree-label:hover {
+  color: var(--n-accent);
+}
+a.n-tree-folder {
+  color: var(--n-text);
+}
+
+.n-tree-label.n-active {
+  background: var(--n-accent-soft);
+  color: #8a3f1c;
+  font-weight: 600;
+  transition: background-color 180ms ease-out, color 180ms ease-out;
+}
+
+/* ---------------------------------------------------------- article column */
+
+.n-article-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .n-article-col {
+    /* Fixed-width article track (matches `.n-article`'s own max-width) +
+       fixed-width TOC track, then `justify-content: center` centers that
+       whole pair within the remaining space next to the sidebar — instead
+       of letting the article float in an `1fr` track while the TOC gets
+       flung out to the far right edge on wide screens. */
+    grid-template-columns: minmax(0, 720px) 200px;
+    justify-content: center;
+    align-items: start;
+    /* breathing room between the article and the TOC, growing with the window */
+    column-gap: clamp(40px, 6vw, 120px);
+  }
+}
+
+.n-article {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--n-text);
+}
+
+/* Route-change transition: keyed on the note slug in NotePage.jsx, so a
+   fresh DOM node (and therefore a fresh animation) mounts per note. Scoped
+   to the article only — the sidebar and shell never animate. */
+@keyframes n-article-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.n-article-enter {
+  animation: n-article-enter 200ms ease-out both;
+}
+
+.n-article-loading {
+  color: var(--n-text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+.n-breadcrumb {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--n-text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.n-breadcrumb-sep {
+  margin: 0 6px;
+  color: var(--n-border);
+}
+
+.n-title {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.n-description {
+  color: var(--n-text-muted);
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.n-updated {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--n-text-muted);
+  margin-bottom: 28px;
+}
+
+.n-text-muted {
+  color: var(--n-text-muted);
+}
+
+/* ---------------------------------------------------------- markdown body */
+
+.n-body h1,
+.n-body h2,
+.n-body h3 {
+  /* So a heading jumped to via the TOC (or a URL hash) doesn't end up
+     hugging the very top edge of the viewport. */
+  scroll-margin-top: 32px;
+}
+
+.n-body h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 40px 0 14px;
+}
+
+.n-body h2 {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 40px 0 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--n-border);
+}
+
+.n-body h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 28px 0 10px;
+}
+
+.n-body p {
+  margin: 14px 0;
+}
+
+.n-body ul,
+.n-body ol {
+  margin: 14px 0;
+  padding-left: 24px;
+}
+
+.n-body li {
+  margin: 4px 0;
+}
+
+.n-body li input[type='checkbox'] {
+  margin-right: 6px;
+}
+
+.n-body strong {
+  font-weight: 600;
+}
+
+.n-body hr {
+  border: none;
+  border-top: 1px solid var(--n-border);
+  margin: 32px 0;
+}
+
+/* ------------------------------------------------- Insights / Sources */
+/* Every note ends with these two sections (see Markdown.jsx's
+   rehypeNoteSections + src/notes/README.md). Specificity here beats the
+   plain `.n-body h2` rule above, so the section heading itself sheds the
+   usual top rule/spacing in favor of a small label. */
+
+.n-body .n-callout {
+  margin: 40px 0;
+  border-radius: 8px;
+}
+
+.n-body .n-callout-insights {
+  padding: 18px 22px 20px;
+  background: rgba(224, 135, 90, 0.09);
+  border-left: 3px solid var(--n-accent);
+}
+.n-body .n-callout-insights > h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--n-accent);
+  margin: 0 0 12px;
+  padding-top: 0;
+  border-top: none;
+}
+.n-body .n-callout-insights > :last-child {
+  margin-bottom: 0;
+}
+
+.n-body .n-callout-sources {
+  padding: 16px 20px 18px;
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  font-size: 14px;
+  color: var(--n-text-muted);
+}
+.n-body .n-callout-sources > h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--n-text-muted);
+  margin: 0 0 10px;
+  padding-top: 0;
+  border-top: none;
+}
+.n-body .n-callout-sources p,
+.n-body .n-callout-sources li {
+  font-size: 14px;
+  margin: 4px 0;
+}
+.n-body .n-callout-sources ol,
+.n-body .n-callout-sources ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.n-body .n-callout-sources > :last-child {
+  margin-bottom: 0;
+}
+
+.n-body blockquote {
+  margin: 18px 0;
+  padding: 6px 16px;
+  border-left: 3px solid var(--n-accent);
+  background: rgba(224, 135, 90, 0.06);
+  color: var(--n-text-muted);
+}
+.n-body blockquote p {
+  margin: 6px 0;
+}
+
+/* inline code */
+.n-body :not(pre) > code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.87em;
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  color: var(--n-code-text);
+}
+
+/* code blocks */
+.n-body pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.6;
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+.n-body pre code {
+  color: var(--n-code-text);
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* minimal highlight.js token palette, peach-tinted for the off-white surface */
+.n-body .hljs-comment,
+.n-body .hljs-quote {
+  color: #9a8c81;
+  font-style: italic;
+}
+.n-body .hljs-keyword,
+.n-body .hljs-selector-tag,
+.n-body .hljs-literal {
+  color: #b5502f;
+  font-weight: 600;
+}
+.n-body .hljs-string,
+.n-body .hljs-attr,
+.n-body .hljs-addition {
+  color: #7a8a4e;
+}
+.n-body .hljs-number,
+.n-body .hljs-built_in,
+.n-body .hljs-type {
+  color: #a9662e;
+}
+.n-body .hljs-title,
+.n-body .hljs-section,
+.n-body .hljs-name {
+  color: #8a5a2e;
+  font-weight: 600;
+}
+.n-body .hljs-variable,
+.n-body .hljs-template-variable {
+  color: #b5502f;
+}
+.n-body .hljs-deletion {
+  color: #b23b3b;
+}
+
+/* tables */
+.n-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14.5px;
+}
+.n-body th,
+.n-body td {
+  border: 1px solid var(--n-border);
+  padding: 7px 12px;
+  text-align: left;
+}
+.n-body th {
+  background: var(--n-surface);
+  font-weight: 600;
+}
+
+/* figures + images */
+.n-figure {
+  margin: 24px 0;
+  text-align: center;
+}
+.n-figure img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--n-border);
+}
+.n-figure figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--n-text-muted);
+}
+
+/* KaTeX */
+.n-body .katex {
+  font-size: 1.05em;
+}
+.n-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0 10px;
+  font-size: 1.15em;
+}
+
+/* manim placeholder */
+.n-manim {
+  margin: 24px 0;
+}
+.n-manim-video {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--n-border);
+  display: block;
+}
+.n-manim-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 20px;
+  border: 1.5px dashed var(--n-accent);
+  border-radius: 10px;
+  background: var(--n-accent-soft);
+  color: #8a3f1c;
+}
+.n-manim-placeholder-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-align: center;
+}
+.n-manim-placeholder-text code {
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.n-manim-caption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--n-text-muted);
+  text-align: center;
+}
+
+/* ---------------------------------------------------------- prev/next */
+
+.n-prevnext {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--n-border);
+}
+
+.n-prevnext-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--n-border);
+  border-radius: 8px;
+  background: var(--n-surface);
+  min-width: 0;
+}
+/* higher specificity than the global `.notes-root a` accent-color rule */
+a.n-prevnext-card {
+  color: var(--n-text);
+  transition: border-color 200ms ease-out, transform 200ms ease-out;
+}
+a.n-prevnext-card:hover {
+  border-color: var(--n-accent);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.n-prevnext-next {
+  text-align: right;
+  align-items: flex-end;
+}
+.n-prevnext-empty {
+  background: transparent;
+  border: none;
+}
+.n-prevnext-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--n-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.n-prevnext-title {
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------- landing list */
+
+.n-landing-list {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.n-landing-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--n-border);
+}
+
+/* ---------------------------------------------------------- not found */
+
+.n-not-found h1 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+.n-not-found p {
+  color: var(--n-text-muted);
+  margin-bottom: 16px;
+}
+
+/* ---------------------------------------------------------- TOC */
+
+.n-toc {
+  position: sticky;
+  top: 48px;
+  align-self: start;
+  padding: 48px 16px 24px 0;
+  font-size: 12.5px;
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .n-toc {
+    display: block;
+  }
+}
+
+.n-toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--n-text-muted);
+  margin-bottom: 10px;
+}
+
+.n-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--n-border);
+}
+
+.n-toc-item a {
+  display: block;
+  padding: 4px 0 4px 12px;
+  color: var(--n-text-muted);
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  transition: color 180ms ease-out, border-color 180ms ease-out;
+}
+.n-toc-item a:hover {
+  color: var(--n-text);
+  text-decoration: none;
+}
+/* math in headings: KaTeX defaults to 1.21em, which towers over TOC text */
+.n-toc .katex {
+  font-size: 1.05em;
+}
+.n-toc-item a .katex-display {
+  display: inline;
+  margin: 0;
+}
+
+.n-toc-level-3 a {
+  padding-left: 24px;
+  font-size: 12px;
+}
+.n-toc-item a.n-toc-active {
+  color: var(--n-accent);
+  border-left-color: var(--n-accent);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------- mobile drawer */
+
+.n-drawer-toggle {
+  display: none;
+}
+
+/* Always mounted (see NotesApp.jsx) so it can fade instead of popping;
+   irrelevant above the mobile breakpoint, so hidden entirely there. */
+.n-drawer-scrim {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .n-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .n-drawer-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--n-border);
+    background: var(--n-surface);
+    color: var(--n-text);
+    z-index: 40;
+  }
+
+  .n-drawer-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(43, 37, 33, 0.35);
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+  }
+  .n-drawer-scrim-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .n-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 35;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .n-drawer-open .n-sidebar {
+    transform: translateX(0);
+  }
+
+  /* leave room for the fixed toggle button so it doesn't sit on the wordmark */
+  .n-sidebar-header {
+    padding-left: 62px;
+    align-items: center;
+    min-height: 64px;
+  }
+
+  .n-article {
+    padding-top: 72px;
+  }
+
+  .n-prevnext {
+    grid-template-columns: 1fr;
+  }
+  .n-prevnext-next {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* ---------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .notes-root *,
+  .notes-root *::before,
+  .notes-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
