@@ -62,7 +62,7 @@ export default function BookingCalendar({ selectedDate, onSelectDate }) {
             aria-label="Previous month"
             disabled={!canGoBack}
             onClick={() => setView(new Date(year, month - 1, 1))}
-            className="w-9 h-9 grid place-items-center rounded-full text-white/90 hover:bg-white/10 disabled:text-white/20 disabled:hover:bg-transparent transition-colors"
+            className="w-11 h-11 lg:w-9 lg:h-9 grid place-items-center rounded-full text-white/90 hover:bg-white/10 disabled:text-white/20 disabled:hover:bg-transparent transition-colors"
           >
             <Chevron dir="left" />
           </button>
@@ -70,7 +70,7 @@ export default function BookingCalendar({ selectedDate, onSelectDate }) {
             type="button"
             aria-label="Next month"
             onClick={() => setView(new Date(year, month + 1, 1))}
-            className="w-9 h-9 grid place-items-center rounded-full text-white/90 hover:bg-white/10 transition-colors"
+            className="w-11 h-11 lg:w-9 lg:h-9 grid place-items-center rounded-full text-white/90 hover:bg-white/10 transition-colors"
           >
             <Chevron dir="right" />
           </button>
@@ -97,7 +97,7 @@ export default function BookingCalendar({ selectedDate, onSelectDate }) {
               type="button"
               disabled={past}
               onClick={() => onSelectDate?.(date)}
-              className={`mx-auto w-10 h-10 grid place-items-center rounded-full text-[17px] tabular-nums transition-colors duration-150
+              className={`mx-auto w-[min(44px,100%)] h-11 lg:w-10 lg:h-10 grid place-items-center rounded-full text-[17px] tabular-nums transition-colors duration-150
                 ${selected
                   ? 'bg-white text-black font-semibold'
                   : past

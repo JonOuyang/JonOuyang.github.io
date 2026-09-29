@@ -3,6 +3,11 @@ import { DAY_START, DAY_END, SLOT, getBusy, getDaySlots, earliestStart, isFree, 
 import { EASE } from './ui';
 import { useTimeFormat } from './tz';
 
+// phone sheet: list fades out under the header / footer
+const FADE_MASK = {
+  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)',
+  maskImage: 'linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)',
+};
 const TOTAL_ROWS = (DAY_END - DAY_START) / SLOT;
 
 /** Current PT calendar date + decimal hour, for the "now" line. */
@@ -21,7 +26,7 @@ function ptNow() {
  * DayTimeline — Google-Calendar-style single-day free/busy vertical timeline.
  * Body content only; the parent supplies the glass container / positioning / close button.
  */
-export default function DayTimeline({ date, selected, onPreview, onSelect, variant = 'side' }) {
+export default function DayTimeline({ date, selected, onPreview, onSelect, variant = 'side', active = true }) {
   const isSheet = variant === 'sheet';
   const fmt = useTimeFormat(); // labels in the viewer's zone (or PT); geometry stays PT
   // half-hour-offset zones (India, Adelaide…) get "8:30 PM" gutter labels, which need more room
@@ -39,7 +44,18 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
     ro.observe(el);
     return () => ro.disconnect();
   }, [isSheet]);
-  const ROW_H = isSheet ? 40 : Math.max(12, fitH / TOTAL_ROWS);
+  // Phone sheet = iOS-picker style: a fixed reading line at the middle of the list; the time under it
+  // drives the sky. Half a viewport of padding above/below lets every time reach the line, so the
+  // time at the line is simply scrollTop / trackHeight (independent of the padding).
+  const [padH, setPadH] = useState(0);
+  useEffect(() => {
+    if (!isSheet || !scrollRef.current) return;
+    const el = scrollRef.current;
+    const ro = new ResizeObserver(() => setPadH(Math.round(el.clientHeight / 2)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isSheet]);
+  const ROW_H = isSheet ? 44 : Math.max(12, fitH / TOTAL_ROWS);
   const trackHeight = ROW_H * TOTAL_ROWS;
 
   const key = date ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : '';
@@ -81,14 +97,20 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
     return ticks;
   }, []);
 
+  const scrolledKey = useRef(null);
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+    if (isSheet && !padH) return; // wait until the padding exists, or the scroll gets clamped
+    if (isSheet && scrolledKey.current === key) return;
+    scrolledKey.current = key;
     const target = selected != null ? selected : (freeSlots[0]?.start ?? DAY_START);
-    el.scrollTop = Math.max(0, yFor(target) - el.clientHeight / 2 + ROW_H / 2);
+    // sheet: the reading line sits on the top edge of the block (= its start time)
+    el.scrollTop = isSheet ? yFor(target) : Math.max(0, yFor(target) - el.clientHeight / 2 + ROW_H / 2);
+    if (isSheet && activeRef.current) previewAt(target);
     // Only when the day changes — not on every `selected` change (that just glides in place).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key, padH]);
 
   // Mouse over any part of the track (busy included) scrubs the sky to the time under the
   // cursor. Written straight to the DOM: no React render per pointermove.
@@ -102,12 +124,14 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
       onPreview?.(t);
       const c = cursorRef.current;
       if (c) {
-        c.style.opacity = '1';
-        c.style.transform = `translateY(${yFor(t)}px)`;
+        if (!isSheet) {
+          c.style.opacity = '1';
+          c.style.transform = `translateY(${yFor(t)}px)`;
+        }
         cursorLabelRef.current.textContent = fmt.time(date, Math.round(t * 12) / 12); // 5-min steps
       }
     },
-    [onPreview, yFor, fmt, date],
+    [onPreview, yFor, fmt, date, isSheet],
   );
 
   const handleTrackMove = useCallback(
@@ -118,6 +142,25 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
     },
     [previewAt, trackHeight],
   );
+
+  // Phone sheet: scrolling moves the sky. Passive listener, straight to refs/DOM (zero React renders).
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !isSheet) return;
+    const timeAtLine = () => DAY_START + (el.scrollTop / trackHeight) * (DAY_END - DAY_START);
+    const onScroll = () => activeRef.current && previewAt(timeAtLine());
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [isSheet, previewAt, trackHeight]);
+  // sheet (re)opened: the sky picks up whatever is under the line
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!isSheet || !active || !el || !padH) return;
+    previewAt(DAY_START + (el.scrollTop / trackHeight) * (DAY_END - DAY_START));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
   // Mouse wheel / trackpad over the track scrubs time live (the timeline itself never scrolls)
   const trackRef = useRef(null);
@@ -142,10 +185,14 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
 
   const activate = useCallback(
     (start) => {
-      if (isSheet) onPreview?.(start);
+      if (isSheet) {
+        onPreview?.(start);
+        const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        scrollRef.current?.scrollTo({ top: yFor(start), behavior: reduce ? 'auto' : 'smooth' }); // line onto the block's start
+      }
       onSelect?.(start);
     },
-    [isSheet, onPreview, onSelect],
+    [isSheet, onPreview, onSelect, yFor],
   );
 
   const now = ptNow();
@@ -161,10 +208,10 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
     <div className="h-full flex flex-col" style={{ fontVariantNumeric: 'tabular-nums' }}>
       {/* Header */}
       <div className="shrink-0 px-1">
-        <div className="text-[13px] font-semibold uppercase tracking-wide text-white/55">
+        <div className={`text-[13px] font-semibold uppercase tracking-wide text-white/55 ${isSheet ? '[@media(max-height:700px)]:hidden' : ''}`}>
           {date.toLocaleDateString('en-US', { weekday: 'long' })}
         </div>
-        <div className="mt-0.5 text-[22px] font-semibold tracking-tight text-white">
+        <div className={`mt-0.5 font-semibold tracking-tight text-white ${isSheet ? 'text-[20px]' : 'text-[22px]'}`}>
           {date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
         </div>
         <div className="mt-1 text-[13px] text-white/55">{secondary}</div>
@@ -172,22 +219,33 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
           <div className="mt-0.5 text-[12px] text-white/45">
             Times in {fmt.zone}
             {' · '}
-            <button type="button" onClick={() => fmt.setShowPT(!fmt.showPT)} className="text-white/70 hover:text-white underline-offset-2 hover:underline">
+            <button type="button" onClick={() => fmt.setShowPT(!fmt.showPT)} className="text-white/70 hover:text-white underline-offset-2 hover:underline max-lg:py-2.5 max-lg:-my-2.5">
               {fmt.showPT ? 'Show my time' : 'Show in PT'}
             </button>
           </div>
         )}
       </div>
 
-      <div className="my-3 h-px bg-white/10 shrink-0" />
+      <div className={`h-px bg-white/10 shrink-0 ${isSheet ? 'mt-2 mb-0' : 'my-3'}`} />
 
       {/* Timeline */}
+      <div className="relative flex-1 min-h-0" style={isSheet ? FADE_MASK : undefined}>
+      {/* sheet: fixed reading line; the sky shows the time under it */}
+      {isSheet && (
+        <div ref={cursorRef} className="absolute inset-x-0 top-1/2 z-30 pointer-events-none">
+          <div className="absolute left-0 right-0 h-px bg-white/60" />
+          <span
+            ref={cursorLabelRef}
+            className="absolute -top-[10px] right-1 px-2 rounded-md bg-black/60 text-[12px] leading-[20px] font-medium text-white tabular-nums"
+          />
+        </div>
+      )}
       <div
         ref={scrollRef}
-        onPointerLeave={handleLeave}
-        className={`flex-1 min-h-0 tabular-nums ${isSheet ? 'overflow-y-auto overscroll-contain sch-noscrollbar' : 'overflow-hidden'}`}
+        onPointerLeave={isSheet ? undefined : handleLeave}
+        className={`h-full tabular-nums ${isSheet ? 'overflow-y-auto overscroll-contain sch-noscrollbar' : 'overflow-hidden'}`}
       >
-        <div className="relative flex" style={{ height: trackHeight }}>
+        <div className="relative flex" style={{ height: trackHeight, ...(isSheet ? { marginTop: padH, marginBottom: padH } : null) }}>
           {/* Hour gutter */}
           <div className="relative shrink-0" style={{ width: GUTTER_W }}>
             {hourTicks.map((h) => (
@@ -212,7 +270,7 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
             {loading && !error && <div className="absolute inset-x-1 inset-y-0 rounded-lg bg-white/[0.05] animate-pulse" />}
 
             {/* Cursor line: follows the mouse, shows the time the sky is at */}
-            <div
+            {!isSheet && <div
               ref={cursorRef}
               className="absolute left-0 right-0 top-0 z-20 pointer-events-none opacity-0 transition-opacity duration-150"
               style={{ willChange: 'transform' }}
@@ -222,7 +280,7 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
                 ref={cursorLabelRef}
                 className="absolute -top-[9px] right-1 px-1.5 rounded-md bg-black/60 text-[11px] leading-[18px] font-medium text-white tabular-nums"
               />
-            </div>
+            </div>}
 
             {/* Busy blocks (merged) */}
             {busy.map((b) => {
@@ -267,8 +325,9 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
                   focus-visible:bg-white/[0.12] focus-visible:scale-[1.02]"
               >
                 <span
-                  className="text-[13px] font-medium text-white tabular-nums opacity-0
-                    group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200"
+                  className={`text-[13px] font-medium text-white tabular-nums transition-opacity duration-200 ${
+                    isSheet ? 'opacity-30' : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+                  }`}
                 >
                   {fmt.range(date, slot.start)}
                 </span>
@@ -302,6 +361,7 @@ export default function DayTimeline({ date, selected, onPreview, onSelect, varia
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

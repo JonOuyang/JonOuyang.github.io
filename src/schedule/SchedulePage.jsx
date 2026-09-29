@@ -143,7 +143,6 @@ export default function SchedulePage() {
   const handlePick = useCallback((d) => {
     setPickedTime(d);
     handleScrub(d);
-    setTimeout(() => setSheetOpen(false), 280); // phones: let the tap register, then drop the sheet
   }, [handleScrub]);
 
   // Timeline hover: preview a slot, or fall back to the resting time when the pointer leaves
@@ -163,17 +162,25 @@ export default function SchedulePage() {
     }
   };
 
+  // phones: dropping the sheet hands the sky back to the picked time / SF now
+  const closeSheet = useCallback(() => {
+    setSheetOpen(false);
+    hovering.current = false;
+    handleScrub(restTime.current);
+  }, [handleScrub]);
+
   const goStep = (next) => {
+    if (next === 'details') closeSheet();
     setStepAnim(next === 'details' ? 'sch-push' : 'sch-pop');
     setStep(next);
   };
 
   useEffect(() => {
     if (!sheetOpen) return;
-    const onKey = (e) => e.key === 'Escape' && setSheetOpen(false);
+    const onKey = (e) => e.key === 'Escape' && closeSheet();
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [sheetOpen]);
+  }, [sheetOpen, closeSheet]);
 
   const ready = selectedDate && pickedTime != null && isFree(selectedDate, pickedTime);
   const { version: availVersion } = useAvailability();
@@ -192,6 +199,8 @@ export default function SchedulePage() {
     paintClock(hovering.current && lastPainted.current != null ? lastPainted.current : pickedTime ?? ptNow.decimal);
   }, [pickedTime, ptNow, selectedDate, fmt, paintClock]);
   const sidebarOpen = !!selectedDate;
+  // phones: sky + clock take the top of the screen, the day timeline the bottom; the card steps aside
+  const phoneSky = sheetOpen && !!selectedDate && step === 'pick';
   const lastDate = useRef(null);
   if (selectedDate) lastDate.current = selectedDate;
   const shownDate = selectedDate ?? lastDate.current;
@@ -202,6 +211,7 @@ export default function SchedulePage() {
   }, [ptNow, pickedTime, handleScrub]);
 
   const closeDay = () => {
+    closeSheet();
     setSelectedDate(null);
     setPickedTime(null);
     if (step === 'details') goStep('pick');
@@ -209,7 +219,10 @@ export default function SchedulePage() {
 
   return (
     <TimeFormatContext.Provider value={fmt}>
-    <div className="relative min-h-[100dvh] w-full bg-black text-white antialiased" style={{ fontFamily: FONT }}>
+    <div
+      className={`relative min-h-[100dvh] w-full bg-black text-white antialiased ${phoneSky ? 'max-lg:h-[100dvh] max-lg:overflow-hidden' : ''}`}
+      style={{ fontFamily: FONT }}
+    >
       {/* Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <canvas
@@ -227,10 +240,10 @@ export default function SchedulePage() {
       </div>
 
       {/* Top bar */}
-      <header className="relative z-20 flex items-center justify-between px-4 sm:px-10 pt-5">
+      <header className="relative z-20 flex items-center justify-between px-4 sm:px-10 pt-[max(12px,env(safe-area-inset-top))] lg:pt-5">
         <Link
           to="/"
-          className="flex items-center gap-1.5 h-9 pl-3 pr-4 rounded-full text-[14px] font-medium text-white/90 hover:text-white transition-colors"
+          className="flex items-center gap-1.5 h-11 lg:h-9 pl-3 pr-4 rounded-full text-[14px] font-medium text-white/90 hover:text-white transition-colors"
           style={GLASS}
         >
           <svg width="8" height="13" viewBox="0 0 8 13" fill="none" aria-hidden="true">
@@ -243,13 +256,18 @@ export default function SchedulePage() {
 
       {/* Big lock-screen clock, follows the wheel/timeline live */}
       <div
-        className={`${sidebarOpen ? 'hidden xl:block' : 'hidden lg:block'} fixed top-24 z-10 text-right pointer-events-none [text-shadow:0_2px_24px_rgba(0,0,0,0.25)]`}
-        style={{ right: 48 }}
+        className={`${sidebarOpen ? 'lg:hidden xl:block' : 'lg:block'} fixed z-10 pointer-events-none [text-shadow:0_2px_24px_rgba(0,0,0,0.25)]
+          max-lg:inset-x-0 max-lg:top-[68px] max-lg:text-center max-lg:transition-opacity max-lg:duration-500
+          ${phoneSky ? '' : 'max-lg:opacity-0'}
+          lg:top-24 lg:right-12 lg:text-right`}
       >
         {/* text is painted by paintClock(), not React, so scrubbing never re-renders */}
-        <div ref={clockDateRef} className="text-[22px] font-semibold text-white/90" />
-        <div ref={clockRef} className="text-[156px] leading-[0.9] font-semibold tracking-[-0.045em] tabular-nums text-white/95" />
-        <div className="mt-3 flex items-center justify-end gap-2 text-[17px] font-semibold text-white/90 tabular-nums">
+        <div ref={clockDateRef} className="text-[17px] lg:text-[22px] font-semibold text-white/90" />
+        <div
+          ref={clockRef}
+          className="[font-size:clamp(64px,10.5dvh,92px)] lg:[font-size:156px] leading-[0.9] font-semibold tracking-[-0.045em] tabular-nums text-white/95"
+        />
+        <div className="mt-2 lg:mt-3 flex items-center justify-center lg:justify-end gap-2 text-[15px] lg:text-[17px] font-semibold text-white/90 tabular-nums">
           <span className="w-1.5 h-1.5 rounded-full bg-[#30D158]" />
           <span>
             San Francisco<span ref={sfTimeRef} className="text-white/65" />
@@ -258,7 +276,11 @@ export default function SchedulePage() {
       </div>
 
       {/* Left panel */}
-      <main className="relative z-10 px-4 sm:px-10 py-6 sm:py-8">
+      <main
+        className={`relative z-10 px-4 sm:px-10 py-6 sm:py-8 max-lg:pb-[max(24px,env(safe-area-inset-bottom))] max-lg:transition-[opacity,transform] max-lg:duration-500
+          ${phoneSky ? 'max-lg:opacity-0 max-lg:-translate-y-3 max-lg:pointer-events-none' : ''}`}
+        style={{ transitionTimingFunction: EASE }}
+      >
         {/* One glass shell: booking card + (desktop) free/busy extension that grows out of its right edge */}
         <div
           className="flex w-full max-w-[380px] lg:max-w-none lg:w-max mx-auto sm:mx-0 rounded-[30px] overflow-hidden"
@@ -358,34 +380,52 @@ export default function SchedulePage() {
         </div>
       </main>
 
-      {/* Phones: free/busy bottom sheet */}
+      {/* Phones: free/busy bottom sheet. Short, so the sky + clock stay visible above it; scrolling
+          the list scrubs the sky (see DayTimeline). */}
       <div className="lg:hidden">
         <div
-          className={`fixed inset-0 z-30 bg-black/30 transition-opacity duration-300 ${sheetOpen && selectedDate ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-          onClick={() => setSheetOpen(false)}
-        />
-        <div
-          className="fixed inset-x-0 bottom-0 z-40 h-[72dvh] flex flex-col rounded-t-[28px] px-5 pb-[max(20px,env(safe-area-inset-bottom))]"
+          className="fixed inset-x-0 bottom-0 z-40 h-[52dvh] [@media(max-height:700px)]:h-[61dvh] flex flex-col rounded-t-[28px] px-5"
           style={{
             ...GLASS,
             background: 'rgba(24, 24, 27, 0.78)',
-            transform: sheetOpen && selectedDate ? 'none' : 'translateY(105%)',
+            transform: phoneSky ? 'none' : 'translateY(105%)',
             transition: `transform 480ms ${EASE}`,
           }}
-          aria-hidden={!sheetOpen}
+          aria-hidden={!phoneSky}
         >
-          <div className="flex items-center justify-between pt-2 pb-2">
-            <span className="w-12" />
+          <div className="flex items-center justify-between pt-2 pb-1">
+            <span className="w-14" />
             <span className="w-9 h-[5px] rounded-full bg-white/25" />
-            <button type="button" onClick={() => setSheetOpen(false)} className="w-12 text-right text-[16px] font-semibold text-white">
+            <button type="button" onClick={closeSheet} className="w-14 h-11 -my-2 text-right text-[16px] font-semibold text-white">
               Done
             </button>
           </div>
           {selectedDate && (
             <div className="flex-1 min-h-0">
-              <DayTimeline date={selectedDate} selected={pickedTime} onPreview={handlePreview} onSelect={handlePick} variant="sheet" />
+              <DayTimeline date={selectedDate} selected={pickedTime} onPreview={handlePreview} onSelect={handlePick} variant="sheet" active={phoneSky} />
             </div>
           )}
+          {/* sticky footer: the pick + Continue, so the sheet never has to be closed first */}
+          <div className="shrink-0 flex items-center gap-3 pt-2 pb-[max(12px,env(safe-area-inset-bottom))]">
+            <div className="flex-1 min-w-0 leading-tight">
+              {ready ? (
+                <>
+                  <div className="text-[12px] text-white/55 truncate">{dateShort}</div>
+                  <div className="text-[15px] font-semibold tabular-nums truncate">{fmt.range(selectedDate, pickedTime, SLOT, { noDay: true })}</div>
+                </>
+              ) : (
+                <div className="text-[14px] text-white/55">Tap an open time</div>
+              )}
+            </div>
+            <button
+              type="button"
+              disabled={!ready}
+              onClick={() => goStep('details')}
+              className="shrink-0 h-11 px-7 rounded-full bg-white text-black text-[16px] font-semibold active:scale-[0.98] transition disabled:bg-white/15 disabled:text-white/45 disabled:active:scale-100"
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>

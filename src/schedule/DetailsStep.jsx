@@ -21,7 +21,8 @@ export default function DetailsStep({ date, decimalHour, timeLabel, onBack }) {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    nameInputRef.current?.focus({ preventScroll: true });
+    // touch devices: don't pop the keyboard (and shove the layout) the moment the step opens
+    if (window.matchMedia('(hover: hover)').matches) nameInputRef.current?.focus({ preventScroll: true });
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
@@ -182,7 +183,7 @@ export default function DetailsStep({ date, decimalHour, timeLabel, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-[15px] text-white/80 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-[15px] text-white/80 hover:text-white transition-colors max-lg:h-11 max-lg:pr-4 max-lg:-my-2"
         >
           <svg
             width="8"
@@ -234,7 +235,7 @@ export default function DetailsStep({ date, decimalHour, timeLabel, onBack }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
-          className="w-full bg-transparent px-4 py-3 text-[15px] text-white placeholder-white/35 outline-none border-0"
+          className="w-full bg-transparent px-4 py-3 text-[16px] lg:text-[15px] text-white placeholder-white/35 outline-none border-0"
         />
         <div className="h-px bg-white/[0.08] ml-4" />
         <input
@@ -245,7 +246,7 @@ export default function DetailsStep({ date, decimalHour, timeLabel, onBack }) {
           onBlur={(e) => runEmailCheck(e.target.value)}
           aria-invalid={!!emailProblem}
           placeholder="Email"
-          className="w-full bg-transparent px-4 py-3 text-[15px] text-white placeholder-white/35 outline-none border-0"
+          className="w-full bg-transparent px-4 py-3 text-[16px] lg:text-[15px] text-white placeholder-white/35 outline-none border-0"
         />
         <div className="h-px bg-white/[0.08] ml-4" />
         <textarea
@@ -253,7 +254,7 @@ export default function DetailsStep({ date, decimalHour, timeLabel, onBack }) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="What would you like to talk about? (optional)"
-          className="w-full bg-transparent px-4 py-3 text-[15px] text-white placeholder-white/35 outline-none border-0 resize-none"
+          className="w-full bg-transparent px-4 py-3 text-[16px] lg:text-[15px] text-white placeholder-white/35 outline-none border-0 resize-none"
         />
       </div>
 
