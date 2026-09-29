@@ -7,7 +7,7 @@
   ],
   "headers": [
     {
-      "source": "/assets/videos/sf_frames_(lo|hi)/(.*)",
+      "source": "/assets/videos/sf_frames_(lo|md|hi)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
