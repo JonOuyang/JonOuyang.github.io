@@ -26,3 +26,13 @@ scratchpad/
 public/assets/marvel/
 public/models/
 
+# Root raw video exports
+/Generated Video*.mp4
+
+# Local secrets (Google Calendar API credentials)
+.env
+.env.local
+.env.*.local
+
+# 4K timelapse source (61 MB; only used to re-extract sky frames)
+public/assets/videos/sf_timelapse.mp4

@@ -33,6 +33,10 @@
     {
       "name": "rectangle",
       "path": "/rectangle"
+    },
+    {
+      "name": "Schedule",
+      "path": "/schedule"
     }
   ]
 }
