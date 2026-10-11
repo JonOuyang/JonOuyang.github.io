@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const NAV_LINKS = [
@@ -14,17 +14,37 @@ const LETTERS = [
 ];
 
 const ChatPage = () => {
+  const aboutRef = useRef(null);
+
+  useEffect(() => {
+    const el = aboutRef.current;
+    if (!el) return undefined;
+    if (typeof IntersectionObserver === 'undefined') {
+      el.classList.add('is-visible');
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.classList.add('is-visible');
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
+    <>
     <div className="cv-root">
       <style>{`
         .cv-root {
-          position: fixed;
-          inset: 0;
+          position: relative;
+          min-height: 100vh;
+          min-height: 100svh;
           background: #000;
           display: flex;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
           cursor: default;
           user-select: none;
         }
@@ -163,6 +183,53 @@ const ChatPage = () => {
           padding: 0 0.05em;
         }
 
+        /* ── About section ── */
+        .cv-about {
+          min-height: 100vh;
+          min-height: 100svh;
+          background: #000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: clamp(5rem, 14vh, 9rem) 1.5rem;
+          box-sizing: border-box;
+          user-select: text;
+          font-family: "Space Grotesk", "Google Sans", sans-serif;
+        }
+        .cv-about-inner {
+          max-width: 860px;
+          width: 100%;
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cv-about-inner.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cv-about-inner {
+            transform: none;
+            transition: none;
+          }
+        }
+        .cv-about-lead {
+          font-size: clamp(1.35rem, 2.6vw, 2.2rem);
+          font-weight: 400;
+          line-height: 1.3;
+          color: #f4f4f5;
+          letter-spacing: -0.01em;
+          margin: 0 0 2.25rem;
+        }
+        .cv-about-p {
+          font-size: clamp(1rem, 1.25vw, 1.125rem);
+          font-weight: 300;
+          line-height: 1.75;
+          color: #a1a1aa;
+          margin: 0 0 1.4rem;
+        }
+
       `}</style>
 
       {/* Top navigation */}
@@ -198,6 +265,21 @@ const ChatPage = () => {
       </div>
 
     </div>
+
+    <section className="cv-about">
+      <div className="cv-about-inner" ref={aboutRef}>
+        <p className="cv-about-lead">
+          I am currently an intern at Google DeepMind working on benchmarks, evals, and RSI research for Gemini Computer Use.
+        </p>
+        <p className="cv-about-p">
+          Before that I was a software engineer intern at Amazon Studios.
+        </p>
+        <p className="cv-about-p">
+          I am a junior at UCLA studying computer science. I do robotics research at the UCLA Robot Intelligence Lab and at Stanford with Dorsa Sadigh.
+        </p>
+      </div>
+    </section>
+    </>
   );
 };
 
